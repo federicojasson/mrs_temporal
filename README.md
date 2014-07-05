@@ -1,4 +1,4 @@
 mrs_temporal
 ============
 
-Temporal solution (local) for the Medical Record System
+Temporal solution (offline) for the Medical Record System (MRS)
