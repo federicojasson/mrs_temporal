@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +16,8 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
 import entities.Study;
+import entitiesManagers.UsersManager;
+import exceptions.NoConnectedException;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -39,22 +42,29 @@ import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class AddRecord extends JFrame {
 
 	private JPanel contentPane;
 	private JList<String> listOfFiles;
 	
-	private ComboBoxModel<String> tiposDeEstudio =  new DefaultComboBoxModel<String>(new String[] {"Test", "Test 1", "Test 2"});
+	private ComboBoxModel<String> tiposDeEstudio =  new DefaultComboBoxModel<String>();
 	
 	private JComboBox<String> dataTipoEstudio;
 	private HTMLEditorPane dataObservaciones;
 	private DefaultListModel<String> dataArchivos;
-	private UtilDateModel dataFecha;
+	private JTextField dataFechaNac;
 	
 	private MedicalRecords parent;
+	
+	private JButton datePicker;
 
 	/**
 	 * Launch the application.
@@ -81,6 +91,13 @@ public class AddRecord extends JFrame {
 	 * Create the frame.
 	 */
 	public AddRecord() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+		
 		setTitle("Agregar Estudio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -94,11 +111,15 @@ public class AddRecord extends JFrame {
 		contentPane.add(basicDataPane);
 		basicDataPane.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.MIN_COLSPEC,
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				FormFactory.GROWING_BUTTON_COLSPEC,
+				FormFactory.UNRELATED_GAP_COLSPEC,
 				FormFactory.MIN_COLSPEC,
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				FormFactory.GROWING_BUTTON_COLSPEC,},
 			new RowSpec[] {
-				FormFactory.DEFAULT_ROWSPEC,}));
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.PARAGRAPH_GAP_ROWSPEC,}));
 		
 		JLabel lblTipoDeEstudio = new JLabel("Tipo de Estudio:");
 		basicDataPane.add(lblTipoDeEstudio, "1, 1, right, default");
@@ -107,43 +128,87 @@ public class AddRecord extends JFrame {
 		dataTipoEstudio.setPreferredSize(new Dimension(28, 23));
 		dataTipoEstudio.setEditable(true);
 		dataTipoEstudio.setModel(this.tiposDeEstudio);
-		basicDataPane.add(dataTipoEstudio, "2, 1, fill, default");
+		basicDataPane.add(dataTipoEstudio, "3, 1, fill, default");
 		
 		JLabel lblFecha = new JLabel("Fecha:");
-		basicDataPane.add(lblFecha, "3, 1, right, default");
+		basicDataPane.add(lblFecha, "5, 1, right, default");
 		
-		dataFecha = new UtilDateModel();
+		//////////////////////////////////////////////////////////
+		
+		JPanel fechaPanel = new JPanel();
+		fechaPanel.setPreferredSize(new Dimension(200, 24));
+		fechaPanel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.GROWING_BUTTON_COLSPEC,
+				FormFactory.PREF_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.BUTTON_ROWSPEC,
+				}));
+		
+		dataFechaNac = new JTextField(10);
+		fechaPanel.add(dataFechaNac, "1, 1, fill, default");
+		
+		final DatePicker dp = new DatePicker();
+        ImageIcon ii = dp.getImage();
+        datePicker = new JButton(ii);
+        datePicker.setPreferredSize(new Dimension(30, 24));
+        fechaPanel.add(datePicker, "2, 1, default, default");
+        datePicker.setMargin(new Insets(0,0,0,0));
+        datePicker.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dp.setDate(dataFechaNac.getText());
+                dp.popupShow(datePicker);
+            }
+        });
+        dp.addPopupListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	dataFechaNac.setText(dp.getFormattedDate());
+                dp.popupHide();
+            }
+        });
+        
+        basicDataPane.add(fechaPanel, "7, 1, fill, default");
+		
+		//////////////////////////////////////////////////////////
+		
+		/*dataFecha = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(dataFecha);
 		JDatePickerImpl Fecha = new JDatePickerImpl(datePanel);
-		basicDataPane.add(Fecha, "4, 1, fill, default");
+		basicDataPane.add(Fecha, "4, 1, fill, default");*/
 		
 		JPanel centerPane = new JPanel();
 		contentPane.add(centerPane);
 		centerPane.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("max(620px;pref):grow"),
+				FormFactory.UNRELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(120px;pref):grow"),},
 			new RowSpec[] {
 				RowSpec.decode("fill:min"),
-				RowSpec.decode("fill:max(250px;default):grow"),}));
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("fill:max(250px;default):grow"),
+				FormFactory.PARAGRAPH_GAP_ROWSPEC,}));
 		
 		JLabel lblObservaciones = new JLabel("Observaciones:");
 		centerPane.add(lblObservaciones, "1, 1");
 		
 		JLabel lblArchivos = new JLabel("Archivos:");
-		centerPane.add(lblArchivos, "2, 1");
+		centerPane.add(lblArchivos, "3, 1");
 		
 		dataObservaciones = new HTMLEditorPane();
-		centerPane.add(dataObservaciones, "1, 2");
+		centerPane.add(dataObservaciones, "1, 3");
 		
 		JPanel archivosPane = new JPanel();
-		centerPane.add(archivosPane, "2, 2, fill, fill");
+		centerPane.add(archivosPane, "3, 3, fill, fill");
 		archivosPane.setLayout(new BorderLayout(0, 0));
 		
 		listOfFiles = new JList<String>();
 		dataArchivos = new DefaultListModel<String>();
 		listOfFiles.setModel(dataArchivos);
 		listOfFiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		archivosPane.add(listOfFiles, BorderLayout.CENTER);
+		
+		JScrollPane scrollPane = new JScrollPane(listOfFiles);
+		scrollPane.setPreferredSize(new Dimension(60, 110));
+		archivosPane.add(scrollPane, BorderLayout.CENTER);
+		//archivosPane.add(listOfFiles, BorderLayout.CENTER);
 		
 		JPanel archivosBotonesPane = new JPanel();
 		archivosPane.add(archivosBotonesPane, BorderLayout.SOUTH);
@@ -179,8 +244,9 @@ public class AddRecord extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.GROWING_BUTTON_COLSPEC,
-				FormFactory.MIN_COLSPEC,
-				FormFactory.MIN_COLSPEC,},
+				FormFactory.BUTTON_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.BUTTON_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.MIN_ROWSPEC,}));
 		
@@ -198,7 +264,25 @@ public class AddRecord extends JFrame {
 				Aceptar(e);
 			}
 		});
-		panel.add(btnAceptar, "3, 1");
+		panel.add(btnAceptar, "4, 1");
+		
+		try {
+			List<String> lista = UsersManager.getInstance().getStudyTypes();
+			String[] tipos = new String[lista.size()];
+			
+			int i = 0;
+			for(String tipo : lista){
+				tipos[i++] = tipo;
+			}
+			
+			tiposDeEstudio =  new DefaultComboBoxModel<String>(tipos);
+			dataTipoEstudio.setModel(tiposDeEstudio);
+		} catch (NoConnectedException e) {
+			JOptionPane.showMessageDialog(null,
+				    e.getMessage(),
+				    "Connection error",
+				    JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private void Aceptar(ActionEvent arg0){
@@ -257,7 +341,7 @@ public class AddRecord extends JFrame {
 		int id = r.nextInt() % 1027;
 		String observaciones = dataObservaciones.getText();
 		String tipoEstudio = (String) dataTipoEstudio.getSelectedItem();
-		String fecha = dataFecha.getDay()+"/"+dataFecha.getMonth()+"/"+dataFecha.getYear();
+		String fecha = dataFechaNac.getText();
 		List<String> archivos = new ArrayList<String>();
 		for(int i = 0; i < dataArchivos.size(); i++){
 			archivos.add(dataArchivos.elementAt(i));

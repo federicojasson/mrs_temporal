@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move 2 elements to &apos;Client/src/entitiesManagers&apos;&#x0D;&#x0A;- Original project: &apos;Client&apos;&#x0D;&#x0A;- Destination element: &apos;Client/src/entitiesManagers&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     database.StudyManager.java&#x0D;&#x0A;     database.PatientManager.java&#x0D;&#x0A;- Update references to refactored element" description="Move compilation units" destination="/src&lt;entitiesManagers" element1="/src&lt;database{StudyManager.java" element2="/src&lt;database{PatientManager.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1405201869985" units="2" version="1.0"/>
+</session>

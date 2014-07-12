@@ -1,0 +1,12 @@
+package entitiesManagers;
+
+import java.util.List;
+
+import entities.Patient;
+
+public interface PatientManager {
+	
+	public List<Patient> searchPatient(String searchCriteria, String field);
+	public void savePatient(Patient patient);
+
+}

@@ -1,0 +1,17 @@
+package entitiesManagers;
+
+import java.util.List;
+
+import entities.Patient;
+
+public class ClinicalRecordsManager {
+	
+	
+	public List<Patient> searchPatient(String searchCriteria){
+		return null; 
+	}
+	
+	public void savePatient(Patient patient){
+		
+	}
+}

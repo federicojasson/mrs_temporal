@@ -3,6 +3,10 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import entitiesManagers.StudyManager;
+import entitiesManagers.UsersManager;
+import exceptions.NoConnectedException;
+
 public class Patient {
 	
 	private int id;
@@ -11,35 +15,40 @@ public class Patient {
 	private char gender;
 	private String bloodType;
 	
-	private List<Study> studies_patient;
+	public Patient() {
+		this.id = -1;
+		this.name = "";
+		this.dateOfBirth = "";
+		this.gender = 'm';
+		this.bloodType = "0-";
+	}
 	
 	public Patient(int id, String name, String dateOfBirth, char gender, String bloodType) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
-		this.studies_patient = new ArrayList<Study>();
 		this.bloodType = bloodType;
 	}
 	
-	public Patient(int id, String name, String dateOfBirth, char gender, String bloodType,
-			List<Study> studies_patient) {
-		super();
-		this.id = id;
+	public Patient(String name, String dateOfBirth, char gender, String bloodType) {
+		this.id = -1;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
-		this.studies_patient = studies_patient;
 		this.bloodType = bloodType;
 	}
 
-	public List<Study> getStudies_patient() {
-		return studies_patient;
+	public List<Study> getStudies_patient() throws NoConnectedException {
+		StudyManager manager = UsersManager.getInstance().getStudyManager();
+		
+		return manager.getPatientStudies(this);
 	}
-
-	public void setStudies_patient(List<Study> studies_patient) {
-		this.studies_patient = studies_patient;
+	
+	public List<Study> searchStudy(String criteria, String field) throws NoConnectedException {
+		StudyManager manager = UsersManager.getInstance().getStudyManager();
+		
+		return manager.searchPatientStudies(this, criteria, field);
 	}
 
 	public int getId() {
@@ -62,13 +71,19 @@ public class Patient {
 		return bloodType;
 	}
 	
-	public Study addStudy(String observations, String type, String date){
+	public Study addStudy(String observations, String type, String date) throws NoConnectedException{
 		Study toAdd = new Study(observations, type, date, this.id);
-		this.studies_patient.add(toAdd);
+		
+		StudyManager manager = UsersManager.getInstance().getStudyManager();
+		
+		manager.saveStudy(toAdd);
+		
 		return toAdd;
 	}
 	
-	public void addStudy(Study toAdd){
-		this.studies_patient.add(toAdd);
+	public void addStudy(Study toAdd) throws NoConnectedException{
+		StudyManager manager = UsersManager.getInstance().getStudyManager();
+		
+		manager.saveStudy(toAdd);
 	}
 }

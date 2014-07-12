@@ -30,22 +30,6 @@ public class Study {
 		this.files = new ArrayList<String>();
 		this.date = date;
 	}
-	
-	public String getDate() {
-		return date;
-	}
-
-	public void addFile(String file){
-		this.files.add(file);
-	}
-
-	public List<String> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<String> files) {
-		this.files = files;
-	}
 
 	public String getObservations() {
 		return observations;
@@ -55,23 +39,32 @@ public class Study {
 		this.observations = observations;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public String getDate() {
+		return date;
+	}
+
+	public List<String> getFiles() {
+		return files;
 	}
 
 	public int getPatient_id() {
 		return patient_id;
 	}
-
-	public void setPatient_id(int patient_id) {
-		this.patient_id = patient_id;
+	
+	public void addFile(String file){
+		this.files.add(file);
+	}
+	
+	public void removeFile(String file){
+		this.files.remove(file);
 	}
 
-	public int getId() {
-		return id;
-	}
 }

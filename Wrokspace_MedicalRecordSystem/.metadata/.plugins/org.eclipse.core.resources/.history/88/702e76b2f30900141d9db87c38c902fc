@@ -1,0 +1,60 @@
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import javax.swing.JLabel;
+
+public class PatientSearch extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PatientSearch frame = new PatientSearch();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public PatientSearch() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		JPanel searchFieldsPane = new JPanel();
+		contentPane.add(searchFieldsPane, BorderLayout.NORTH);
+		searchFieldsPane.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.MIN_COLSPEC,
+				FormFactory.GROWING_BUTTON_COLSPEC,
+				FormFactory.MIN_COLSPEC,
+				FormFactory.MIN_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		searchFieldsPane.add(lblNewLabel, "1, 1");
+	}
+
+}

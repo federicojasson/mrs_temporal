@@ -1,0 +1,14 @@
+package entitiesManagers;
+
+import java.util.List;
+
+import entities.Study;
+import entities.Patient;
+
+public interface StudyManager {
+	
+	public List<Study> getPatientStudies(Patient patient); 
+	public List<Study> searchPatientStudies(Patient patient, String searchCriteria);
+	public void saveStudy(Study study);
+
+}
