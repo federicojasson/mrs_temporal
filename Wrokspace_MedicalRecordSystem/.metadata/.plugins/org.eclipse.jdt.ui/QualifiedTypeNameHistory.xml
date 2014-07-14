@@ -28,4 +28,6 @@
 <fullyQualifiedTypeName name="javax.swing.table.TableModel"/>
 <fullyQualifiedTypeName name="entities.Patient"/>
 <fullyQualifiedTypeName name="gui.MedicalRecords"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="gui.PatientSearch"/>
 </qualifiedTypeNameHistroy>

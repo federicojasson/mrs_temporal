@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;

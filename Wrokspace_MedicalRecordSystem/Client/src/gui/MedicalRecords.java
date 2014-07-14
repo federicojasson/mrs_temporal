@@ -37,10 +37,6 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
-
 import javax.swing.DefaultComboBoxModel;
 
 import java.awt.event.ActionListener;

@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +34,6 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField dataUser;
 	private JPasswordField dataPassword;
-	private JLabel lblNewLabel;
 	private JLabel lblLogo;
 	private JPanel botonesPane;
 	private JButton btnSalir;
@@ -117,10 +118,40 @@ public class Login extends JFrame {
 		contentPane.add(botonesPane, "2, 6, fill, fill");
 		
 		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		botonesPane.add(btnSalir);
 		
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO
+				login(dataUser.getText(), dataPassword.getText());
+			}
+		});
 		botonesPane.add(btnAceptar);
+	}
+	
+	private void login(String user, String password){
+		//TODO
+		PatientSearch test = new PatientSearch();
+		test.setVisible(true);
+		
+		this.setVisible(false);
+		this.dispose();
+	}
+	
+	private void salir(){
+		//TODO
+		System.exit(0);
 	}
 
 }
