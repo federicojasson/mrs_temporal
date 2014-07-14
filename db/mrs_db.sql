@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS users_passwords (
 	user VARCHAR(32),
 	PRIMARY KEY(user),
 	FOREIGN KEY(user) REFERENCES users(id)
-	-- TODO: add columns
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS patients (
@@ -46,7 +45,6 @@ CREATE TABLE IF NOT EXISTS study_types (
 	description VARCHAR(32),
 	id BINARY(1),
 	PRIMARY KEY(id)
-	-- TODO: add columns
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies (
@@ -57,7 +55,6 @@ CREATE TABLE IF NOT EXISTS studies (
 	PRIMARY KEY(id),
 	FOREIGN KEY(patient) REFERENCES patients(id),
 	FOREIGN KEY(type) REFERENCES study_types(id)
-	-- TODO: add columns
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_histories (
@@ -66,13 +63,33 @@ CREATE TABLE IF NOT EXISTS studies_histories (
 	study BINARY(16),
 	PRIMARY KEY (study, datetime),
 	FOREIGN KEY(study) REFERENCES studies(id)
-	-- TODO: add columns
 ) ENGINE = InnoDB;
 
 -- PROCEDURES --------------------------------------------------------------------------------
 DELIMITER !
 
 -- TODO: add stored procedures
+
+-- TODO: comments
+CREATE PROCEDURE get_studies (
+	-- Hexadecimal representation of the patient ID
+	IN i_hex_patient BINARY(32)
+)
+BEGIN
+	-- Converts the hexadecimal input data to binary
+	DECLARE v_patient BINARY(16) DEFAULT UNHEX(i_hex_patient);
+	
+	SELECT id, observations, patient, type
+	FROM studies
+	WHERE patient = v_patient;
+END; !
+
+-- TODO: comments
+CREATE PROCEDURE get_study_types ()
+BEGIN
+	SELECT description, id
+	FROM study_types;
+END; !
 
 -- TODO: comments
 CREATE PROCEDURE insert_study (
@@ -161,6 +178,16 @@ BEGIN
 		v_salt,
 		i_id
 	);
+END; !
+
+-- TODO: comments
+CREATE PROCEDURE update_study (
+	-- Hexadecimal representation of the ID
+	IN i_hex_id BINARY(32),
+	IN i_observations TEXT
+)
+BEGIN
+	-- TODO
 END; !
 
 DELIMITER ;
