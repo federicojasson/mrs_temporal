@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.DefaultComboBoxModel;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
@@ -41,6 +42,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PatientSearch extends JFrame {
 
@@ -156,7 +159,25 @@ public class PatientSearch extends JFrame {
 		JButton btnView = new JButton("Ver");
 		buttonsPane.add(btnView, "5, 2");
 		
+		dataPaceientes.addMouseListener(new MouseAdapter() {
+			 public void mouseClicked(MouseEvent e) {
+				 System.out.println(e.getClickCount());
+			      if (e.getClickCount() == 2) {
+			         JTable target = (JTable)e.getSource();
+			         int row = target.getSelectedRow();
+			         
+			         doubleClickPatient(dataPacientes.get(row));
+			      }
+			   }
+		});
+		
 		this.fillPatients("");
+	}
+	
+	private void doubleClickPatient(Patient patient) {
+		MedicalRecords mr = new MedicalRecords(patient, this);
+		mr.setVisible(true);
+		this.setVisible(false);
 	}
 	
 	private void addNewPatient(){
