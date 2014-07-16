@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS study_types (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies (
+	date DATE,
 	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	observations TEXT,
 	patient BINARY(16), -- UUID: 128 bits = 16 bytes
@@ -53,14 +54,6 @@ CREATE TABLE IF NOT EXISTS studies (
 	PRIMARY KEY(id),
 	FOREIGN KEY(patient) REFERENCES patients(id),
 	FOREIGN KEY(type) REFERENCES study_types(id)
-) ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS studies_histories (
-	datetime DATETIME,
-	modification VARCHAR(32),
-	study BINARY(16),
-	PRIMARY KEY(datetime, study),
-	FOREIGN KEY(study) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_files (
@@ -71,20 +64,28 @@ CREATE TABLE IF NOT EXISTS studies_files (
 	FOREIGN KEY(study) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS studies_histories (
+	datetime DATETIME,
+	modification VARCHAR(32),
+	study BINARY(16),
+	PRIMARY KEY(datetime, study),
+	FOREIGN KEY(study) REFERENCES studies(id)
+) ENGINE = InnoDB;
+
 
 -- VIEWS -------------------------------------------------------------------------------------
 
-CREATE VIEW admins_authentication AS
+CREATE VIEW users_admins_authentication AS
 SELECT id, password, salt
 FROM users
 WHERE role = 'A';
 
-CREATE VIEW doctors_authentication AS
+CREATE VIEW users_doctors_authentication AS
 SELECT id, password, salt
 FROM users
 WHERE role = 'D';
 
-CREATE VIEW researchers_authentication AS
+CREATE VIEW users_researchers_authentication AS
 SELECT id, password, salt
 FROM users
 WHERE role = 'R';
@@ -95,20 +96,7 @@ DELIMITER !
 
 -- TODO: add stored procedures
 
-/* -- TODO: comments
-CREATE PROCEDURE get_studies (
-	-- Hexadecimal representation of the patient ID
-	IN i_hex_patient BINARY(32)
-)
-BEGIN
-	-- Converts the hexadecimal input data to binary
-	DECLARE v_patient BINARY(16) DEFAULT UNHEX(i_hex_patient);
-	
-	SELECT id, observations, patient, type
-	FROM studies
-	WHERE patient = v_patient;
-END; !
-
+/*
 -- TODO: comments
 CREATE PROCEDURE insert_study (
 	-- Hexadecimal representation of the ID
@@ -153,67 +141,39 @@ BEGIN
 END; !*/
 
 /*
- *	Gets all the study types.
+ *	Inserts a patient.
  */
-CREATE PROCEDURE get_study_types ()
-BEGIN
-	SELECT description, id
-	FROM study_types;
-END; !
-
-/*
- *	Inserts an admin user in the database.
- */
-CREATE PROCEDURE insert_admin (
-	IN i_id VARCHAR(32),
-	IN i_hex_password BINARY(128), -- Hexadecimal representation of the hash of the password
-	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
+CREATE PROCEDURE insert_patient (
+	IN i_birth_date DATE, -- Format: YYYY-MM-DD
+	IN i_blood_type BINARY(3),
+	IN i_hex_id BINARY(32), -- Hexadecimal representation of the ID
+	IN i_gender BINARY(1),
+	IN i_name VARCHAR(128),
+	IN i_user VARCHAR(32)
 )
 BEGIN
-	CALL insert_user(
-		i_id,
-		i_hex_password,
-		'A',
-		i_hex_salt
+	-- Converts the hexadecimal input data to binary
+	DECLARE v_id BINARY(16) DEFAULT UNHEX(i_hex_id);
+	
+	INSERT INTO patients (
+		birth_date,
+		blood_type,
+		id,
+		gender,
+		name,
+		user
+	) VALUES (
+		i_birth_date,
+		i_blood_type,
+		v_id,
+		i_gender,
+		i_name,
+		i_user
 	);
 END; !
 
 /*
- *	Inserts a dctor user in the database.
- */
-CREATE PROCEDURE insert_doctor (
-	IN i_id VARCHAR(32),
-	IN i_hex_password BINARY(128), -- Hexadecimal representation of the hash of the password
-	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
-)
-BEGIN
-	CALL insert_user(
-		i_id,
-		i_hex_password,
-		'D',
-		i_hex_salt
-	);
-END; !
-
-/*
- *	Inserts a researcher user in the database.
- */
-CREATE PROCEDURE insert_researcher (
-	IN i_id VARCHAR(32),
-	IN i_hex_password BINARY(128), -- Hexadecimal representation of the hash of the password
-	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
-)
-BEGIN
-	CALL insert_user(
-		i_id,
-		i_hex_password,
-		'R',
-		i_hex_salt
-	);
-END; !
-
-/*
- *	Inserts a study type in the database.
+ *	Inserts a study type.
  */
 CREATE PROCEDURE insert_study_type (
 	IN i_description VARCHAR(32),
@@ -230,7 +190,7 @@ BEGIN
 END; !
 
 /*
- *	Inserts a user in the database.
+ *	Inserts a user.
  */
 CREATE PROCEDURE insert_user (
 	IN i_id VARCHAR(32),
@@ -256,6 +216,57 @@ BEGIN
 	);
 END; !
 
+/*
+ *	Inserts a user with admin role.
+ */
+CREATE PROCEDURE insert_user_admin (
+	IN i_id VARCHAR(32),
+	IN i_hex_password BINARY(128), -- Hexadecimal representation of the hash of the password
+	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
+)
+BEGIN
+	CALL insert_user(
+		i_id,
+		i_hex_password,
+		'A',
+		i_hex_salt
+	);
+END; !
+
+/*
+ *	Inserts a user with doctor role.
+ */
+CREATE PROCEDURE insert_user_doctor (
+	IN i_id VARCHAR(32),
+	IN i_hex_password BINARY(128), -- Hexadecimal representation of the hash of the password
+	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
+)
+BEGIN
+	CALL insert_user(
+		i_id,
+		i_hex_password,
+		'D',
+		i_hex_salt
+	);
+END; !
+
+/*
+ *	Inserts a user with researcher role.
+ */
+CREATE PROCEDURE insert_user_researcher (
+	IN i_id VARCHAR(32),
+	IN i_hex_password BINARY(128), -- Hexadecimal representation of the hash of the password
+	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
+)
+BEGIN
+	CALL insert_user(
+		i_id,
+		i_hex_password,
+		'R',
+		i_hex_salt
+	);
+END; !
+
 
 DELIMITER ;
 -- TRIGGERS ----------------------------------------------------------------------------------
@@ -276,24 +287,24 @@ IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA';  -- TODO: de
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_admin'@'localhost';
 
-GRANT SELECT
-ON TABLE mrs_db.admins_authentication
-TO 'mrs_admin'@'localhost';
-
-GRANT EXECUTE
-ON PROCEDURE mrs_db.insert_admin
-TO 'mrs_admin'@'localhost';
-
-GRANT EXECUTE
-ON PROCEDURE mrs_db.insert_doctor
-TO 'mrs_admin'@'localhost';
-
-GRANT EXECUTE
-ON PROCEDURE mrs_db.insert_researcher
-TO 'mrs_admin'@'localhost';
-
 GRANT EXECUTE
 ON PROCEDURE mrs_db.insert_study_type
+TO 'mrs_admin'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.insert_user_admin
+TO 'mrs_admin'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.insert_user_doctor
+TO 'mrs_admin'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.insert_user_researcher
+TO 'mrs_admin'@'localhost';
+
+GRANT SELECT
+ON TABLE mrs_db.users_admins_authentication
 TO 'mrs_admin'@'localhost';
 
 /*
@@ -305,12 +316,16 @@ IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: def
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_doctor'@'localhost';
 
-GRANT SELECT
-ON TABLE mrs_db.doctors_authentication
+GRANT EXECUTE
+ON PROCEDURE mrs_db.insert_patient
 TO 'mrs_doctor'@'localhost';
 
-GRANT EXECUTE
-ON PROCEDURE mrs_db.get_study_types
+GRANT SELECT
+ON TABLE mrs_db.study_types
+TO 'mrs_doctor'@'localhost';
+
+GRANT SELECT
+ON TABLE mrs_db.users_doctors_authentication
 TO 'mrs_doctor'@'localhost';
 
 /*
@@ -323,20 +338,20 @@ REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_researcher'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.researchers_authentication
+ON TABLE mrs_db.users_researchers_authentication
 TO 'mrs_researcher'@'localhost';
 
 
 -- INITIAL DATA ------------------------------------------------------------------------------
 
 -- TODO: define default study types
--- CALL insert_study_type ('Estudio de eye tracker', 'A');
+CALL insert_study_type ('Estudio de eye tracker', 'A');
 
 -- TODO: insert default admin user
-/*CALL insert_admin (
+CALL insert_user_admin (
 	'admin',
 	'C7AD44CBAD762A5DA0A452F9E854FDC1E0E7A52A38015F23F3EAB1D80B931DD472634DFAC71CD34EBC35D16AB7FB8A90C81F975113D6C7538DC69DD8DE9077EC',
 	'1ADF99D5B48E22EF7672565352BC817D'
-);*/
+);
 
 COMMIT;
