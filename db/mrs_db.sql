@@ -94,52 +94,6 @@ WHERE role = 'R';
 -- PROCEDURES --------------------------------------------------------------------------------
 DELIMITER !
 
--- TODO: add stored procedures
-
-/*
--- TODO: comments
-CREATE PROCEDURE insert_study (
-	-- Hexadecimal representation of the ID
-	IN i_hex_id BINARY(32),
-	IN i_observations TEXT,
-	-- Hexadecimal representation of the patient ID
-	IN i_hex_patient BINARY(32),
-	IN i_type BINARY(1)
-)
-BEGIN
-	-- Converts the hexadecimal input data to binary
-	DECLARE v_id BINARY(16) DEFAULT UNHEX(i_hex_id);
-	DECLARE v_patient BINARY(16) DEFAULT UNHEX(i_hex_patient);
-	
-	-- TODO: doubt: should this procedure check if a study with the same ID already exists?
-	-- or this should be checked beforehand by the caller
-	--
-	-- TODO: what happens if the user exists?
-	--
-	-- TODO: what about foreign keys? (v_patient and i_type)
-	--
-	-- If you use the IGNORE keyword, errors that occur while executing the INSERT statement
-	-- are ignored. For example, without IGNORE, a row that duplicates an existing UNIQUE
-	-- index or PRIMARY KEY value in the table causes a duplicate-key error and the statement
-	-- is aborted. With IGNORE, the row still is not inserted, but no error occurs. Ignored
-	-- errors may generate warnings instead, although duplicate-key errors do not.
-	--
-	-- Source: http://dev.mysql.com/doc/refman/5.0/en/insert.html
-	
-	-- Inserts a new row in the "studies" table
-	INSERT INTO studies (
-		id,
-		observations,
-		patient,
-		type
-	) VALUES (
-		v_id,
-		i_observations,
-		v_patient,
-		i_type
-	);
-END; !*/
-
 /*
  *	Inserts a patient.
  */
@@ -170,6 +124,64 @@ BEGIN
 		i_name,
 		i_user
 	);
+END; !
+
+/*
+ *	Inserts a study.
+ */
+CREATE PROCEDURE insert_study (
+	IN i_date DATE, -- Format: YYYY-MM-DD
+	IN i_hex_id BINARY(32), -- Hexadecimal representation of the ID
+	IN i_observations TEXT,
+	IN i_hex_patient BINARY(32), -- Hexadecimal representation of the patient ID
+	IN i_type BINARY(1)
+)
+BEGIN
+	-- Converts the hexadecimal input data to binary
+	DECLARE v_id BINARY(16) DEFAULT UNHEX(i_hex_id);
+	DECLARE v_patient BINARY(16) DEFAULT UNHEX(i_hex_patient);
+	
+	INSERT INTO studies (
+		date,
+		id,
+		observations,
+		patient,
+		type
+	) VALUES (
+		i_date,
+		v_id,
+		i_observations,
+		v_patient,
+		i_type
+	);
+	
+	-- TODO: add a studies_histories row for creation?
+END; !
+
+/*
+ *	Inserts a study's file.
+ */
+CREATE PROCEDURE insert_study_file (
+	IN i_hex_checksum BINARY(32), -- Hexadecimal representation of the checksum
+	IN i_filename VARCHAR(128),
+	IN i_hex_study BINARY(32) -- Hexadecimal representation of the study ID
+)
+BEGIN
+	-- Converts the hexadecimal input data to binary
+	DECLARE v_checksum BINARY(16) DEFAULT UNHEX(i_hex_checksum);
+	DECLARE v_study BINARY(16) DEFAULT UNHEX(i_hex_study);
+	
+	INSERT INTO studies_files (
+		checksum,
+		filename,
+		study
+	) VALUES (
+		v_checksum,
+		i_filename,
+		v_study
+	);
+	
+	-- TODO: add a studies_histories row for creation?
 END; !
 
 /*
@@ -267,6 +279,25 @@ BEGIN
 	);
 END; !
 
+/*
+ *	Updates a study's information.
+ */
+CREATE PROCEDURE update_study (
+	IN i_hex_id BINARY(32), -- Hexadecimal representation of the ID
+	IN i_observations TEXT
+)
+BEGIN
+	-- Converts the hexadecimal input data to binary
+	DECLARE v_id BINARY(16) DEFAULT UNHEX(i_hex_id);
+	
+	UPDATE studies
+	SET observations = i_observations
+	WHERE id = v_id
+	LIMIT 1;
+	
+	-- TODO: add a studies_histories row for modification?
+END; !
+
 
 DELIMITER ;
 -- TRIGGERS ----------------------------------------------------------------------------------
@@ -320,6 +351,22 @@ GRANT EXECUTE
 ON PROCEDURE mrs_db.insert_patient
 TO 'mrs_doctor'@'localhost';
 
+GRANT EXECUTE
+ON PROCEDURE mrs_db.insert_study
+TO 'mrs_doctor'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.insert_study_file
+TO 'mrs_doctor'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.update_study
+TO 'mrs_doctor'@'localhost';
+
+GRANT SELECT
+ON TABLE mrs_db.studies
+TO 'mrs_doctor'@'localhost';
+
 GRANT SELECT
 ON TABLE mrs_db.study_types
 TO 'mrs_doctor'@'localhost';
@@ -345,13 +392,13 @@ TO 'mrs_researcher'@'localhost';
 -- INITIAL DATA ------------------------------------------------------------------------------
 
 -- TODO: define default study types
-CALL insert_study_type ('Estudio de eye tracker', 'A');
+-- CALL insert_study_type ('Estudio de eye tracker', 'A');
 
 -- TODO: insert default admin user
-CALL insert_user_admin (
+/*CALL insert_user_admin (
 	'admin',
 	'C7AD44CBAD762A5DA0A452F9E854FDC1E0E7A52A38015F23F3EAB1D80B931DD472634DFAC71CD34EBC35D16AB7FB8A90C81F975113D6C7538DC69DD8DE9077EC',
 	'1ADF99D5B48E22EF7672565352BC817D'
-);
+);*/
 
 COMMIT;

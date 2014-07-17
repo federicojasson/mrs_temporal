@@ -13,7 +13,8 @@ A continuación se muestra cómo realizar algunas consultas básicas:
 
 	SELECT HEX(password) as password, HEX(salt) as salt
 	FROM users_doctors_authentication
-	WHERE id LIKE BINARY <id>;
+	WHERE id LIKE BINARY <id>
+	LIMIT 1;
 
 	Reemplazar <id> con el ID real del usuario.
 	El hash del password y el salt se retornan en formato hexadecimal.
