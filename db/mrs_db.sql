@@ -11,38 +11,53 @@ DROP DATABASE IF EXISTS mrs_db;
 
 -- INITIALIZATION AND CONFIGURATION ----------------------------------------------------------
 
+SET NAMES 'utf8';
+SET CHARACTER SET utf8;
+
 CREATE DATABASE IF NOT EXISTS mrs_db
 CHARACTER SET utf8;
 
-USE mrs_db;
-SET NAMES utf8;
+USE mrs_db
 
 
 -- TABLES ------------------------------------------------------------------------------------
 
+/*
+ *	Role allowed values: [A, D, R]
+ *	A = Admin
+ *	D = Doctor
+ *	R = Researcher
+ */
 CREATE TABLE IF NOT EXISTS users (
 	id VARCHAR(32),
 	password BINARY(64), -- Hash function: SHA-512
-	role BINARY(1), -- Values: [A, D, R]
+	role BINARY(1),
 	salt BINARY(16), -- Salt: 128 bits = 16 bytes
-	PRIMARY KEY (id)
+	PRIMARY KEY(id)
 ) ENGINE = InnoDB;
 
+/*
+ *	Blood type allowed values: [A+, A-, AB+, AB-, B+, B-, O+, O-]
+ *
+ *	Gender allowed values: [F, M]
+ *	F = Female
+ *	M = Male
+ */
 CREATE TABLE IF NOT EXISTS patients (
 	birth_date DATE,
-	blood_type BINARY(3), -- Values: [A+, A-, AB+, AB-, B+, B-, O+, O-]
+	blood_type BINARY(3),
 	id BINARY(16), -- UUID: 128 bits = 16 bytes
-	gender BINARY(1), -- Values: [F, M]
+	gender BINARY(1),
 	name VARCHAR(128),
 	user VARCHAR(32),
-	PRIMARY KEY (id),
-	FOREIGN KEY (user) REFERENCES users (id)
+	PRIMARY KEY(id),
+	FOREIGN KEY(user) REFERENCES users(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS study_types (
 	description VARCHAR(32),
 	id BINARY(1),
-	PRIMARY KEY (id)
+	PRIMARY KEY(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies (
@@ -51,25 +66,25 @@ CREATE TABLE IF NOT EXISTS studies (
 	observations TEXT,
 	patient BINARY(16), -- UUID: 128 bits = 16 bytes
 	type BINARY(1),
-	PRIMARY KEY (id),
-	FOREIGN KEY (patient) REFERENCES patients (id),
-	FOREIGN KEY (type) REFERENCES study_types (id)
+	PRIMARY KEY(id),
+	FOREIGN KEY(patient) REFERENCES patients(id),
+	FOREIGN KEY(type) REFERENCES study_types(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_files (
 	checksum BINARY(16), -- Hash function: MD5
 	filename VARCHAR(128),
 	study BINARY(16),
-	PRIMARY KEY (filename, study),
-	FOREIGN KEY (study) REFERENCES studies (id)
+	PRIMARY KEY(filename, study),
+	FOREIGN KEY(study) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_histories (
 	datetime DATETIME,
 	modification VARCHAR(32),
 	study BINARY(16),
-	PRIMARY KEY (datetime, study),
-	FOREIGN KEY (study) REFERENCES studies (id)
+	PRIMARY KEY(datetime, modification, study),
+	FOREIGN KEY(study) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
 
@@ -93,6 +108,21 @@ WHERE role = 'R';
 
 -- PROCEDURES --------------------------------------------------------------------------------
 DELIMITER !
+
+/*
+ *	Deletes a study's file.
+ */
+CREATE PROCEDURE delete_study_file (
+	IN i_filename VARCHAR(128),
+	IN i_hex_study BINARY(32) -- Hexadecimal representation of the study ID
+)
+BEGIN
+	-- Converts the hexadecimal input data to binary
+	DECLARE v_study BINARY(16) DEFAULT UNHEX(i_hex_study);
+	
+	DELETE FROM studies_files
+	WHERE study = v_study AND filename LIKE BINARY i_filename;
+END; !
 
 /*
  *	Inserts a patient.
@@ -154,8 +184,6 @@ BEGIN
 		v_patient,
 		i_type
 	);
-	
-	-- TODO: add a studies_histories row for creation?
 END; !
 
 /*
@@ -180,8 +208,6 @@ BEGIN
 		i_filename,
 		v_study
 	);
-	
-	-- TODO: add a studies_histories row for filed added?
 END; !
 
 /*
@@ -237,10 +263,13 @@ CREATE PROCEDURE insert_user_admin (
 	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
 )
 BEGIN
+	-- Initializes the user role
+	DECLARE v_role BINARY(1) DEFAULT 'A';
+	
 	CALL insert_user(
 		i_id,
 		i_hex_password,
-		'A',
+		v_role,
 		i_hex_salt
 	);
 END; !
@@ -254,10 +283,13 @@ CREATE PROCEDURE insert_user_doctor (
 	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
 )
 BEGIN
+	-- Initializes the user role
+	DECLARE v_role BINARY(1) DEFAULT 'D';
+	
 	CALL insert_user(
 		i_id,
 		i_hex_password,
-		'D',
+		v_role,
 		i_hex_salt
 	);
 END; !
@@ -271,10 +303,13 @@ CREATE PROCEDURE insert_user_researcher (
 	IN i_hex_salt BINARY(32) -- Hexadecimal representation of the salt
 )
 BEGIN
+	-- Initializes the user role
+	DECLARE v_role BINARY(1) DEFAULT 'R';
+	
 	CALL insert_user(
 		i_id,
 		i_hex_password,
-		'R',
+		v_role,
 		i_hex_salt
 	);
 END; !
@@ -294,8 +329,6 @@ BEGIN
 	SET observations = i_observations
 	WHERE id = v_id
 	LIMIT 1;
-	
-	-- TODO: add a studies_histories row for modification?
 END; !
 
 
@@ -303,7 +336,105 @@ DELIMITER ;
 -- TRIGGERS ----------------------------------------------------------------------------------
 DELIMITER !
 
--- TODO: add triggers
+/*
+ *	Inserts a history entry to register that a study's file has been deleted.
+ */
+CREATE TRIGGER after_delete_study_file
+AFTER DELETE ON studies_files
+FOR EACH ROW
+BEGIN
+	-- Gets the current date and time
+	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
+	
+	-- Initializes the modification statement and study ID
+	DECLARE v_modification VARCHAR(32) DEFAULT CONCAT('Archivo eliminado: ', OLD.filename);
+	DECLARE v_study BINARY(16) DEFAULT OLD.study;
+	
+	INSERT INTO studies_histories (
+		datetime,
+		modification,
+		study
+	) VALUES (
+		v_datetime,
+		v_modification,
+		v_study
+	);
+END; !
+
+/*
+ *	Inserts a history entry to register that a study has been inserted.
+ */
+CREATE TRIGGER after_insert_study
+AFTER INSERT ON studies
+FOR EACH ROW
+BEGIN
+	-- Gets the current date and time
+	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
+	
+	-- Initializes the modification statement and study ID
+	DECLARE v_modification VARCHAR(32) DEFAULT 'Estudio ingresado';
+	DECLARE v_id BINARY(16) DEFAULT NEW.id;
+	
+	INSERT INTO studies_histories (
+		datetime,
+		modification,
+		study
+	) VALUES (
+		v_datetime,
+		v_modification,
+		v_id
+	);
+END; !
+
+/*
+ *	Inserts a history entry to register that a study's file has been inserted.
+ */
+CREATE TRIGGER after_insert_study_file
+AFTER INSERT ON studies_files
+FOR EACH ROW
+BEGIN
+	-- Gets the current date and time
+	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
+	
+	-- Initializes the modification statement and study ID
+	DECLARE v_modification VARCHAR(32) DEFAULT CONCAT('Archivo ingresado: ', NEW.filename);
+	DECLARE v_study BINARY(16) DEFAULT NEW.study;
+	
+	INSERT INTO studies_histories (
+		datetime,
+		modification,
+		study
+	) VALUES (
+		v_datetime,
+		v_modification,
+		v_study
+	);
+END; !
+
+/*
+ *	Inserts a history entry to register that a study's information has been updated.
+ */
+CREATE TRIGGER after_update_study
+AFTER UPDATE ON studies
+FOR EACH ROW
+BEGIN
+	-- Gets the current date and time
+	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
+	
+	-- Initializes the modification statement and study ID
+	DECLARE v_modification VARCHAR(32) DEFAULT 'Estudio modificado';
+	DECLARE v_study BINARY(16) DEFAULT NEW.id;
+	
+	INSERT INTO studies_histories (
+		datetime,
+		modification,
+		study
+	) VALUES (
+		v_datetime,
+		v_modification,
+		v_study
+	);
+END; !
 
 
 DELIMITER ;
@@ -312,8 +443,8 @@ DELIMITER ;
 /*
  *	Role: mrs_admin
  */
-CREATE USER 'mrs_admin'@'localhost'
-IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA';  -- TODO: define
+CREATE USER 'mrs_admin'@'localhost';
+-- IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA';  -- TODO: define
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_admin'@'localhost';
@@ -341,11 +472,15 @@ TO 'mrs_admin'@'localhost';
 /*
  *	Role: mrs_doctor
  */
-CREATE USER 'mrs_doctor'@'localhost'
-IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
+CREATE USER 'mrs_doctor'@'localhost';
+-- IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_doctor'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.delete_study_file
+TO 'mrs_doctor'@'localhost';
 
 GRANT EXECUTE
 ON PROCEDURE mrs_db.insert_patient
@@ -364,7 +499,19 @@ ON PROCEDURE mrs_db.update_study
 TO 'mrs_doctor'@'localhost';
 
 GRANT SELECT
+ON TABLE mrs_db.patients
+TO 'mrs_doctor'@'localhost';
+
+GRANT SELECT
 ON TABLE mrs_db.studies
+TO 'mrs_doctor'@'localhost';
+
+GRANT SELECT
+ON TABLE mrs_db.studies_files
+TO 'mrs_doctor'@'localhost';
+
+GRANT SELECT
+ON TABLE mrs_db.studies_histories
 TO 'mrs_doctor'@'localhost';
 
 GRANT SELECT
@@ -378,8 +525,8 @@ TO 'mrs_doctor'@'localhost';
 /*
  *	Role: mrs_researcher
  */
-CREATE USER 'mrs_researcher'@'localhost'
-IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
+CREATE USER 'mrs_researcher'@'localhost';
+-- IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_researcher'@'localhost';
@@ -392,7 +539,7 @@ TO 'mrs_researcher'@'localhost';
 -- INITIAL DATA ------------------------------------------------------------------------------
 
 -- TODO: define default study types
--- CALL insert_study_type ('Estudio de eye tracker', 'A');
+-- CALL insert_study_type('Estudio de eye tracker', 'A');
 
 -- Inserts a default user with admin role
 CALL insert_user_admin (

@@ -1,12 +1,15 @@
 
 START TRANSACTION; -- Executes all statements or rollbacks
 
-USE mrs_db;
+SET NAMES 'utf8';
+SET CHARACTER SET utf8;
 
-SELECT id, HEX(password) as password, HEX(salt) as salt
+USE mrs_db
+
+SELECT id, HEX(password) AS password, HEX(salt) AS salt
 FROM users_admins_authentication;
 
-CALL insert_study_type ('Análisis de sangre', 'B');
+CALL insert_study_type('Análisis de sangre', 'B');
 
 CALL insert_user_admin (
 	'admin2',
@@ -26,7 +29,7 @@ CALL insert_user_researcher (
 	'1ADF99D5B48E22EF7672565352BC817D'
 );
 
-SELECT id, HEX(password) as password, HEX(salt) as salt
+SELECT id, HEX(password) AS password, HEX(salt) AS salt
 FROM users_admins_authentication;
 
 COMMIT;
