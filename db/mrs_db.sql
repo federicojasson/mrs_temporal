@@ -1,5 +1,5 @@
 
-START TRANSACTION; -- Execute all statements or rollback
+START TRANSACTION; -- Executes all statements or rollbacks
 
 -- CLEANUP -----------------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS users (
 	password BINARY(64), -- Hash function: SHA-512
 	role BINARY(1), -- Values: [A, D, R]
 	salt BINARY(16), -- Salt: 128 bits = 16 bytes
-	PRIMARY KEY(id)
+	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS patients (
@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS patients (
 	gender BINARY(1), -- Values: [F, M]
 	name VARCHAR(128),
 	user VARCHAR(32),
-	PRIMARY KEY(id),
-	FOREIGN KEY(user) REFERENCES users(id)
+	PRIMARY KEY (id),
+	FOREIGN KEY (user) REFERENCES users (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS study_types (
 	description VARCHAR(32),
 	id BINARY(1),
-	PRIMARY KEY(id)
+	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies (
@@ -51,25 +51,25 @@ CREATE TABLE IF NOT EXISTS studies (
 	observations TEXT,
 	patient BINARY(16), -- UUID: 128 bits = 16 bytes
 	type BINARY(1),
-	PRIMARY KEY(id),
-	FOREIGN KEY(patient) REFERENCES patients(id),
-	FOREIGN KEY(type) REFERENCES study_types(id)
+	PRIMARY KEY (id),
+	FOREIGN KEY (patient) REFERENCES patients (id),
+	FOREIGN KEY (type) REFERENCES study_types (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_files (
 	checksum BINARY(16), -- Hash function: MD5
 	filename VARCHAR(128),
 	study BINARY(16),
-	PRIMARY KEY(filename, study),
-	FOREIGN KEY(study) REFERENCES studies(id)
+	PRIMARY KEY (filename, study),
+	FOREIGN KEY (study) REFERENCES studies (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_histories (
 	datetime DATETIME,
 	modification VARCHAR(32),
 	study BINARY(16),
-	PRIMARY KEY(datetime, study),
-	FOREIGN KEY(study) REFERENCES studies(id)
+	PRIMARY KEY (datetime, study),
+	FOREIGN KEY (study) REFERENCES studies (id)
 ) ENGINE = InnoDB;
 
 
@@ -181,7 +181,7 @@ BEGIN
 		v_study
 	);
 	
-	-- TODO: add a studies_histories row for creation?
+	-- TODO: add a studies_histories row for filed added?
 END; !
 
 /*
@@ -394,11 +394,11 @@ TO 'mrs_researcher'@'localhost';
 -- TODO: define default study types
 -- CALL insert_study_type ('Estudio de eye tracker', 'A');
 
--- TODO: insert default admin user
-/*CALL insert_user_admin (
+-- Inserts a default user with admin role
+CALL insert_user_admin (
 	'admin',
 	'C7AD44CBAD762A5DA0A452F9E854FDC1E0E7A52A38015F23F3EAB1D80B931DD472634DFAC71CD34EBC35D16AB7FB8A90C81F975113D6C7538DC69DD8DE9077EC',
 	'1ADF99D5B48E22EF7672565352BC817D'
-);*/
+);
 
 COMMIT;
