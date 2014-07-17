@@ -53,7 +53,7 @@ public class MedicalRecords extends JFrame {
 	private JTextField fieldBuscar;
 	private JTable records;
 	
-	private final JButton datePicker;
+	private JButton datePicker;
 	
 	private ComboBoxModel<String> filtros =  new DefaultComboBoxModel<String>(new String[] {"Cualquier Campo", "Tipo de Estudio", "Observaciones"});
 	private ComboBoxModel<String> sexos =  new DefaultComboBoxModel<String>(new String[] {"Masculino", "Femenino"});
@@ -63,7 +63,7 @@ public class MedicalRecords extends JFrame {
 	
 	private JTextField dataId;
 	private JTextField dataNombre;
-	private final JTextField dataFechaNac;
+	private JTextField dataFechaNac;
 	//private UtilDateModel dataFechaNac;
 	private JComboBox<String> dataSangre;
 	private JComboBox<String> dataSexo;
@@ -92,12 +92,13 @@ public class MedicalRecords extends JFrame {
 	}
 	
 	public MedicalRecords(JFrame parent){
-		this(new Patient());
+		this();
 		this.parent = parent;
 	}
 	
 	public MedicalRecords(Patient current_patient, JFrame parent){
 		this(current_patient);
+		this.editMode(false);
 		this.parent = parent;
 	}
 	
@@ -111,11 +112,25 @@ public class MedicalRecords extends JFrame {
 			this.datePicker.setEnabled(false);
 		}
 	}
+	
+	public MedicalRecords(Patient current_patient) {
+		this.initGUI();
+		this.paceinte = current_patient;
+		this.editMode(false);
+		this.showPatientData();
+	}
+	
+	public MedicalRecords() {
+		this.initGUI();
+		this.paceinte = new Patient();
+		this.editMode(true);
+		this.showPatientData();
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public MedicalRecords(Patient current_patient) {
+	private void initGUI(){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
@@ -274,7 +289,7 @@ public class MedicalRecords extends JFrame {
 			         JTable target = (JTable)e.getSource();
 			         int row = target.getSelectedRow();
 			         
-			         doubleClickStudy(dataEstudiosPaciente[row]);
+			         verEstudio(dataEstudiosPaciente[row]);
 			      }
 			   }
 		});
@@ -283,6 +298,8 @@ public class MedicalRecords extends JFrame {
 		bottomPane.setMaximumSize(new Dimension(32767, 90));
 		contentPane.add(bottomPane);
 		bottomPane.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.BUTTON_COLSPEC,
+				FormFactory.UNRELATED_GAP_COLSPEC,
 				FormFactory.BUTTON_COLSPEC,
 				FormFactory.GROWING_BUTTON_COLSPEC,
 				FormFactory.BUTTON_COLSPEC,},
@@ -298,20 +315,27 @@ public class MedicalRecords extends JFrame {
 		});
 		bottomPane.add(btnAgregarEstudio, "1, 2");
 		
+		JButton btnVerEstudio = new JButton("Ver Estudio");
+		btnAgregarEstudio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		         int row = records.getSelectedRow();
+		         
+		         verEstudio(dataEstudiosPaciente[row]);
+			}
+		});
+		bottomPane.add(btnVerEstudio, "3, 2");
+		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Volver(e);
 			}
 		});
-		bottomPane.add(btnVolver, "3, 2");
-		
-		this.paceinte = current_patient;
-		this.showPatientData();
+		bottomPane.add(btnVolver, "5, 2");
 	}
 	
 	private void AgregarEstudio(ActionEvent arg0){
-		AddRecord add = new AddRecord(this);
+		AddRecord add = new AddRecord(this, this.paceinte.getId());
 		add.setVisible(true);
 		this.setVisible(false);
 	}
@@ -324,7 +348,7 @@ public class MedicalRecords extends JFrame {
 		this.dispose();
 	}
 	
-	private void doubleClickStudy(Study selectedStudy){
+	private void verEstudio(Study selectedStudy){
 		//Lanzar la ventana de edición de estudios
 	}
 	

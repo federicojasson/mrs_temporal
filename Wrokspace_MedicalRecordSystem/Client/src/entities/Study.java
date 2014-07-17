@@ -3,40 +3,36 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import entitiesManagers.UsersManager;
+
 public class Study {
 	
 	private int id;
-	private String observations;
 	private String type;
 	private String date;
-	private List<String> files;
 	
 	private int patient_id;
 	
-	public Study(int id, String observations, String type, String date, List<String> files, int patient_id) {
+	public Study(int id, String type, String date, int patient_id) {
 		this.id = id;
-		this.observations = observations;
 		this.type = type;
 		this.patient_id = patient_id;
-		this.files = files;
 		this.date = date;
 	}
 	
-	public Study(String observations, String type, String date, int patient_id) {
+	public Study(String type, String date, int patient_id) {
 		this.id = -1;
-		this.observations = observations;
 		this.type = type;
 		this.patient_id = patient_id;
-		this.files = new ArrayList<String>();
 		this.date = date;
 	}
 
 	public String getObservations() {
-		return observations;
+		return UsersManager.getInstance().getStudyManager().getObservations(this.id);
 	}
 
 	public void setObservations(String observations) {
-		this.observations = observations;
+		UsersManager.getInstance().getStudyManager().setObservations(this.id, observations);
 	}
 
 	public int getId() {
@@ -52,7 +48,7 @@ public class Study {
 	}
 
 	public List<String> getFiles() {
-		return files;
+		return UsersManager.getInstance().getStudyManager().getFiles(this.id);
 	}
 
 	public int getPatient_id() {
@@ -60,11 +56,11 @@ public class Study {
 	}
 	
 	public void addFile(String file){
-		this.files.add(file);
+		UsersManager.getInstance().getStudyManager().addFile(this.id, file);
 	}
 	
 	public void removeFile(String file){
-		this.files.remove(file);
+		UsersManager.getInstance().getStudyManager().removeFile(this.id, file);
 	}
 
 }

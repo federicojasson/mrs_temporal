@@ -70,10 +70,15 @@ public class PatientSearch extends JFrame {
 		});
 	}
 
+	public PatientSearch(){
+		this.initGUI();
+		this.fillPatients("");
+	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public PatientSearch() {
+	private void initGUI(){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
@@ -157,6 +162,13 @@ public class PatientSearch extends JFrame {
 		buttonsPane.add(btnAddNew, "3, 2");
 		
 		JButton btnView = new JButton("Ver");
+		btnView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		        int row = dataPaceientes.getSelectedRow();
+		        
+		        viewPatient(dataPacientes.get(row));
+			}
+		});
 		buttonsPane.add(btnView, "5, 2");
 		
 		dataPaceientes.addMouseListener(new MouseAdapter() {
@@ -166,15 +178,13 @@ public class PatientSearch extends JFrame {
 			         JTable target = (JTable)e.getSource();
 			         int row = target.getSelectedRow();
 			         
-			         doubleClickPatient(dataPacientes.get(row));
+			         viewPatient(dataPacientes.get(row));
 			      }
 			   }
 		});
-		
-		this.fillPatients("");
 	}
 	
-	private void doubleClickPatient(Patient patient) {
+	private void viewPatient(Patient patient) {
 		MedicalRecords mr = new MedicalRecords(patient, this);
 		mr.setVisible(true);
 		this.setVisible(false);

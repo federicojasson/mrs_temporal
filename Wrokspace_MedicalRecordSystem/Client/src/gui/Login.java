@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
@@ -16,6 +17,10 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+
+import entitiesManagers.UsersManager;
+import exceptions.ConnectionException;
+import exceptions.UserPasswordException;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -141,12 +146,30 @@ public class Login extends JFrame {
 	}
 	
 	private void login(String user, String password){
-		//TODO
-		PatientSearch test = new PatientSearch();
-		test.setVisible(true);
+		//TODO	
+		UsersManager man = UsersManager.getInstance();
+		try {
+			man.login(user, password);
+		} catch (UserPasswordException e) {
+			JOptionPane.showMessageDialog(this,
+				    e.getMessage(),
+				    "Usuario o contraseña incorrectos.",
+				    JOptionPane.ERROR_MESSAGE);
+			this.dataUser.setText("");
+			this.dataPassword.setText("");
+		} catch (ConnectionException e) {
+			JOptionPane.showMessageDialog(this,
+				    e.getMessage(),
+				    "Connection error.",
+				    JOptionPane.ERROR_MESSAGE);
+		}
 		
-		this.setVisible(false);
-		this.dispose();
+		if(man.isConnected()){
+			PatientSearch test = new PatientSearch();
+			test.setVisible(true);
+			this.setVisible(false);
+			this.dispose();
+		}
 	}
 	
 	private void salir(){

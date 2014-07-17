@@ -62,6 +62,9 @@ public class AddRecord extends JFrame {
 	private MedicalRecords parent;
 	
 	private JButton datePicker;
+	
+	private Study current;
+	private int patient_id;
 
 	/**
 	 * Launch the application.
@@ -70,7 +73,7 @@ public class AddRecord extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddRecord frame = new AddRecord();
+					AddRecord frame = new AddRecord(-1);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -79,15 +82,26 @@ public class AddRecord extends JFrame {
 		});
 	}
 	
-	public AddRecord(MedicalRecords parent){
-		this();
+	public AddRecord(MedicalRecords parent, int patient_id){
+		this(patient_id);
 		this.parent = parent;
+	}
+	
+	public AddRecord(int patient_id){
+		this.initGUI();
+		this.patient_id = patient_id;
+	}
+	
+	public AddRecord(MedicalRecords parent, Study currentStudy){
+		this.initGUI();
+		this.patient_id = currentStudy.getPatient_id();
+		this.current = currentStudy;
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public AddRecord() {
+	private void initGUI(){
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
@@ -284,7 +298,7 @@ public class AddRecord extends JFrame {
 	
 	private void Aceptar(ActionEvent arg0){
 		if(this.parent != null){
-			parent.ReturnFromAgregarEstudio(this.createNewStudy());
+			parent.ReturnFromAgregarEstudio(this.returnStudy());
 		}
 		this.setVisible(false);
 		this.dispose();
@@ -328,24 +342,24 @@ public class AddRecord extends JFrame {
 			
 			for(int i = 0; i < toRemove.length; i++){
 				this.dataArchivos.removeElement(toRemove[i]);
-				//Acá habría que remover el archivo del directorio
 			}
 		}
 	}
 	
-	private Study createNewStudy(){
-		Random r = new Random();
-		int id = r.nextInt() % 1027;
+	private Study returnStudy(){
 		String observaciones = dataObservaciones.getText();
 		String tipoEstudio = (String) dataTipoEstudio.getSelectedItem();
 		String fecha = dataFechaNac.getText();
-		List<String> archivos = new ArrayList<String>();
+		
+		if(this.current == null)
+			this.current = new Study(tipoEstudio, fecha, this.patient_id);
+		
+		this.current.setObservations(observaciones);
+		
 		for(int i = 0; i < dataArchivos.size(); i++){
-			archivos.add(dataArchivos.elementAt(i));
+			this.current.addFile(dataArchivos.elementAt(i));
 		}
 		
-		Study toReturn = new Study(id, observaciones, tipoEstudio, fecha, archivos, this.parent.getPatientId());
-		
-		return toReturn;
+		return this.current;
 	}
 }
