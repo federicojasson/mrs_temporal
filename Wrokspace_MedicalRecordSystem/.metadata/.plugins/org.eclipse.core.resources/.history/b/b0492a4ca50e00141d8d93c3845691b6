@@ -1,0 +1,14 @@
+package utility;
+
+import java.util.UUID;
+
+public class Utility {
+	
+	public static String UUIDToString(UUID uuid) {
+		long mostSignificantBits = id.getMostSignificantBits();
+		long leastSignificantBits = id.getLeastSignificantBits();
+		
+		return Long.toHexString(mostSignificantBits) + Long.toHexString(leastSignificantBits);
+	}
+	
+}

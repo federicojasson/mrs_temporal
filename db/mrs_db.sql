@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS patients (
 
 CREATE TABLE IF NOT EXISTS study_types (
 	description VARCHAR(32),
-	id BINARY(1),
+	id BINARY(2),
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB;
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS studies (
 	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	observations TEXT,
 	patient BINARY(16), -- UUID: 128 bits = 16 bytes
-	type BINARY(1),
+	type BINARY(2),
 	PRIMARY KEY(id),
 	FOREIGN KEY(patient) REFERENCES patients(id),
 	FOREIGN KEY(type) REFERENCES study_types(id)
@@ -81,9 +81,9 @@ CREATE TABLE IF NOT EXISTS studies_files (
 
 CREATE TABLE IF NOT EXISTS studies_histories (
 	datetime DATETIME,
-	modification VARCHAR(32),
+	modification VARCHAR(160),
 	study BINARY(16),
-	PRIMARY KEY(datetime, modification, study),
+	PRIMARY KEY(datetime, modification, study), -- TODO: this could be a problem, maybe use an ID
 	FOREIGN KEY(study) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
@@ -164,7 +164,7 @@ CREATE PROCEDURE insert_study (
 	IN i_hex_id BINARY(32), -- Hexadecimal representation of the ID
 	IN i_observations TEXT,
 	IN i_hex_patient BINARY(32), -- Hexadecimal representation of the patient ID
-	IN i_type BINARY(1)
+	IN i_type BINARY(2)
 )
 BEGIN
 	-- Converts the hexadecimal input data to binary
@@ -215,7 +215,7 @@ END; !
  */
 CREATE PROCEDURE insert_study_type (
 	IN i_description VARCHAR(32),
-	IN i_id BINARY(1)
+	IN i_id BINARY(2)
 )
 BEGIN
 	INSERT INTO study_types (
@@ -347,7 +347,7 @@ BEGIN
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
 	
 	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(32) DEFAULT CONCAT('Archivo eliminado: ', OLD.filename);
+	DECLARE v_modification VARCHAR(160) DEFAULT CONCAT('Archivo eliminado: ', OLD.filename);
 	DECLARE v_study BINARY(16) DEFAULT OLD.study;
 	
 	INSERT INTO studies_histories (
@@ -372,7 +372,7 @@ BEGIN
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
 	
 	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(32) DEFAULT 'Estudio ingresado';
+	DECLARE v_modification VARCHAR(160) DEFAULT 'Estudio ingresado';
 	DECLARE v_id BINARY(16) DEFAULT NEW.id;
 	
 	INSERT INTO studies_histories (
@@ -397,7 +397,7 @@ BEGIN
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
 	
 	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(32) DEFAULT CONCAT('Archivo ingresado: ', NEW.filename);
+	DECLARE v_modification VARCHAR(160) DEFAULT CONCAT('Archivo ingresado: ', NEW.filename);
 	DECLARE v_study BINARY(16) DEFAULT NEW.study;
 	
 	INSERT INTO studies_histories (
@@ -422,7 +422,7 @@ BEGIN
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
 	
 	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(32) DEFAULT 'Estudio modificado';
+	DECLARE v_modification VARCHAR(160) DEFAULT 'Estudio modificado';
 	DECLARE v_study BINARY(16) DEFAULT NEW.id;
 	
 	INSERT INTO studies_histories (
@@ -443,8 +443,8 @@ DELIMITER ;
 /*
  *	Role: mrs_admin
  */
-CREATE USER 'mrs_admin'@'localhost';
--- IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA';  -- TODO: define
+CREATE USER 'mrs_admin'@'localhost'
+IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA';  -- TODO: define
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_admin'@'localhost';
@@ -472,8 +472,8 @@ TO 'mrs_admin'@'localhost';
 /*
  *	Role: mrs_doctor
  */
-CREATE USER 'mrs_doctor'@'localhost';
--- IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
+CREATE USER 'mrs_doctor'@'localhost'
+IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_doctor'@'localhost';
@@ -525,8 +525,8 @@ TO 'mrs_doctor'@'localhost';
 /*
  *	Role: mrs_researcher
  */
-CREATE USER 'mrs_researcher'@'localhost';
--- IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
+CREATE USER 'mrs_researcher'@'localhost'
+IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: define
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_researcher'@'localhost';

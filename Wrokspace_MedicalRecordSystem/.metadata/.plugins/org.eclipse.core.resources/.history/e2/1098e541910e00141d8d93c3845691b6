@@ -1,0 +1,9 @@
+package utility;
+
+public static class Utility {
+	
+	public static String UUIDToString(UUID id) {
+		
+	}
+	
+}

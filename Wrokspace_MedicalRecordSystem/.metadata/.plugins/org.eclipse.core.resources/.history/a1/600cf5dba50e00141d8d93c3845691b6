@@ -1,0 +1,25 @@
+package utility;
+
+import java.sql.SQLException;
+import java.util.UUID;
+import database.DatabaseManager;
+
+public class Tester {
+	
+	public static void main(String[] args) {
+		System.out.println("Tester");
+		
+		/*DatabaseManager databaseManager = new DatabaseManager();
+		
+		try {
+			databaseManager.connect();
+			
+			databaseManager.insertStudyFile(checksum, filename, studyId);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+	}
+	
+}

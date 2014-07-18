@@ -23,7 +23,7 @@ CALL insert_study (
 	'9c3f374d8ed2443282c21afd974c4a96',
 	'Observación 1',
 	'6c6e05fa4e0845838ed839f913ea06d6',
-	'B'
+	'BT'
 );
 
 CALL insert_study_file (

@@ -9,7 +9,7 @@ USE mrs_db
 SELECT id, HEX(password) AS password, HEX(salt) AS salt
 FROM users_admins_authentication;
 
-CALL insert_study_type('Análisis de sangre', 'B');
+CALL insert_study_type('Análisis de sangre', 'BT');
 
 CALL insert_user_admin (
 	'admin2',

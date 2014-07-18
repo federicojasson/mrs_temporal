@@ -1,0 +1,13 @@
+package utility;
+
+import database.DatabaseManager;
+
+public class Tester {
+	
+	public static void main(String[] args) {
+		System.out.println("Tester");
+		
+		DatabaseManager databaseManager
+	}
+	
+}

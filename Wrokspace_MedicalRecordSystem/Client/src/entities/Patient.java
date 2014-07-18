@@ -1,8 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import entitiesManagers.StudyManager;
 import entitiesManagers.UsersManager;
 import exceptions.NoConnectedException;
@@ -16,7 +14,7 @@ public class Patient {
 	private String bloodType;
 	
 	public Patient() {
-		this.id = -1;
+		this.id = - 1;
 		this.name = "";
 		this.dateOfBirth = "";
 		this.gender = 'm';
@@ -32,46 +30,14 @@ public class Patient {
 	}
 	
 	public Patient(String name, String dateOfBirth, char gender, String bloodType) {
-		this.id = -1;
+		this.id = - 1;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 		this.bloodType = bloodType;
 	}
 
-	public List<Study> getStudies_patient() throws NoConnectedException {
-		StudyManager manager = UsersManager.getInstance().getStudyManager();
-		
-		return manager.getPatientStudies(this);
-	}
-	
-	public List<Study> searchStudy(String criteria, String field) throws NoConnectedException {
-		StudyManager manager = UsersManager.getInstance().getStudyManager();
-		
-		return manager.searchPatientStudies(this, criteria, field);
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public char getGender() {
-		return gender;
-	}
-	
-	public String getBloodType() {
-		return bloodType;
-	}
-	
-	public Study addStudy(String observations, String type, String date) throws NoConnectedException{
+	public Study addStudy(String observations, String type, String date) throws NoConnectedException {
 		Study toAdd = new Study(type, date, this.id);
 		toAdd.setObservations(observations);
 		
@@ -82,9 +48,41 @@ public class Patient {
 		return toAdd;
 	}
 	
-	public void addStudy(Study toAdd) throws NoConnectedException{
+	public void addStudy(Study toAdd) throws NoConnectedException {
 		StudyManager manager = UsersManager.getInstance().getStudyManager();
 		
 		manager.saveStudy(toAdd);
+	}
+
+	public String getBloodType() {
+		return bloodType;
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public char getGender() {
+		return gender;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public List<Study> getStudies_patient() throws NoConnectedException {
+		StudyManager manager = UsersManager.getInstance().getStudyManager();
+		
+		return manager.getPatientStudies(this);
+	}
+	
+	public List<Study> searchStudy(String criteria, String field) throws NoConnectedException {
+		StudyManager manager = UsersManager.getInstance().getStudyManager();
+		
+		return manager.searchPatientStudies(this, criteria, field);
 	}
 }

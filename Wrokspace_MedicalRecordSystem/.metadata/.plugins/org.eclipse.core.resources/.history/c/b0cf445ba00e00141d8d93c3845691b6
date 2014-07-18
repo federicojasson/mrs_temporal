@@ -1,0 +1,92 @@
+package database;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import utility.Utility;
+import entities.BloodType;
+import entities.Gender;
+import entities.StudySummary;
+import entities.StudyType;
+
+public class DatabaseManager {
+	
+	// TODO: initialize both somehow
+	private Connection connection;
+	private Map<String, CallableStatement> storedProcedures;
+	
+	public void commitTransaction() throws SQLException {
+		connection.commit();
+		connection.setAutoCommit(true);
+	}
+	
+	public void connect() {
+		// TODO
+		
+		connection = DataSource.getConnection(url, username, password);
+	}
+	
+	public void deleteStudyFile(String filename, UUID studyId) throws SQLException {
+		CallableStatement storedProcedure = storedProcedures.get("delete_study_file");
+
+		// Sets the input parameters
+		storedProcedure.setString("i_filename", filename);
+		storedProcedure.setString("i_hex_study", Utility.UUIDToString(studyId));
+		
+		// Executes the stored procedure
+		storedProcedure.execute();
+	}
+	
+	public List<StudySummary> getStudySummaries(UUID patientId) {
+		// TODO
+	}
+	
+	public List<StudyType> getStudyTypes() throws SQLException {
+		List<StudyType> studyTypes = new LinkedList<StudyType>();
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(
+			"SELECT description, id " +
+			"FROM study_types"
+		);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		while (resultSet.next()) {
+			String description = resultSet.getString("description");
+			String id = resultSet.getString("id");
+			
+			// Adds the study type to the list
+			studyTypes.add(new StudyType(description, id));
+		}
+		
+		return studyTypes;
+	}
+	
+	public void insertPatient(Date birthDate, BloodType bloodType, UUID id, Gender gender, String name, String user) {
+		// TODO
+	}
+	
+	public void insertStudy() {
+		// TODO
+	}
+	
+	public void insertStudyFile() {
+		// TODO
+	}
+	
+	public void startTransaction() throws SQLException {
+		connection.setAutoCommit(false);
+	}
+	
+	public void updateStudy() {
+		// TODO
+	}
+	
+}

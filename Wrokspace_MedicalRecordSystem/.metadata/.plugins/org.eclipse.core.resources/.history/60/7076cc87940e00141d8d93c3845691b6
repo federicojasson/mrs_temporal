@@ -1,0 +1,8 @@
+package entities;
+
+public class StudyType {
+	
+	private String description;
+	private String id;
+	
+}
