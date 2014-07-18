@@ -48,22 +48,22 @@ CALL delete_study_file (
 	'9c3f374d8ed2443282c21afd974c4a96'
 );
 
-SELECT birth_date, blood_type, HEX(id) AS id, gender, name, user
+SELECT birth_date, blood_type, HEX(id) AS id, gender, name, user_id
 FROM patients
-WHERE user LIKE BINARY 'doctor';
+WHERE user_id LIKE BINARY 'doctor';
 
-SELECT date, HEX(id) AS id, observations, HEX(patient) AS patient, type
+SELECT date, HEX(id) AS id, observations, HEX(patient_id) AS patient_id, study_type_id
 FROM studies
 WHERE id = UNHEX('9c3f374d8ed2443282c21afd974c4a96')
 ORDER BY date DESC;
 
-SELECT datetime, modification, HEX(study) AS study
+SELECT datetime, id, modification, HEX(study_id) AS study_id
 FROM studies_histories
-WHERE study = UNHEX('9c3f374d8ed2443282c21afd974c4a96')
+WHERE study_id = UNHEX('9c3f374d8ed2443282c21afd974c4a96')
 ORDER BY datetime DESC;
 
-SELECT HEX(checksum) AS checksum, filename, HEX(study) AS study
+SELECT HEX(checksum) AS checksum, filename, HEX(study_id) AS study_id
 FROM studies_files
-WHERE study = UNHEX('9c3f374d8ed2443282c21afd974c4a96');
+WHERE study_id = UNHEX('9c3f374d8ed2443282c21afd974c4a96');
 
 COMMIT;

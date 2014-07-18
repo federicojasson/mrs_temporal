@@ -28,7 +28,7 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
 public class DatePicker extends JPanel {
-	
+
 	public static void main(String[] args) {
 		final JFrame frame = new JFrame("Date Picker");
 		Container pane = frame.getContentPane();
@@ -47,14 +47,14 @@ public class DatePicker extends JPanel {
 		datePicker.setPreferredSize(new Dimension(30, 24));
 		datePicker.setMargin(new Insets(0, 0, 0, 0));
 		datePicker.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				dp.setDate(testDate.getText());
 				dp.popupShow(datePicker);
 			}
 		});
 		dp.addPopupListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				testDate.setText(dp.getFormattedDate());
 				dp.popupHide();
@@ -65,29 +65,29 @@ public class DatePicker extends JPanel {
 		frame.setResizable(true);
 		frame.setVisible(true);
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 	protected boolean controlsOnTop;
-	
+
 	protected boolean removeOnDaySelection;
-	
+
 	protected Calendar currentDisplayDate;
 	protected JButton prevMonth;
 	protected JButton nextMonth;
 	protected JButton prevYear;
-	
+
 	protected JButton nextYear;
-	
+
 	protected JTextField textField;
-	
+
 	protected List<ActionListener> popupListeners = new ArrayList<ActionListener>();
-	
+
 	protected Popup popup;
 	protected SimpleDateFormat dayName = new SimpleDateFormat("d");
-	
+
 	protected SimpleDateFormat monthName = new SimpleDateFormat("MMMM");
 	protected String iconFile = "/images/datepicker.gif";
-	
+
 	protected String[] weekdayNames = {
 		"Sun",
 		"Mon",
@@ -97,7 +97,7 @@ public class DatePicker extends JPanel {
 		"Fri",
 		"Sat"
 	};
-	
+
 	public DatePicker() {
 		super();
 		currentDisplayDate = Calendar.getInstance();
@@ -105,7 +105,7 @@ public class DatePicker extends JPanel {
 		removeOnDaySelection = true;
 		createPanel();
 	}
-	
+
 	public DatePicker(Calendar date) {
 		super();
 		setDate(date);
@@ -113,7 +113,7 @@ public class DatePicker extends JPanel {
 		removeOnDaySelection = true;
 		createPanel();
 	}
-	
+
 	public DatePicker(int month, int day, int year) {
 		super();
 		setDate(month, day, year);
@@ -121,25 +121,25 @@ public class DatePicker extends JPanel {
 		removeOnDaySelection = true;
 		createPanel();
 	}
-	
+
 	public void addMonth(int month) {
 		currentDisplayDate.add(Calendar.MONTH, month);
 		createPanel();
 		validate();
 		repaint();
 	}
-	
+
 	public void addPopupListener(ActionListener l) {
 		popupListeners.add(l);
 	}
-	
+
 	public void addYear(int year) {
 		currentDisplayDate.add(Calendar.YEAR, year);
 		createPanel();
 		validate();
 		repaint();
 	}
-	
+
 	public void changeDay(String day) {
 		currentDisplayDate.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day.trim()));
 		if (removeOnDaySelection) {
@@ -151,18 +151,18 @@ public class DatePicker extends JPanel {
 			repaint();
 		}
 	}
-	
+
 	protected JPanel createCalendar() {
 		JPanel x = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		x.setFocusable(true);
 		x.setLayout(gridbag);
-		
+
 		String month = monthName.format(currentDisplayDate.getTime());
 		String year = Integer.toString(getYear());
-		
+
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 7;
@@ -174,7 +174,7 @@ public class DatePicker extends JPanel {
 		//              font.getSize() + 2);
 		Font weekFont = new Font(font.getName(), font.getStyle(), font.getSize() - 2);
 		title.setFont(font);
-		
+
 		c.gridy = 1;
 		c.gridwidth = 1;
 		c.gridheight = 1;
@@ -183,20 +183,20 @@ public class DatePicker extends JPanel {
 			x.add(label, c);
 			label.setFont(weekFont);
 		}
-		
+
 		Calendar draw = (Calendar) currentDisplayDate.clone();
 		draw.set(Calendar.DATE, 1);
 		draw.add(Calendar.DATE, - draw.get(Calendar.DAY_OF_WEEK) + 1);
 		int monthInt = currentDisplayDate.get(Calendar.MONTH);
 		//      monthInt = 0;
 		//      System.out.println("Current month: " + monthInt);
-		
+
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		int width = getFontMetrics(weekFont).stringWidth(" Wed ");
 		int width1 = getFontMetrics(weekFont).stringWidth("Wed");
 		int height = getFontMetrics(weekFont).getHeight() + (width - width1);
-		
+
 		for (c.gridy = 2; c.gridy < 8; c.gridy++)
 			for (c.gridx = 0; c.gridx < 7; c.gridx++) {
 				JButton dayButton;
@@ -224,78 +224,78 @@ public class DatePicker extends JPanel {
 				dayButton.setPreferredSize(new Dimension(width, height));
 				dayButton.setMargin(new Insets(0, 0, 0, 0));
 				dayButton.addActionListener(new ActionListener() {
-					
+
 					public void actionPerformed(ActionEvent e) {
 						changeDay(e.getActionCommand());
 					}
-					
+
 				});
 				draw.add(Calendar.DATE, + 1);
 			}
 		//          if (draw.get(Calendar.MONTH) != monthInt) break;
 		return x;
 	}
-	
+
 	protected JPanel createControls() {
 		JPanel c = new JPanel();
 		c.setBorder(BorderFactory.createRaisedBevelBorder());
 		c.setFocusable(true);
 		c.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
+
 		prevYear = new JButton("<<");
 		c.add(prevYear);
 		prevYear.setMargin(new Insets(0, 0, 0, 0));
 		prevYear.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				addYear(- 1);
 			}
 		});
-		
+
 		prevMonth = new JButton("<");
 		c.add(prevMonth);
 		prevMonth.setMargin(new Insets(0, 0, 0, 0));
 		prevMonth.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				addMonth(- 1);
 			}
 		});
-		
+
 		textField = new JTextField(getFormattedDate(), 10);
 		c.add(textField);
 		textField.setEditable(true);
 		textField.setEnabled(true);
 		textField.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				editDate(textField.getText());
 			}
 		});
-		
+
 		nextMonth = new JButton(">");
 		c.add(nextMonth);
 		nextMonth.setMargin(new Insets(0, 0, 0, 0));
 		nextMonth.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				addMonth(+ 1);
 			}
 		});
-		
+
 		nextYear = new JButton(">>");
 		c.add(nextYear);
 		nextYear.setMargin(new Insets(0, 0, 0, 0));
 		nextYear.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				addYear(+ 1);
 			}
 		});
-		
+
 		return c;
 	}
-	
+
 	/*
 	 * Returns an ImageIcon, or null if the path was invalid.
 	 */
@@ -309,7 +309,7 @@ public class DatePicker extends JPanel {
 		ImageIcon icon = new ImageIcon(AddRecord.class.getResource(iconFile));
 		return icon;
 	}
-	
+
 	protected void createPanel() {
 		removeAll();
 		setBorder(BorderFactory.createLineBorder(Color.black, 3));
@@ -325,14 +325,14 @@ public class DatePicker extends JPanel {
 		Dimension d = getPreferredSize();
 		setPreferredSize(new Dimension(d.width, d.height + 8));
 	}
-	
+
 	public void editDate(String date) {
 		parseDate(date);
 		createPanel();
 		validate();
 		repaint();
 	}
-	
+
 	protected int expandYear(int year) {
 		if (year < 100) { // 2 digit year
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -347,38 +347,38 @@ public class DatePicker extends JPanel {
 		}
 		return year;
 	}
-	
+
 	public void firePopupEvent(ActionEvent e) {
 		for (int i = popupListeners.size() - 1; i >= 0; i--) {
 			ActionListener l = popupListeners.get(i);
 			l.actionPerformed(e);
 		}
 	}
-	
+
 	public Calendar getCalendarDate() {
 		return currentDisplayDate;
 	}
-	
+
 	public Date getDate() {
 		return currentDisplayDate.getTime();
 	}
-	
+
 	public int getDay() {
 		return currentDisplayDate.get(Calendar.DAY_OF_MONTH);
 	}
-	
+
 	public String getFormattedDate() {
 		return Integer.toString(getMonth()) + "/" + Integer.toString(getDay()) + "/" + Integer.toString(getYear());
 	}
-	
+
 	public ImageIcon getImage() {
 		return createImageIcon(iconFile, "Calendar date picker");
 	}
-	
+
 	public int getMonth() {
 		return currentDisplayDate.get(Calendar.MONTH) + 1;
 	}
-	
+
 	public Popup getPopup(Container c) {
 		if (popup == null) {
 			Point p = c.getLocation();
@@ -387,11 +387,11 @@ public class DatePicker extends JPanel {
 		}
 		return popup;
 	}
-	
+
 	public int getYear() {
 		return currentDisplayDate.get(Calendar.YEAR);
 	}
-	
+
 	protected void parseDate(String date) {
 		String[] parts = date.split("/");
 		if (parts.length == 3) {
@@ -407,34 +407,34 @@ public class DatePicker extends JPanel {
 				// invalid date
 				currentDisplayDate = Calendar.getInstance();
 	}
-	
+
 	public void popupHide() {
 		popup.hide();
 	}
-	
+
 	public void popupShow(Container c) {
 		getPopup(c);
 		popup.show();
 	}
-	
+
 	public void removePopupListener(ActionListener l) {
 		popupListeners.remove(l);
 	}
-	
+
 	public void setControlsOnTop(boolean flag) {
 		controlsOnTop = flag;
 		createPanel();
 		validate();
 		repaint();
 	}
-	
+
 	public void setDate(Calendar date) {
 		currentDisplayDate = date;
 		createPanel();
 		validate();
 		repaint();
 	}
-	
+
 	public void setDate(int month, int day, int year) {
 		currentDisplayDate = Calendar.getInstance();
 		currentDisplayDate.set(expandYear(year), month - 1, day);
@@ -442,12 +442,12 @@ public class DatePicker extends JPanel {
 		validate();
 		repaint();
 	}
-	
+
 	public void setDate(String date) {
 		currentDisplayDate = Calendar.getInstance();
 		editDate(date);
 	}
-	
+
 	public void setRemoveOnDaySelection(boolean flag) {
 		removeOnDaySelection = flag;
 	}

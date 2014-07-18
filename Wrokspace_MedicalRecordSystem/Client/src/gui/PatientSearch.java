@@ -37,13 +37,13 @@ import entitiesManagers.UsersManager;
 import exceptions.NoConnectedException;
 
 public class PatientSearch extends JFrame {
-	
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			public void run() {
 				try {
 					PatientSearch frame = new PatientSearch();
@@ -54,44 +54,44 @@ public class PatientSearch extends JFrame {
 			}
 		});
 	}
-	
+
 	private JPanel contentPane;
 	private JTextField dataSearchCriteria;
-
+	
 	private JTable dataPaceientes;
 	private List<Patient> dataPacientes;
-	
+
 	private TableModel modelTablaPacientes;
-	
+
 	public PatientSearch() {
 		this.initGUI();
 		this.fillPatients("");
 	}
-
+	
 	private void addNewPatient() {
 		MedicalRecords show = new MedicalRecords(this);
 		show.setVisible(true);
 		this.setVisible(false);
 	}
-
+	
 	private void fillPatients(String searchCriteria) {
 		System.out.println(searchCriteria);
 		try {
 			PatientManager manager = UsersManager.getInstance().getPatientManager();
 			this.dataPacientes = manager.searchPatient(searchCriteria, "");
 			String[][] data = new String[this.dataPacientes.size()][4];
-
+			
 			int i = 0;
 			for (Patient p : this.dataPacientes) {
-
+				
 				data[i][0] = p.getName();
 				data[i][1] = p.getDateOfBirth();
 				data[i][2] = "" + p.getGender();
 				data[i][3] = p.getBloodType();
-
+				
 				i++;
 			}
-
+			
 			this.modelTablaPacientes = new DefaultTableModel(data, new String[] {
 				"Nombre",
 				"F. Nac.",
@@ -104,7 +104,7 @@ public class PatientSearch extends JFrame {
 			System.exit(ERROR);
 		}
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */
@@ -114,7 +114,7 @@ public class PatientSearch extends JFrame {
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-
+		
 		setTitle("Buscar Paciente");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -122,7 +122,7 @@ public class PatientSearch extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-
+		
 		JPanel searchFieldsPane = new JPanel();
 		contentPane.add(searchFieldsPane, BorderLayout.NORTH);
 		searchFieldsPane.setLayout(new FormLayout(new ColumnSpec[] {
@@ -137,13 +137,13 @@ public class PatientSearch extends JFrame {
 			FormFactory.DEFAULT_ROWSPEC,
 			FormFactory.PARAGRAPH_GAP_ROWSPEC,
 		}));
-
+		
 		JLabel lblBuscar = new JLabel("Buscar:");
 		searchFieldsPane.add(lblBuscar, "1, 1, right, default");
-
+		
 		dataSearchCriteria = new JTextField();
 		dataSearchCriteria.addKeyListener(new KeyAdapter() {
-			
+
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				fillPatients(dataSearchCriteria.getText());
@@ -151,13 +151,13 @@ public class PatientSearch extends JFrame {
 		});
 		searchFieldsPane.add(dataSearchCriteria, "3, 1, fill, default");
 		dataSearchCriteria.setColumns(10);
-
+		
 		JLabel lblCampo = new JLabel("Campo:");
 		searchFieldsPane.add(lblCampo, "5, 1, right, default");
-
+		
 		JComboBox Campos = new JComboBox();
 		Campos.addItemListener(new ItemListener() {
-			
+
 			public void itemStateChanged(ItemEvent arg0) {
 				fillPatients(dataSearchCriteria.getText());
 			}
@@ -169,12 +169,12 @@ public class PatientSearch extends JFrame {
 			"Sangre"
 		}));
 		searchFieldsPane.add(Campos, "7, 1, fill, default");
-
+		
 		dataPaceientes = new JTable();
 		JScrollPane scrollPane = new JScrollPane(dataPaceientes);
 		scrollPane.setPreferredSize(new Dimension(800, 500));
 		contentPane.add(scrollPane, BorderLayout.CENTER);
-
+		
 		JPanel buttonsPane = new JPanel();
 		contentPane.add(buttonsPane, BorderLayout.SOUTH);
 		buttonsPane.setLayout(new FormLayout(new ColumnSpec[] {
@@ -187,48 +187,48 @@ public class PatientSearch extends JFrame {
 			FormFactory.PARAGRAPH_GAP_ROWSPEC,
 			FormFactory.DEFAULT_ROWSPEC,
 		}));
-
+		
 		JButton btnSalir = new JButton("Salir");
 		buttonsPane.add(btnSalir, "1, 2");
-
+		
 		JButton btnAddNew = new JButton("Agregar Nuevo");
 		btnAddNew.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				addNewPatient();
 			}
 		});
 		buttonsPane.add(btnAddNew, "3, 2");
-
+		
 		JButton btnView = new JButton("Ver");
 		btnView.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				int row = dataPaceientes.getSelectedRow();
-				
+
 				viewPatient(dataPacientes.get(row));
 			}
 		});
 		buttonsPane.add(btnView, "5, 2");
-
+		
 		dataPaceientes.addMouseListener(new MouseAdapter() {
-			
+
 			public void mouseClicked(MouseEvent e) {
 				System.out.println(e.getClickCount());
 				if (e.getClickCount() == 2) {
 					JTable target = (JTable) e.getSource();
 					int row = target.getSelectedRow();
-					
+
 					viewPatient(dataPacientes.get(row));
 				}
 			}
 		});
 	}
-
+	
 	private void viewPatient(Patient patient) {
 		MedicalRecords mr = new MedicalRecords(patient, this);
 		mr.setVisible(true);
 		this.setVisible(false);
 	}
-	
+
 }

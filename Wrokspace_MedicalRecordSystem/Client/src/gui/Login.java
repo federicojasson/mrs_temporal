@@ -24,13 +24,13 @@ import exceptions.ConnectionException;
 import exceptions.UserPasswordException;
 
 public class Login extends JFrame {
-	
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			
+
 			public void run() {
 				try {
 					Login frame = new Login();
@@ -41,16 +41,16 @@ public class Login extends JFrame {
 			}
 		});
 	}
-	
+
 	private JPanel contentPane;
 	private JTextField dataUser;
 	private JPasswordField dataPassword;
 	private JLabel lblLogo;
 	private JPanel botonesPane;
 	private JButton btnSalir;
-	
+
 	private JButton btnAceptar;
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -60,7 +60,7 @@ public class Login extends JFrame {
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-
+		
 		setTitle("Ingreso al sistema de historia cl\u00EDnica");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -80,12 +80,12 @@ public class Login extends JFrame {
 			FormFactory.DEFAULT_ROWSPEC,
 			RowSpec.decode("default:grow"),
 		}));
-
+		
 		lblLogo = new JLabel("");
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogo.setIcon(new ImageIcon(Login.class.getResource("/images/logo.png")));
 		contentPane.add(lblLogo, "2, 2, center, center");
-
+		
 		JPanel loginPane = new JPanel();
 		contentPane.add(loginPane, "2, 4, center, center");
 		loginPane.setLayout(new FormLayout(new ColumnSpec[] {
@@ -97,37 +97,37 @@ public class Login extends JFrame {
 			FormFactory.RELATED_GAP_ROWSPEC,
 			FormFactory.DEFAULT_ROWSPEC,
 		}));
-
+		
 		JLabel lblUsername = new JLabel("Usuario:");
 		loginPane.add(lblUsername, "1, 1");
-
+		
 		JLabel lblPassword = new JLabel("Contraseña:");
 		loginPane.add(lblPassword, "1, 3");
-
+		
 		dataUser = new JTextField(10);
 		loginPane.add(dataUser, "3, 1");
-
+		
 		dataPassword = new JPasswordField(10);
 		dataPassword.setColumns(10);
 		loginPane.add(dataPassword, "3, 3");
-
+		
 		botonesPane = new JPanel();
 		contentPane.add(botonesPane, "2, 6, fill, fill");
-
+		
 		btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				
 			}
 		});
 		botonesPane.add(btnSalir);
-
+		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//TODO
@@ -136,7 +136,7 @@ public class Login extends JFrame {
 		});
 		botonesPane.add(btnAceptar);
 	}
-
+	
 	private void login(String user, String password) {
 		//TODO
 		UsersManager man = UsersManager.getInstance();
@@ -149,7 +149,7 @@ public class Login extends JFrame {
 		} catch (ConnectionException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Connection error.", JOptionPane.ERROR_MESSAGE);
 		}
-
+		
 		if (man.isConnected()) {
 			PatientSearch test = new PatientSearch();
 			test.setVisible(true);
@@ -157,10 +157,10 @@ public class Login extends JFrame {
 			this.dispose();
 		}
 	}
-
+	
 	private void salir() {
 		//TODO
 		System.exit(0);
 	}
-	
+
 }
