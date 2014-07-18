@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS patients (
 	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	gender BINARY(1),
 	name VARCHAR(128),
-	user VARCHAR(32),
+	user_id VARCHAR(32),
 	PRIMARY KEY(id),
-	FOREIGN KEY(user) REFERENCES users(id)
+	FOREIGN KEY(user_id) REFERENCES users(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS study_types (
@@ -64,27 +64,28 @@ CREATE TABLE IF NOT EXISTS studies (
 	date DATE,
 	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	observations TEXT,
-	patient BINARY(16), -- UUID: 128 bits = 16 bytes
-	type BINARY(2),
+	patient_id BINARY(16), -- UUID: 128 bits = 16 bytes
+	study_type_id BINARY(2),
 	PRIMARY KEY(id),
-	FOREIGN KEY(patient) REFERENCES patients(id),
-	FOREIGN KEY(type) REFERENCES study_types(id)
+	FOREIGN KEY(patient_id) REFERENCES patients(id),
+	FOREIGN KEY(study_type_id) REFERENCES study_types(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_files (
 	checksum BINARY(16), -- Hash function: MD5
 	filename VARCHAR(128),
-	study BINARY(16),
-	PRIMARY KEY(filename, study),
-	FOREIGN KEY(study) REFERENCES studies(id)
+	study_id BINARY(16),
+	PRIMARY KEY(filename, study_id),
+	FOREIGN KEY(study_id) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_histories (
 	datetime DATETIME,
+	id BIGINT AUTO_INCREMENT,
 	modification VARCHAR(160),
-	study BINARY(16),
-	PRIMARY KEY(datetime, modification, study), -- TODO: this could be a problem, maybe use an ID
-	FOREIGN KEY(study) REFERENCES studies(id)
+	study_id BINARY(16),
+	PRIMARY KEY(id),
+	FOREIGN KEY(study_id) REFERENCES studies(id)
 ) ENGINE = InnoDB;
 
 
@@ -114,14 +115,14 @@ DELIMITER !
  */
 CREATE PROCEDURE delete_study_file (
 	IN i_filename VARCHAR(128),
-	IN i_hex_study BINARY(32) -- Hexadecimal representation of the study ID
+	IN i_hex_study_id BINARY(32) -- Hexadecimal representation of the study ID
 )
 BEGIN
 	-- Converts the hexadecimal input data to binary
-	DECLARE v_study BINARY(16) DEFAULT UNHEX(i_hex_study);
+	DECLARE v_study_id BINARY(16) DEFAULT UNHEX(i_hex_study_id);
 	
 	DELETE FROM studies_files
-	WHERE study = v_study AND filename LIKE BINARY i_filename;
+	WHERE study_id = v_study_id AND filename LIKE BINARY i_filename;
 END; !
 
 /*
@@ -133,7 +134,7 @@ CREATE PROCEDURE insert_patient (
 	IN i_hex_id BINARY(32), -- Hexadecimal representation of the ID
 	IN i_gender BINARY(1),
 	IN i_name VARCHAR(128),
-	IN i_user VARCHAR(32)
+	IN i_user_id VARCHAR(32)
 )
 BEGIN
 	-- Converts the hexadecimal input data to binary
@@ -145,14 +146,14 @@ BEGIN
 		id,
 		gender,
 		name,
-		user
+		user_id
 	) VALUES (
 		i_birth_date,
 		i_blood_type,
 		v_id,
 		i_gender,
 		i_name,
-		i_user
+		i_user_id
 	);
 END; !
 
@@ -163,26 +164,26 @@ CREATE PROCEDURE insert_study (
 	IN i_date DATE, -- Format: YYYY-MM-DD
 	IN i_hex_id BINARY(32), -- Hexadecimal representation of the ID
 	IN i_observations TEXT,
-	IN i_hex_patient BINARY(32), -- Hexadecimal representation of the patient ID
-	IN i_type BINARY(2)
+	IN i_hex_patient_id BINARY(32), -- Hexadecimal representation of the patient ID
+	IN i_study_type_id BINARY(2)
 )
 BEGIN
 	-- Converts the hexadecimal input data to binary
 	DECLARE v_id BINARY(16) DEFAULT UNHEX(i_hex_id);
-	DECLARE v_patient BINARY(16) DEFAULT UNHEX(i_hex_patient);
+	DECLARE v_patient_id BINARY(16) DEFAULT UNHEX(i_hex_patient_id);
 	
 	INSERT INTO studies (
 		date,
 		id,
 		observations,
-		patient,
-		type
+		patient_id,
+		study_type_id
 	) VALUES (
 		i_date,
 		v_id,
 		i_observations,
-		v_patient,
-		i_type
+		v_patient_id,
+		i_study_type_id
 	);
 END; !
 
@@ -192,21 +193,21 @@ END; !
 CREATE PROCEDURE insert_study_file (
 	IN i_hex_checksum BINARY(32), -- Hexadecimal representation of the checksum
 	IN i_filename VARCHAR(128),
-	IN i_hex_study BINARY(32) -- Hexadecimal representation of the study ID
+	IN i_hex_study_id BINARY(32) -- Hexadecimal representation of the study ID
 )
 BEGIN
 	-- Converts the hexadecimal input data to binary
 	DECLARE v_checksum BINARY(16) DEFAULT UNHEX(i_hex_checksum);
-	DECLARE v_study BINARY(16) DEFAULT UNHEX(i_hex_study);
+	DECLARE v_study_id BINARY(16) DEFAULT UNHEX(i_hex_study_id);
 	
 	INSERT INTO studies_files (
 		checksum,
 		filename,
-		study
+		study_id
 	) VALUES (
 		v_checksum,
 		i_filename,
-		v_study
+		v_study_id
 	);
 END; !
 
@@ -348,16 +349,16 @@ BEGIN
 	
 	-- Initializes the modification statement and study ID
 	DECLARE v_modification VARCHAR(160) DEFAULT CONCAT('Archivo eliminado: ', OLD.filename);
-	DECLARE v_study BINARY(16) DEFAULT OLD.study;
+	DECLARE v_study_id BINARY(16) DEFAULT OLD.study_id;
 	
 	INSERT INTO studies_histories (
 		datetime,
 		modification,
-		study
+		study_id
 	) VALUES (
 		v_datetime,
 		v_modification,
-		v_study
+		v_study_id
 	);
 END; !
 
@@ -378,7 +379,7 @@ BEGIN
 	INSERT INTO studies_histories (
 		datetime,
 		modification,
-		study
+		study_id
 	) VALUES (
 		v_datetime,
 		v_modification,
@@ -396,18 +397,18 @@ BEGIN
 	-- Gets the current date and time
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
 	
-	-- Initializes the modification statement and study ID
+	-- Initializes the modification statement and study_id ID
 	DECLARE v_modification VARCHAR(160) DEFAULT CONCAT('Archivo ingresado: ', NEW.filename);
-	DECLARE v_study BINARY(16) DEFAULT NEW.study;
+	DECLARE v_study_id BINARY(16) DEFAULT NEW.study_id;
 	
 	INSERT INTO studies_histories (
 		datetime,
 		modification,
-		study
+		study_id
 	) VALUES (
 		v_datetime,
 		v_modification,
-		v_study
+		v_study_id
 	);
 END; !
 
@@ -423,16 +424,16 @@ BEGIN
 	
 	-- Initializes the modification statement and study ID
 	DECLARE v_modification VARCHAR(160) DEFAULT 'Estudio modificado';
-	DECLARE v_study BINARY(16) DEFAULT NEW.id;
+	DECLARE v_study_id BINARY(16) DEFAULT OLD.id;
 	
 	INSERT INTO studies_histories (
 		datetime,
 		modification,
-		study
+		study_id
 	) VALUES (
 		v_datetime,
 		v_modification,
-		v_study
+		v_study_id
 	);
 END; !
 
