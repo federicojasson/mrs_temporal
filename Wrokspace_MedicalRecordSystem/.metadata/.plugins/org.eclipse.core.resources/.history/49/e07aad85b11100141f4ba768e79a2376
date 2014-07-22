@@ -1,0 +1,22 @@
+package modules;
+
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.List;
+
+public class StudyManager {
+	
+	public static void addStudy(Date date, String observations, String patientId, String studyTypeId, List<String> filePaths) throws SQLException {
+		// TODO
+		
+		String id = null; // TODO: generate UUID
+		
+		
+		DatabaseManager.startTransaction();
+		
+		DatabaseManager.insertStudy(date, id, observations, patientId, studyTypeId);
+		
+		DatabaseManager.commitTransaction();
+	}
+	
+}

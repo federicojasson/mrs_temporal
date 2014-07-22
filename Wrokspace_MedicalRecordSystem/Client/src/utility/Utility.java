@@ -16,7 +16,7 @@ public class Utility {
 	 * "-" + dayString; }
 	 */
 
-	public static UUID generateUUID() {
+	/*public static UUID generateUUID() {
 		// TODO: maybe use a dedicated library (true randomness is important)
 		return UUID.randomUUID();
 	}
@@ -26,6 +26,6 @@ public class Utility {
 		long leastSignificantBits = uuid.getLeastSignificantBits();
 
 		return Long.toHexString(mostSignificantBits) + Long.toHexString(leastSignificantBits);
-	}
+	}*/
 
 }

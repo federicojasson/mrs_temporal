@@ -1,0 +1,11 @@
+package modules;
+
+import java.sql.Date;
+
+public class StudyManager {
+	
+	public static void addStudy(Date date, String id, String observations, String patientId, String studyTypeId, List<String> filePaths) {
+		// TODO
+	}
+	
+}

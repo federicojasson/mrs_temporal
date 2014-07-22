@@ -1,0 +1,16 @@
+package modules;
+
+import entities.UserAuthenticationData;
+
+public class UserManager {
+	
+	public static boolean loginUserDoctor(String id, String plaintextPassword) {
+		
+		// Gets the user authentication data
+		UserAuthenticationData userAuthenticationData = DatabaseManager.getUserDoctorAuthenticationData(id);
+		
+		// TODO
+		return false;
+	}
+	
+}

@@ -1,0 +1,24 @@
+package modules;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
+public class FileManager {
+	
+	public static void copyStudyFile(String studyId, File studyFile) throws IOException {
+		String pathname = "./";
+		
+		int size = 4;
+		for (int i = 0; i < studyId.length() / size; i += size)
+			pathname += studyId.substring(i, i + size) + "/";
+		
+		File studyFileCopy = new File(pathname);
+		
+		studyFileCopy.mkdirs();
+		
+		Files.copy(studyFile.toPath(), studyFileCopy.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	}
+	
+}

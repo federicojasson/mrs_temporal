@@ -1,0 +1,14 @@
+package modules;
+
+import java.sql.Date;
+import java.util.List;
+
+public class StudyManager {
+	
+	public static void addStudy(Date date, String observations, String patientId, String studyTypeId, List<String> filePaths) {
+		// TODO
+		
+		String id = null; // TODO: generate UUID
+	}
+	
+}

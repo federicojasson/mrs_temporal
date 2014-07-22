@@ -91,17 +91,17 @@ CREATE TABLE IF NOT EXISTS studies_histories (
 
 -- VIEWS -------------------------------------------------------------------------------------
 
-CREATE VIEW users_admins_authentication AS
+CREATE VIEW users_admins_authentication_data AS
 SELECT id, password, salt
 FROM users
 WHERE role = 'A';
 
-CREATE VIEW users_doctors_authentication AS
+CREATE VIEW users_doctors_authentication_data AS
 SELECT id, password, salt
 FROM users
 WHERE role = 'D';
 
-CREATE VIEW users_researchers_authentication AS
+CREATE VIEW users_researchers_authentication_data AS
 SELECT id, password, salt
 FROM users
 WHERE role = 'R';
@@ -467,7 +467,7 @@ ON PROCEDURE mrs_db.insert_user_researcher
 TO 'mrs_admin'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.users_admins_authentication
+ON TABLE mrs_db.users_admins_authentication_data
 TO 'mrs_admin'@'localhost';
 
 /*
@@ -520,7 +520,7 @@ ON TABLE mrs_db.study_types
 TO 'mrs_doctor'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.users_doctors_authentication
+ON TABLE mrs_db.users_doctors_authentication_data
 TO 'mrs_doctor'@'localhost';
 
 /*
@@ -533,7 +533,7 @@ REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_researcher'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.users_researchers_authentication
+ON TABLE mrs_db.users_researchers_authentication_data
 TO 'mrs_researcher'@'localhost';
 
 

@@ -1,0 +1,9 @@
+package modules;
+
+public class UserManager {
+	
+	public static boolean loginUserDoctor(String id, String plaintextPassword) {
+		
+	}
+	
+}

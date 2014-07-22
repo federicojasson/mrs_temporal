@@ -1,0 +1,9 @@
+package modules;
+
+public class PatientManager {
+	
+	public static void addPatient() {
+		
+	}
+	
+}

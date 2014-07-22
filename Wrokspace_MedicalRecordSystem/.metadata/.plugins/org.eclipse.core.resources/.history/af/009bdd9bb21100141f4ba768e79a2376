@@ -1,0 +1,11 @@
+package modules;
+
+import java.io.File;
+
+public class FileManager {
+	
+	public static void copyStudyFile(File studyFile) {
+		
+	}
+	
+}

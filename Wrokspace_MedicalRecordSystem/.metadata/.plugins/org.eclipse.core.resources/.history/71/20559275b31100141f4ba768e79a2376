@@ -1,0 +1,12 @@
+package modules;
+
+import java.io.File;
+
+public class FileManager {
+	
+	public static File copyStudyFile(String studyId, File studyFile) {
+		// TODO: create directories if don't exists
+		// TODO: copy file
+	}
+	
+}

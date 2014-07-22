@@ -1,0 +1,9 @@
+package modules;
+
+public class StudyManager {
+	
+	public static void addStudy() {
+		// TODO
+	}
+	
+}
