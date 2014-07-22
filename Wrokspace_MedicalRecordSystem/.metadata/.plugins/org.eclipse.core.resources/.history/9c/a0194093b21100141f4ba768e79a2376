@@ -1,9 +1,0 @@
-package modules;
-
-public class FileManager {
-	
-	public static void copyStudyFile(File studyFile) {
-		
-	}
-	
-}

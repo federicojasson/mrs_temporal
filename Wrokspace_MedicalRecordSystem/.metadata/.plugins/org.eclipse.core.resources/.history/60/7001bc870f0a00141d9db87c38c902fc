@@ -1,7 +1,0 @@
-package entitiesManagers;
-
-public class ClinicalRecordsManager {
-	public List<Patient> searchPatient(Sting searchCriteria){
-		
-	}
-}
