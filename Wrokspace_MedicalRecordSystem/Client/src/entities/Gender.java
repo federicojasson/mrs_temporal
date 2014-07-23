@@ -2,17 +2,23 @@ package entities;
 
 public enum Gender {
 
-	FEMALE('F'),
-	MALE('M');
+	FEMALE("Femenino", (byte) 'F'),
+	MALE("Masculino", (byte) 'M');
 
-	private char label;
+	private String label;
+	private byte value;
 
-	private Gender(char label) {
+	private Gender(String label, byte value) {
 		this.label = label;
+		this.value = value;
+	}
+	
+	public byte getValue() {
+		return value;
 	}
 
 	public String toString() {
-		return String.valueOf(label);
+		return label;
 	}
 
 }

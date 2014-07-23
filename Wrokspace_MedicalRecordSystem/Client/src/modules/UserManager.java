@@ -5,15 +5,16 @@ import entities.AuthenticationData;
 
 public class UserManager {
 	
-	public static boolean loginUserDoctor(String id, String plaintextPassword) throws SQLException {
+	public static boolean loginUserDoctor(String id, byte[] password) throws SQLException {
 		// Gets the user authentication data
 		AuthenticationData authenticationData = DatabaseManager.getUserDoctorAuthenticationData(id);
 		
-		// Hashes the plaintext password using the salt as a prefix
-		String password = null; // TODO: use some hashing library to do SHA-512(unhex(salt) + plaintextPassword)
+		if (authenticationData == null)
+			// User not found
+			return false;
 		
-		// Compares the hashes
-		return authenticationData.getPassword().equals(password);
+		// Authenticates the user
+		return SecurityManager.authenticateUser(authenticationData, password);
 	}
 	
 }

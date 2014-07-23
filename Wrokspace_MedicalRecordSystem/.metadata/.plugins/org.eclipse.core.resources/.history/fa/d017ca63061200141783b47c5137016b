@@ -1,0 +1,64 @@
+package modules;
+
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import utility.Utility;
+
+public class CryptographyManager {
+	
+	private static final String ALGORITHM_FILE_CHECKSUM = "MD5";
+	private static final String ALGORITHM_PASSWORD_HASH = "SHA-512";
+	
+	public static byte[] computeFileChecksum(File file) {
+		try {
+			// Initializes the algorithm
+			MessageDigest algorithm = MessageDigest.getInstance(ALGORITHM_FILE_CHECKSUM);
+			
+			// Initializes the stream
+			InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
+			DigestInputStream algorithmInputStream = new DigestInputStream(inputStream, algorithm);
+			
+			// Reads the file bytes
+			while (algorithmInputStream.read() != -1);
+			
+			// Closes the stream
+			algorithmInputStream.close();
+			
+			// Computes the hash value
+			byte[] checksumBytes = algorithm.digest(); 
+			
+			// Converts the checksum bytes to hexadecimal
+			return Utility.bytesToHexadecimal(checksumBytes);
+		} catch (NoSuchAlgorithmException exception) {
+			// Exits the application abnormally
+			ApplicationManager.exitAbnormally("Algorithm " + CHECKSUM_ALGORITHM + " not found.", exception);
+			return null;
+		}
+	}
+	
+	public static byte[] computePasswordHash(byte[] password, byte[] salt) {
+		try {
+			// Initializes the algorithm
+			MessageDigest algorithm = MessageDigest.getInstance(ALGORITHM_PASSWORD_HASH);
+			
+			// Prepends the salt to the password
+			byte[] bytes = Utility.concatenateBytes(salt, password);
+			
+			// Computes the password hash
+			return algorithm.digest(bytes);
+		} catch (NoSuchAlgorithmException exception) {
+			// Exits the application abnormally
+			ApplicationManager.exitAbnormally("Algorithm " + ALGORITHM_PASSWORD_HASH + " not found.", exception);
+			return null;
+		}
+	}
+	
+	public static byte[] generateRandomUuid() {
+		// TODO
+	}
+	
+}

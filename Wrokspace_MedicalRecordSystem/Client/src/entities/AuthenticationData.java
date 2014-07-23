@@ -2,19 +2,19 @@ package entities;
 
 public class AuthenticationData {
 	
-	private String password;
-	private String salt;
+	private byte[] passwordHash;
+	private byte[] salt;
 	
-	public AuthenticationData(String password, String salt) {
-		this.password = password;
+	public AuthenticationData(byte[] passwordHash, byte[] salt) {
+		this.passwordHash = passwordHash;
 		this.salt = salt;
 	}
 	
-	public String getPassword() {
-		return password;
+	public byte[] getPasswordHash() {
+		return passwordHash;
 	}
 	
-	public String getSalt() {
+	public byte[] getSalt() {
 		return salt;
 	}
 	

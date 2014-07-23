@@ -1,0 +1,26 @@
+package modules;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import utility.Utility;
+
+public class CryptographyManager {
+	
+	public static byte[] computePasswordHash(byte[] password, byte[] salt) {
+		try {
+			// Initializes the algorithm
+			MessageDigest algorithm = MessageDigest.getInstance(ALGORITHM_PASSWORD_HASH);
+			
+			// Prepends the salt to the password
+			byte[] bytes = Utility.concatenateBytes(salt, password);
+			
+			// Computes the password hash
+			return algorithm.digest(bytes);
+		} catch (NoSuchAlgorithmException exception) {
+			// Exits the application abnormally
+			ApplicationManager.exitAbnormally("Algorithm " + ALGORITHM_PASSWORD_HASH + " not found.", exception);
+			return null;
+		}
+	}
+	
+}

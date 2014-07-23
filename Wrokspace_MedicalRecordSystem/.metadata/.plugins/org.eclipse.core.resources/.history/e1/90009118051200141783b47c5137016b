@@ -1,0 +1,36 @@
+package modules;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import utility.Utility;
+import entities.AuthenticationData;
+
+public class SecurityManager {
+	
+	public static boolean authenticateUser(AuthenticationData authenticationData, byte[] password) {
+		// Computes the password hash using the salt as its prefix
+		byte[] passwordHash = computePasswordHash(password, authenticationData.getSalt());
+		
+		// Compares the password hashes
+		return Arrays.equals(authenticationData.getPasswordHash(), passwordHash);
+	}
+	
+	private static byte[] computePasswordHash(byte[] password, byte[] salt) {
+		try {
+			// Initializes the algorithm
+			MessageDigest algorithm = MessageDigest.getInstance("SHA-512");
+			
+			// Prepends the salt to the password
+			byte[] bytes = Utility.concatenateBytes(salt, password);
+			
+			// Computes the password hash
+			return algorithm.digest(bytes);
+		} catch (NoSuchAlgorithmException exception) {
+			// Exits the application abnormally
+			ApplicationManager.exitAbnormally("Algorithm SHA-512 not found.", exception);
+			return null;
+		}
+	}
+	
+}

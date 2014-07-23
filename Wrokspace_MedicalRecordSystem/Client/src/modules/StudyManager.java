@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
-import utility.Utility;
 
 public class StudyManager {
 	
-	public static void addStudy(Date date, String observations, String patientId, String studyTypeId, List<File> studyFiles) throws IOException, SQLException {
+	public static void addStudy(Date date, String observations, byte[] patientId, byte[] studyTypeId, List<File> studyFiles) throws IOException, SQLException {
 		// Generates a study ID
-		String id = Utility.generateUuid();
+		byte[] id = CryptographyManager.generateRandomUuid();
 		
 		// Copies the files to the system directory tree
 		for (File studyFile : studyFiles)
@@ -20,10 +19,12 @@ public class StudyManager {
 		// Starts a transaction
 		DatabaseManager.startTransaction();
 		
+		// Inserts the study into the database
 		DatabaseManager.insertStudy(date, id, observations, patientId, studyTypeId);
 		
+		// Inserts the study files into the database
 		for (File studyFile : studyFiles) {
-			String checksum = FileManager.computeFileChecksum(studyFile);
+			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
 			String filename = studyFile.getName();
 			DatabaseManager.insertStudyFile(checksum, filename, id);
 		}

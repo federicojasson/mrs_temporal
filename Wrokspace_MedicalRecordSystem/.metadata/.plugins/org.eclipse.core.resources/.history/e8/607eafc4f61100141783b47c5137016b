@@ -1,0 +1,26 @@
+package entities;
+
+public enum BloodType {
+
+	O_NEGATIVE("O-", (byte) '0'),
+	O_POSITIVE("O+", (byte) '0'),
+	A_NEGATIVE("A-", (byte) '0'),
+	A_POSITIVE("A+", (byte) '0'),
+	B_NEGATIVE("B-", (byte) '0'),
+	B_POSITIVE("B+", (byte) '0'),
+	AB_NEGATIVE("AB-", (byte) '0'),
+	AB_POSITIVE("AB+", (byte) '0');
+
+	private String label;
+	private byte value;
+
+	private BloodType(String label, byte value) {
+		this.label = label;
+		this.value = value;
+	}
+
+	public String toString() {
+		return label;
+	}
+
+}

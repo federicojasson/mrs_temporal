@@ -3,14 +3,14 @@ package entities;
 public class StudyType {
 
 	private String description;
-	private String id;
+	private byte[] id;
 
-	public StudyType(String description, String id) {
+	public StudyType(String description, byte[] id) {
 		this.description = description;
 		this.id = id;
 	}
 
-	public String getId() {
+	public byte[] getId() {
 		return id;
 	}
 

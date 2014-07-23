@@ -1,0 +1,23 @@
+package modules;
+
+import java.sql.SQLException;
+import entities.AuthenticationData;
+
+public class UserManager {
+	
+	public static boolean loginUserDoctor(String id, String plaintextPassword) throws SQLException {
+		// Gets the user authentication data
+		AuthenticationData authenticationData = DatabaseManager.getUserDoctorAuthenticationData(id);
+		
+		if (authenticationData == null)
+			// User not found
+			return false;
+		
+		// Computes the hash of the plaintext password using the salt as its prefix
+		byte[] password = SecurityManager.hashPassword();
+		
+		// Compares the hashes
+		return authenticationData.getPassword().equals(password);
+	}
+	
+}
