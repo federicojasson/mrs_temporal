@@ -1,0 +1,22 @@
+package modules;
+
+import java.sql.Date;
+import java.sql.SQLException;
+
+public class PatientManager {
+	
+	public static void addPatient(Date birthDate, byte bloodType, byte gender, String name, String userId) throws SQLException {
+		// Generates a patient ID
+		byte[] id = CryptographyManager.generateRandomUuid();
+		
+		// Starts a transaction
+		DatabaseManager.startTransaction();
+		
+		// Inserts the patient into the database
+		DatabaseManager.insertPatient(birthDate, bloodType, id, gender, name, userId);
+		
+		// Commits the transaction
+		DatabaseManager.commitTransaction();
+	}
+	
+}

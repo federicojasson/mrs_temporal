@@ -5,12 +5,12 @@ import java.sql.Date;
 public class StudySummary {
 
 	private Date date;
-	private String observations;
+	private byte[] id;
 	private StudyType studyType;
 
-	public StudySummary(Date date, String observations, StudyType studyType) {
+	public StudySummary(Date date, byte[] id, StudyType studyType) {
 		this.date = date;
-		this.observations = observations;
+		this.id = id;
 		this.studyType = studyType;
 	}
 	
@@ -18,8 +18,8 @@ public class StudySummary {
 		return date;
 	}
 	
-	public String getObservations() {
-		return observations;
+	public byte[] getId() {
+		return id;
 	}
 	
 	public StudyType getStudyType() {

@@ -1,0 +1,69 @@
+package modules;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.List;
+
+public class StudyManager {
+	
+	private static byte[] currentStudyId;
+	
+	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFiles) throws IOException, SQLException {
+		// Generates a study ID
+		byte[] id = CryptographyManager.generateRandomUuid();
+		
+		// Gets the current patient ID
+		byte[] patientId = PatientManager.getCurrentPatientId();
+		
+		// Copies the files to the system directory tree
+		for (File studyFile : studyFiles)
+			FileManager.copyStudyFile(id, studyFile);
+		
+		// Starts a transaction
+		DatabaseManager.startTransaction();
+		
+		// Inserts the study into the database
+		DatabaseManager.insertStudy(date, id, observations, patientId, studyTypeId);
+		
+		// Inserts the study files into the database
+		for (File studyFile : studyFiles) {
+			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
+			String filename = studyFile.getName();
+			DatabaseManager.insertStudyFile(checksum, filename, id);
+		}
+		
+		// Commits the transaction
+		DatabaseManager.commitTransaction();
+	}
+	
+	public static void setCurrentStudyId(byte[] studyId) {
+		currentStudyId = studyId;
+	}
+	
+	public static void updateStudy(String observations) throws SQLException {
+		// Copies the files to the system directory tree
+		// TODO
+		/*for (File studyFile : studyFiles)
+			FileManager.copyStudyFile(id, studyFile);*/
+		
+		// Starts a transaction
+		DatabaseManager.startTransaction();
+		
+		// Updates the study in the database
+		DatabaseManager.updateStudy(currentStudyId, observations);
+		
+		// Inserts the study files into the database
+		// TODO
+		/*for (File studyFile : studyFiles) {
+			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
+			String filename = studyFile.getName();
+			DatabaseManager.insertStudyFile(checksum, filename, id);
+		}*/
+		
+		// Commits the transaction
+		DatabaseManager.commitTransaction();
+	}
+	
+}

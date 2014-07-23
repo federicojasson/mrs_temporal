@@ -21,6 +21,22 @@ CALL insert_study (
 	'BT'
 );
 
+CALL insert_study (
+	'2014-07-16',
+	0x8f3f374d8ed2443282c21afd974c4a96b,
+	'Observación 2',
+	0x6c6e05fa4e0845838ed839f913ea06d6b,
+	'BT'
+);
+
+CALL insert_study (
+	'2014-07-16',
+	0x223f374d8ed2443282c21afd974c4a96b,
+	'Observación 3',
+	0x6c6e05fa4e0845838ed839f913ea06d6b,
+	'ET'
+);
+
 CALL insert_study_file (
 	0x333c8e6f0e7f918b944ab997b075a3eeb,
 	'archivo1.txt',
@@ -35,7 +51,7 @@ CALL insert_study_file (
 
 CALL update_study (
 	0x9c3f374d8ed2443282c21afd974c4a96b,
-	'Observación 2'
+	'Observación 1'
 );
 
 CALL delete_study_file (

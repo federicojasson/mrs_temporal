@@ -12,7 +12,7 @@ public class FileManager {
 	private static final int UUID_FRAGMENT_LENGTH = 4; // UUID_LENGTH / 8
 	private static final int UUID_LENGTH = 32;
 	
-	public static void copyStudyFile(byte[] studyId, File studyFile) throws IOException {
+	public static void addStudyFile(byte[] studyId, File studyFile) throws IOException {
 		// Converts the study ID to hexadecimal
 		String hexadecimalStudyId = Utility.bytesToHexadecimal(studyId);
 		
@@ -24,13 +24,34 @@ public class FileManager {
 		pathname += studyFile.getName();
 		
 		// Initializes a file for the pathname
-		File studyFileCopy = new File(pathname);
+		File applicationStudyFile = new File(pathname);
 		
 		// Creates the necessary directories
-		studyFileCopy.mkdirs();
+		applicationStudyFile.mkdirs();
 		
 		// Copies the study file
-		Files.copy(studyFile.toPath(), studyFileCopy.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(studyFile.toPath(), applicationStudyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	}
+	
+	public static void removeStudyFile(byte[] studyId, File studyFile) {
+		// Converts the study ID to hexadecimal
+		String hexadecimalStudyId = Utility.bytesToHexadecimal(studyId);
+		
+		// Computes the study directory pathname
+		String pathname = STUDIES_FILES_DIRECTORY + File.separator;
+		for (int i = 0; i < UUID_LENGTH; i += UUID_FRAGMENT_LENGTH)
+			pathname += hexadecimalStudyId.substring(i, i + UUID_FRAGMENT_LENGTH) + File.separator;
+		
+		pathname += studyFile.getName();
+		
+		// Defining the pathname in this manner is a security control, to avoid
+		// accidentally deleting files outside the application directory
+		
+		// Initializes a file for the pathname
+		File applicationStudyFile = new File(pathname);
+		
+		// Deletes the study file
+		applicationStudyFile.delete();
 	}
 	
 }

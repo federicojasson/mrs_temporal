@@ -1,0 +1,22 @@
+package modules;
+
+import java.io.File;
+import java.sql.Date;
+
+public class PatientManager {
+	
+	public static void addPatient(Date birthDate, ) {
+		// Generates a patient ID
+		byte[] id = CryptographyManager.generateRandomUuid();
+		
+		// Starts a transaction
+		DatabaseManager.startTransaction();
+		
+		// Inserts the patient into the database
+		DatabaseManager.insertPatient(birthDate, bloodType, id, gender, name, userId);
+		
+		// Commits the transaction
+		DatabaseManager.commitTransaction();
+	}
+	
+}

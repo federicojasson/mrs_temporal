@@ -8,13 +8,18 @@ import java.util.List;
 
 public class StudyManager {
 	
-	public static void addStudy(Date date, String observations, byte[] patientId, byte[] studyTypeId, List<File> studyFiles) throws IOException, SQLException {
+	private static byte[] currentStudyId;
+	
+	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFiles) throws IOException, SQLException {
 		// Generates a study ID
 		byte[] id = CryptographyManager.generateRandomUuid();
 		
-		// Copies the files to the system directory tree
+		// Gets the current patient ID
+		byte[] patientId = PatientManager.getCurrentPatientId();
+		
+		// Adds the files to the application directory tree
 		for (File studyFile : studyFiles)
-			FileManager.copyStudyFile(id, studyFile);
+			FileManager.addStudyFile(id, studyFile);
 		
 		// Starts a transaction
 		DatabaseManager.startTransaction();
@@ -27,6 +32,42 @@ public class StudyManager {
 			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
 			String filename = studyFile.getName();
 			DatabaseManager.insertStudyFile(checksum, filename, id);
+		}
+		
+		// Commits the transaction
+		DatabaseManager.commitTransaction();
+	}
+	
+	public static void setCurrentStudyId(byte[] studyId) {
+		currentStudyId = studyId;
+	}
+	
+	public static void updateStudy(String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws IOException, SQLException {
+		// Removes the files from the application directory tree
+		for (File studyFile : studyFilesToRemove)
+			FileManager.removeStudyFile(currentStudyId, studyFile);
+		
+		// Adds the files to the application directory tree
+		for (File studyFile : studyFilesToAdd)
+			FileManager.addStudyFile(currentStudyId, studyFile);
+		
+		// Starts a transaction
+		DatabaseManager.startTransaction();
+		
+		// Updates the study in the database
+		DatabaseManager.updateStudy(currentStudyId, observations);
+		
+		// Deletes the study files from the database
+		for (File studyFile : studyFilesToRemove) {
+			String filename = studyFile.getName();
+			DatabaseManager.deleteStudyFile(filename, currentStudyId);
+		}
+		
+		// Inserts the study files into the database
+		for (File studyFile : studyFilesToAdd) {
+			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
+			String filename = studyFile.getName();
+			DatabaseManager.insertStudyFile(checksum, filename, currentStudyId);
 		}
 		
 		// Commits the transaction

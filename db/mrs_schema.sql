@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS study_types (
 
 CREATE TABLE IF NOT EXISTS studies (
 	date DATE,
-	id BINARY(16), -- UUID: 128 bits = 16 bytes
+	id BINARY(16), -- UUID: 128 bits = 16 bytesa
 	observations TEXT,
 	patient_id BINARY(16), -- UUID: 128 bits = 16 bytes
 	study_type_id BINARY(2),

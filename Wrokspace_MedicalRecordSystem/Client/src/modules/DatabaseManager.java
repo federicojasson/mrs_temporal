@@ -84,9 +84,40 @@ public class DatabaseManager {
 		}
 	}
 
-	public static List<StudySummary> getStudySummaries(String patientId) {
-		// TODO
-		return null;
+	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
+		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
+		
+		// Initializes the prepared statement
+		PreparedStatement preparedStatement = dbmsConnection.prepareStatement(
+			"SELECT studies.date, studies.id, study_types.description, study_types.id " +
+			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
+			"WHERE studies.patient_id = ?"
+		);
+
+		try {
+			// Sets the input parameters
+			preparedStatement.setBytes(1, patientId);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+	
+			// Fetches the query results
+			while (resultSet.next()) {
+				Date date = resultSet.getDate("studies.date");
+				byte[] id = resultSet.getBytes("studies.id");
+				String studyTypeDescription = resultSet.getString("study_types.description");
+				byte[] studyTypeId = resultSet.getBytes("study_type.id");
+				StudyType studyType = new StudyType(studyTypeDescription, studyTypeId);
+	
+				// Adds the study summary to the list
+				studySummaries.add(new StudySummary(date, id, studyType));
+			}
+		} finally {
+			// Releases the statement resources
+			preparedStatement.close();
+		}
+
+		return studySummaries;
 	}
 
 	public static List<StudyType> getStudyTypes() throws SQLException {

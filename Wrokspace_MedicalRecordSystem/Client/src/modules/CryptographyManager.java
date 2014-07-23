@@ -8,12 +8,14 @@ import java.nio.file.StandardOpenOption;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import utility.Utility;
 
 public class CryptographyManager {
 	
 	private static final String ALGORITHM_FILE_CHECKSUM = "MD5";
 	private static final String ALGORITHM_PASSWORD_HASH = "SHA-512";
+	private static final int UUID_BYTES = 16;
 	
 	public static byte[] computeFileChecksum(File file) throws IOException {
 		MessageDigest algorithm;
@@ -63,8 +65,14 @@ public class CryptographyManager {
 	}
 	
 	public static byte[] generateRandomUuid() {
-		// TODO
-		return null;
+		// Initializes a cryptographically strong random number generator
+		SecureRandom secureRandom = new SecureRandom();
+		
+		// Computes a random UUID
+		byte[] uuid = new byte[UUID_BYTES];
+		secureRandom.nextBytes(uuid);
+		
+		return uuid;
 	}
 	
 }
