@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.awt.Insets"/>
-<fullyQualifiedTypeName name="database.PatientManager"/>
-<fullyQualifiedTypeName name="database.StudyManager"/>
 <fullyQualifiedTypeName name="entitiesManagers.ClinicalRecordsManager"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="entitiesManagers.StudyManager"/>
@@ -20,8 +17,6 @@
 <fullyQualifiedTypeName name="entitiesManagers.UsersManager"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
 <fullyQualifiedTypeName name="gui.MedicalRecords"/>
-<fullyQualifiedTypeName name="entities.StudyType"/>
-<fullyQualifiedTypeName name="entities.StudySummary"/>
 <fullyQualifiedTypeName name="entities.BloodType"/>
 <fullyQualifiedTypeName name="entities.Gender"/>
 <fullyQualifiedTypeName name="java.sql.Connection"/>
@@ -38,10 +33,8 @@
 <fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="java.text.DecimalFormat"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="entities.UserAuthenticationData"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="modules.DatabaseManager"/>
 <fullyQualifiedTypeName name="java.nio.file.Files"/>
 <fullyQualifiedTypeName name="java.nio.file.StandardCopyOption"/>
 <fullyQualifiedTypeName name="java.security.MessageDigest"/>
@@ -57,7 +50,14 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.nio.charset.Charset"/>
-<fullyQualifiedTypeName name="modules.CryptographyManager"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="utility.Utility"/>
+<fullyQualifiedTypeName name="modules.CryptographyManager"/>
+<fullyQualifiedTypeName name="java.security.SecureRandom"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="modules.UserManager"/>
+<fullyQualifiedTypeName name="modules.PatientManager"/>
+<fullyQualifiedTypeName name="entities.StudySummary"/>
+<fullyQualifiedTypeName name="entities.StudyType"/>
+<fullyQualifiedTypeName name="modules.DatabaseManager"/>
 </qualifiedTypeNameHistroy>
