@@ -1,14 +1,20 @@
 package utility;
 
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
-import modules.ApplicationManager;
 
 public class Utility {
 	
 	private static final char[] HEXADECIMAL_VALUES = "0123456789ABCDEF".toCharArray();
+	
+	// TODO: remove this
+	public static byte[] hexStringToByteArray(String s) {
+		int len = s.length();
+		byte[] data = new byte[len / 2];
+		for (int i = 0; i < len; i += 2)
+			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16));
+		
+		return data;
+	}
 	
 	public static String bytesToHexadecimal(byte[] bytes) {
 		char[] chars = new char[2 * bytes.length];
@@ -22,22 +28,9 @@ public class Utility {
 		return new String(chars);
 	}
 	
-	/*public static String computeSha512(byte[] dataBytes) {
-		try {
-			// Initializes the algorithm
-			MessageDigest algorithm = MessageDigest.getInstance("SHA-512");
-			
-			// Computes the hash value
-			byte[] hashBytes = algorithm.digest(dataBytes);
-			
-			// Converts the hash bytes to hexadecimal
-			return Utility.bytesToHexadecimal(hashBytes);
-		} catch (NoSuchAlgorithmException exception) {
-			// Exits the application abnormally
-			ApplicationManager.exitAbnormally("Algorithm SHA-512 not found.", exception);
-			return null;
-		}
-	}*/
+	public static byte[] charsToBytes(char[] chars) {
+		return new String(chars).getBytes(Charset.forName("UTF-8"));
+	}
 	
 	public static byte[] concatenateBytes(byte[] b1, byte[] b2) {
 		byte[] b3 = new byte[b1.length + b2.length];
@@ -47,19 +40,5 @@ public class Utility {
 		
 		return b3;
 	}
-	
-	/*public static String generateUuid() {
-		// Computes a random UUID
-		UUID uuid = UUID.randomUUID();
-		
-		// Converts the UUID to hexadecimal and returns it
-		long higherBits = uuid.getMostSignificantBits();
-		long lowerBits = uuid.getLeastSignificantBits();
-		return Long.toHexString(higherBits) + Long.toHexString(lowerBits);
-	}*/
-	
-	/*public static byte[] getStringBytes(String string) {
-		return string.getBytes(Charset.forName("UTF-8"));
-	}*/
 
 }

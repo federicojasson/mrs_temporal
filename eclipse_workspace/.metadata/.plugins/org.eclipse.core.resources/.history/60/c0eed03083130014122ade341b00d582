@@ -1,0 +1,39 @@
+package gui;
+
+import javax.swing.JFrame;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import workers.LoginUserDoctorWorker;
+import modules.ApplicationManager;
+
+public class LoginFrame extends JFrame {
+	
+	private JButton exitButton;
+	private JTextField idField;
+	private JButton loginUserDoctorButton;
+	private JPasswordField passwordField;
+	
+	public LoginFrame() {
+		initializeGui();
+	}
+	
+	private void initializeGui() {
+		
+	}
+	
+	private void onExit() {
+		// Exits the application normally
+		ApplicationManager.exitNormally();
+	}
+	
+	private void onLoginUserDoctor() {
+		// Gets user ID and password
+		String id = idField.getText();
+		char[] password = passwordField.getPassword();
+		
+		// Performs the task in a worker thread
+		LoginUserDoctorWorker worker = new LoginUserDoctorWorker(id, password);
+		worker.execute();
+	}
+	
+}

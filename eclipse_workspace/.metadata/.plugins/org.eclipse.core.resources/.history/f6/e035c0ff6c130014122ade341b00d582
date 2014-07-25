@@ -1,0 +1,17 @@
+package workers;
+
+import javax.swing.SwingWorker;
+
+public class LoginUserDoctorWorker extends SwingWorker<Void, Void> {
+	
+	public LoginUserDoctorWorker() {
+		// TODO
+	}
+	
+	protected Void doInBackground() {
+		// TODO
+		
+		return null;
+	}
+	
+}

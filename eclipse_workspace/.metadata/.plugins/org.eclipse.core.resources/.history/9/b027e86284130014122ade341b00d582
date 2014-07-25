@@ -1,0 +1,40 @@
+package modules;
+
+import gui.ErrorFrame;
+import gui.LoginFrame;
+import java.awt.EventQueue;
+
+public class GuiManager {
+	
+	private static GuiFrame currentFrame;
+	
+	public static void openErrorFrame(final Exception exception) {
+		// TODO: close current frame
+		
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				ErrorFrame frame = new ErrorFrame(exception);
+				currentFrame = frame;
+			}
+		});
+	}
+	
+	public static void openLoginFrame() {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				LoginFrame frame = new LoginFrame();
+				currentFrame = frame;
+			}
+		});
+	}
+	
+	private static void closeCurrentFrame() {
+		if (currentFrame != null)
+			currentFrame;
+	}
+	
+}

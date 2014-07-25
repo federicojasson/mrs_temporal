@@ -6,3 +6,10 @@
 1406057131791	Delete element
 1406067954319	Rename field 'connection'
 1406123794445	Delete element
+1406230967660	Rename type 'DatabaseManager'
+1406231384184	Rename type 'LoginFrame'
+1406231547937	Rename type 'UserDoctorLoginFrame'
+1406232092639	Rename type 'DbmsErrorFrame'
+1406232945502	Rename type 'LoginUserDoctorFrame'
+1406245229258	Rename type 'LoginUserDoctorWorker'
+1406245249743	Rename type 'LoginFrame'

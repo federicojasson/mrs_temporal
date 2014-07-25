@@ -11,17 +11,22 @@ public class PatientManager {
 		// Generates a patient ID
 		byte[] id = CryptographyManager.generateRandomUuid();
 		
+		// Checks if a patient with the same ID already exists
+		while (DbmsManager.patientExists(id))
+			// Generates another patient ID
+			id = CryptographyManager.generateRandomUuid();
+		
 		// Gets the current user ID
 		String userId = UserManager.getCurrentUserId();
 		
 		// Starts a transaction
-		DatabaseManager.startTransaction();
+		DbmsManager.startTransaction();
 		
 		// Inserts the patient into the database
-		DatabaseManager.insertPatient(birthDate, bloodType, id, gender, name, userId);
+		DbmsManager.insertPatient(birthDate, bloodType, id, gender, name, userId);
 		
 		// Commits the transaction
-		DatabaseManager.commitTransaction();
+		DbmsManager.commitTransaction();
 	}
 	
 	public static byte[] getCurrentPatientId() {

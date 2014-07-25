@@ -1,0 +1,12 @@
+package gui;
+
+import java.sql.SQLException;
+import javax.swing.JFrame;
+
+public class DbmsErrorFrame extends JFrame {
+	
+	public DbmsErrorFrame(SQLException exception) {
+		super();
+	}
+	
+}

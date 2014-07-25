@@ -33,9 +33,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import entities.Study;
-import entitiesManagers.UsersManager;
-import exceptions.NoConnectedException;
 
 public class AddRecord extends JFrame {
 

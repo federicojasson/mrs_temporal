@@ -1,0 +1,34 @@
+package workers;
+
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import javax.swing.SwingWorker;
+import utility.Utility;
+import modules.ApplicationManager;
+import modules.UserManager;
+
+public class LoginUserDoctorWorker extends SwingWorker<Boolean, Void> {
+	
+	private String id;
+	private char[] password;
+	
+	public LoginUserDoctorWorker(String id, char[] password) {
+		this.id = id;
+		this.password = password;
+	}
+	
+	protected Boolean doInBackground() {
+		try {
+			// Gets the password bytes
+			byte[] passwordBytes = Utility.getStringBytes(password);
+			
+			// Attempts to login the user
+			return UserManager.loginUserDoctor(id, passwordBytes);
+		} catch (NoSuchAlgorithmException | SQLException exception) {
+			// An error occurred
+			ApplicationManager.notifyError(exception);
+			return false;
+		}
+	}
+	
+}

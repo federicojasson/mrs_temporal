@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
@@ -19,9 +20,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import entitiesManagers.UsersManager;
-import exceptions.ConnectionException;
-import exceptions.UserPasswordException;
 
 public class Login extends JFrame {
 
@@ -130,6 +128,7 @@ public class Login extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Boton aceptar clickeado");
 				//TODO
 				login(dataUser.getText(), dataPassword.getText());
 			}
@@ -138,8 +137,16 @@ public class Login extends JFrame {
 	}
 	
 	private void login(String user, String password) {
+		// TODO: ejemplo: tareas fuera del EDT
+		Thread t = new Thread() {
+			public void run() {
+				System.out.println(SwingUtilities.isEventDispatchThread());
+			}
+		};
+		t.start();
+		
 		//TODO
-		UsersManager man = UsersManager.getInstance();
+		/*UsersManager man = UsersManager.getInstance();
 		try {
 			man.login(user, password);
 		} catch (UserPasswordException e) {
@@ -155,7 +162,7 @@ public class Login extends JFrame {
 			test.setVisible(true);
 			this.setVisible(false);
 			this.dispose();
-		}
+		}*/
 	}
 	
 	private void salir() {

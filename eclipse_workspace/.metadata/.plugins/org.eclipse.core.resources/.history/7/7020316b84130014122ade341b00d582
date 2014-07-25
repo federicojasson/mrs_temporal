@@ -1,0 +1,14 @@
+package gui;
+
+import javax.swing.JFrame;
+
+public class GuiFrame {
+	
+	private JFrame frame;
+	
+	public GuiFrame() {
+		frame = new JFrame();
+		frame.setVisible(true);
+	}
+	
+}

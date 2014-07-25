@@ -1,0 +1,24 @@
+package gui;
+
+import javax.swing.JPanel;
+
+public class UserFrame extends GuiFrame {
+
+	protected JPanel getMainPanel() {
+		// TODO
+		return new JPanel();
+	}
+
+	@Override
+	protected String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void onClose() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

@@ -1,0 +1,25 @@
+package gui;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.JFrame;
+import modules.ApplicationManager;
+
+public class ErrorFrame extends JFrame {
+	
+	private Exception exception;
+	
+	public ErrorFrame(Exception exception) {
+		super();
+		initGui();
+	}
+	
+	private void initGui() {
+		// TODO
+	}
+	
+	private void onClose() {
+		ApplicationManager.exitAbnormally(exception);
+	}
+	
+}

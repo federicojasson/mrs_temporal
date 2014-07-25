@@ -1,0 +1,18 @@
+package gui;
+
+import javax.swing.JFrame;
+import modules.ApplicationManager;
+
+public class ErrorFrame extends JFrame {
+	
+	private Exception exception;
+	
+	public ErrorFrame(Exception exception) {
+		super();
+	}
+	
+	private void onClose() {
+		ApplicationManager.exitAbnormally(exception);
+	}
+	
+}

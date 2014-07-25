@@ -1,5 +1,6 @@
 package modules;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import entities.AuthenticationData;
 
@@ -11,9 +12,9 @@ public class UserManager {
 		return currentUserId;
 	}
 	
-	public static boolean loginUserDoctor(String id, byte[] password) throws SQLException {
+	public static boolean logInUserDoctor(String id, byte[] password) throws NoSuchAlgorithmException, SQLException {
 		// Gets the user authentication data
-		AuthenticationData authenticationData = DatabaseManager.getUserDoctorAuthenticationData(id);
+		AuthenticationData authenticationData = DbmsManager.getUserDoctorAuthenticationData(id);
 		
 		if (authenticationData == null)
 			// User not found
@@ -27,10 +28,6 @@ public class UserManager {
 			currentUserId = id;
 		
 		return userAuthenticated;
-	}
-	
-	public static void logout() {
-		currentUserId = null;
 	}
 	
 }

@@ -1,0 +1,30 @@
+package gui;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public abstract class GuiFrame {
+	
+	private JFrame frame;
+	
+	public GuiFrame(JPanel mainPanel) {
+		
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosed(WindowEvent e) {
+				onWindowClosed();
+			}
+		});
+		
+		frame.add(mainPanel);
+		frame.setTitle("Dog Year Converter");
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+	
+	protected abstract void onClose();
+	
+}
