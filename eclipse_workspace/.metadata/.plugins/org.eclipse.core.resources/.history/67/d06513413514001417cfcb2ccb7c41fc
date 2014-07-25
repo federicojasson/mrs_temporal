@@ -1,0 +1,38 @@
+package gui;
+
+import javax.swing.JEditorPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import managers.ErrorManager;
+
+public class ErrorFrame extends GuiFrame {
+	
+	private Exception exception;
+	
+	public void initialize() {
+		exception = ErrorManager.getCurrentException();
+		super.initialize();
+	}
+	
+	protected JPanel computeMainPanel() {
+		
+		JTextArea errorDetailsField = new JTextArea();
+		errorDetailsField.setText(exception.getStackTrace()[0].toString());
+		errorDetailsField.setEditable(false);
+		
+		JScrollPane errorDetailsFieldContainer = new JScrollPane();
+		errorDetailsFieldContainer.setViewportView(errorDetailsField);
+		
+		// TODO
+		JPanel mainPanel = new JPanel();
+		
+		return mainPanel;
+	}
+
+	protected String computeTitle() {
+		return "MRS - Error";
+	}
+	
+}

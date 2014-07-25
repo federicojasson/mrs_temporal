@@ -6,10 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import utilities.Utility;
 import workers.LogInUserDoctorWorker;
-import managers.ApplicationManager;
 import managers.GuiManager;
 
 public class LogInFrame extends GuiFrame {
@@ -47,31 +45,11 @@ public class LogInFrame extends GuiFrame {
 		mainPanel.add(exitButton);
 		mainPanel.add(logInUserDoctorButton);
 		
-		// TODO: debug
-		JButton closeButton = new JButton("cerrar");
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GuiManager.closeCurrentFrame();
-			}
-		});
-		JButton nextButton = new JButton("siguiente");
-		nextButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GuiManager.openNewFrame(GuiManager.USER_FRAME);
-			}
-		});
-		mainPanel.add(closeButton);
-		mainPanel.add(nextButton);
-		
 		return mainPanel;
 	}
 
 	protected String getTitle() {
 		return "MRS - Ingresar";
-	}
-
-	protected void onClose() {
-		GuiManager.closeCurrentFrame();
 	}
 	
 	private void onExit() {

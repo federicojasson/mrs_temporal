@@ -1,38 +1,40 @@
 package gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import managers.ApplicationManager;
-import managers.GuiManager;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import managers.ErrorManager;
 
 public class ErrorFrame extends GuiFrame {
-
+	
+	private String errorDetails;
+	
+	public void initialize() {
+		errorDetails = ErrorManager.getErrorDetails();
+		super.initialize();
+	}
+	
 	protected JPanel getMainPanel() {
+		
+		JTextArea errorDetailsField = new JTextArea();
+		errorDetailsField.setText(errorDetails);
+		errorDetailsField.setEditable(false);
+		
+		JScrollPane errorDetailsFieldContainer = new JScrollPane();
+		errorDetailsFieldContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		errorDetailsFieldContainer.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		errorDetailsFieldContainer.setViewportView(errorDetailsField);
+		
 		// TODO
-		// TODO: use ErrorManager.getCurrentException() to get the exception
-		
 		JPanel mainPanel = new JPanel();
-		
-		// TODO: debug
-		JButton closeButton = new JButton("cerrar");
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GuiManager.closeCurrentFrame();
-			}
-		});
-		mainPanel.add(closeButton);
+		//mainPanel.setLayout();
+		mainPanel.add(errorDetailsFieldContainer);
 		
 		return mainPanel;
 	}
 
 	protected String getTitle() {
 		return "MRS - Error";
-	}
-
-	protected void onClose() {
-		GuiManager.closeCurrentFrame();
 	}
 	
 }

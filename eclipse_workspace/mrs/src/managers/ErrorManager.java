@@ -1,18 +1,32 @@
 package managers;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class ErrorManager {
 	
 	private static Exception currentException;
 	
-	public static Exception getCurrentException() {
-		return currentException;
+	public static String getErrorDetails() {
+		// Initializes the buffer
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		
+		// Prints the error details into the buffer
+		currentException.printStackTrace(printWriter);
+		String errorDetails = stringWriter.toString();
+		
+		// Closes the buffer
+		printWriter.close();
+		
+		return errorDetails;
 	}
 	
 	public static void notifyError(Exception exception) {
 		// Sets the exception as the current one
 		currentException = exception;
 		
-		// Prints error details
+		// Prints the error details
 		printErrorDetails();
 		
 		// Opens an error frame
@@ -24,7 +38,7 @@ public class ErrorManager {
 		System.err.println();
 		System.err.println("Details");
 		System.err.println("--------------------------------");
-		currentException.printStackTrace();
+		System.err.println(getErrorDetails());
 	}
 	
 }

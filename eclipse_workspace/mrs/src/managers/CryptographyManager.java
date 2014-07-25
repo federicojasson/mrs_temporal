@@ -23,7 +23,7 @@ public class CryptographyManager {
 		// Initializes the algorithm
 		algorithm = MessageDigest.getInstance(ALGORITHM_FILE_CHECKSUM);
 		
-		// Initializes the stream
+		// Initializes the buffer
 		InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
 		DigestInputStream algorithmInputStream = new DigestInputStream(inputStream, algorithm);
 		
@@ -31,7 +31,7 @@ public class CryptographyManager {
 			// Reads the file bytes
 			while (algorithmInputStream.read() != -1);
 		} finally {
-			// Closes the stream
+			// Closes the buffer
 			algorithmInputStream.close();
 		}
 		

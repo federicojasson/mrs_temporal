@@ -114,7 +114,7 @@ public class GuiManager {
 		currentFrameIndex = frameIndex;
 		
 		// Initializes the frame GUI
-		frames[frameIndex].initializeGui();
+		frames[frameIndex].initialize();
 	}
 	
 }

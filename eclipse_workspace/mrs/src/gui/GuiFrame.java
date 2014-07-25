@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import managers.GuiManager;
 
 public abstract class GuiFrame {
 	
@@ -13,7 +14,7 @@ public abstract class GuiFrame {
 		frame.dispose();
 	}
 	
-	public void initializeGui() {
+	public void initialize() {
 		frame = new JFrame();
 		
 		frame.addWindowListener(new WindowAdapter() {
@@ -35,6 +36,8 @@ public abstract class GuiFrame {
 	
 	protected abstract String getTitle();
 	
-	protected abstract void onClose();
+	private void onClose() {
+		GuiManager.closeCurrentFrame();
+	}
 	
 }

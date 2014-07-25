@@ -1,0 +1,19 @@
+package gui;
+
+import javax.swing.JPanel;
+
+public class StudyFrame extends GuiFrame {
+
+	protected JPanel computeMainPanel() {
+		// TODO
+		JPanel mainPanel = new JPanel();
+		
+		return mainPanel;
+	}
+
+	protected String computeTitle() {
+		// TODO
+		return "";
+	}
+	
+}

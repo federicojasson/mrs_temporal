@@ -1,0 +1,32 @@
+package gui;
+
+import javax.swing.JPanel;
+import managers.ErrorManager;
+import managers.GuiManager;
+
+public class ErrorFrame extends GuiFrame {
+	
+	private Exception exception;
+	
+	protected JPanel getMainPanel() {
+		// TODO
+		// TODO: use ErrorManager.getCurrentException() to get the exception
+		
+		JPanel mainPanel = new JPanel();
+		
+		return mainPanel;
+	}
+
+	protected String getTitle() {
+		return "MRS - Error";
+	}
+	
+	protected void initialize() {
+		exception = ErrorManager.getCurrentException();
+	}
+
+	protected void onClose() {
+		GuiManager.closeCurrentFrame();
+	}
+	
+}

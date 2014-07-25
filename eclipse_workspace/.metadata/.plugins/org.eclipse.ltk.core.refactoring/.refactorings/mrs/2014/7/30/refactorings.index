@@ -15,3 +15,6 @@
 1406245249743	Rename type 'LoginFrame'
 1406254674995	Rename package 'modules'
 1406254684932	Rename package 'utility'
+1406318307981	Rename method 'computeMainPanel'
+1406318316095	Rename method 'computeTitle'
+1406318395490	Rename method 'getCurrentException'

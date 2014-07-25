@@ -1,43 +1,27 @@
 package gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import managers.GuiManager;
+import utilities.Utility;
+import managers.PatientManager;
 
 public class PatientFrame extends GuiFrame {
-
+	
+	private String hexadecimalPatientId;
+	
+	public void initialize() {
+		hexadecimalPatientId = Utility.bytesToHexadecimal(PatientManager.getCurrentPatientId());
+		super.initialize();
+	}
+	
 	protected JPanel getMainPanel() {
 		// TODO
 		JPanel mainPanel = new JPanel();
-		
-		// TODO: debug
-		JButton closeButton = new JButton("cerrar");
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GuiManager.closeCurrentFrame();
-			}
-		});
-		JButton nextButton = new JButton("siguiente");
-		nextButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GuiManager.openNewFrame(GuiManager.STUDY_FRAME);
-			}
-		});
-		mainPanel.add(closeButton);
-		mainPanel.add(nextButton);
 		
 		return mainPanel;
 	}
 
 	protected String getTitle() {
-		// TODO
-		return "";
-	}
-
-	protected void onClose() {
-		GuiManager.closeCurrentFrame();
+		return "MRS - Paciente (" + hexadecimalPatientId + ")";
 	}
 	
 }
