@@ -13,3 +13,5 @@
 1406232945502	Rename type 'LoginUserDoctorFrame'
 1406245229258	Rename type 'LoginUserDoctorWorker'
 1406245249743	Rename type 'LoginFrame'
+1406254674995	Rename package 'modules'
+1406254684932	Rename package 'utility'

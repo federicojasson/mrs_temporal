@@ -1,13 +1,34 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JPanel;
-import modules.GuiManager;
+import managers.GuiManager;
 
 public class PatientFrame extends GuiFrame {
 
 	protected JPanel getMainPanel() {
 		// TODO
-		return new JPanel();
+		JPanel mainPanel = new JPanel();
+		
+		// TODO: debug
+		JButton closeButton = new JButton("cerrar");
+		closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GuiManager.closeCurrentFrame();
+			}
+		});
+		JButton nextButton = new JButton("siguiente");
+		nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GuiManager.openNewFrame(GuiManager.STUDY_FRAME);
+			}
+		});
+		mainPanel.add(closeButton);
+		mainPanel.add(nextButton);
+		
+		return mainPanel;
 	}
 
 	protected String getTitle() {
@@ -16,7 +37,7 @@ public class PatientFrame extends GuiFrame {
 	}
 
 	protected void onClose() {
-		GuiManager.onPatientFrameClosed();
+		GuiManager.closeCurrentFrame();
 	}
 	
 }

@@ -1,0 +1,281 @@
+package managers;
+
+import gui.ErrorFrame;
+import gui.GuiFrame;
+import gui.LogInFrame;
+import gui.PatientFrame;
+import gui.StudyFrame;
+import gui.UserFrame;
+import java.awt.EventQueue;
+
+public class GuiManager {
+	
+	public static final int ERROR_FRAME = 0;
+	public static final int LOG_IN_FRAME = 1;
+	public static final int PATIENT_FRAME = 2;
+	public static final int STUDY_FRAME = 3;
+	public static final int USER_FRAME = 4;
+	
+	private static final int FRAME_COUNT = 5;
+	
+	private static int currentFrameIndex; // Points to the current frame
+	private static GuiFrame[] frames;
+	
+	static {
+		// Initializes the frames
+		frames = new GuiFrame[FRAME_COUNT];
+		frames[ERROR_FRAME] = new ErrorFrame();
+		frames[LOG_IN_FRAME] = new LogInFrame();
+		frames[PATIENT_FRAME] = new PatientFrame();
+		frames[STUDY_FRAME] = new StudyFrame();
+		frames[USER_FRAME] = new UserFrame();
+		currentFrameIndex = -1;
+	}
+	
+	public static void openFrame(final int frameIndex) {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Closes the current frame (if any is opened)
+				if (currentFrameIndex >= 0)
+					closeCurrentFrame();
+				
+				// Updates the current frame's index
+				currentFrameIndex = frameIndex;
+				
+				// Initializes the frame GUI
+				frames[frameIndex].initializeGui();
+			}
+		});
+	}
+	
+	private static void closeCurrentFrame() {
+		// Gets the current frame
+		GuiFrame currentFrame = frames[currentFrameIndex];
+		
+		try {
+			// Constructs a new object of the same class as the current frame
+			frames[currentFrameIndex] = currentFrame.getClass().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Closes the current frame
+		currentFrame.close();
+		
+		onFrameClosed(currentFrameIndex);
+	}
+	
+	public static void onFrameClosedByUser(int frameIndex) {
+		switch (frameIndex) {
+			case ERROR_FRAME : {
+				// Exits the application abnormally
+				ApplicationManager.exitAbnormally();
+				break;
+			}
+			
+			case LOG_IN_FRAME : {
+				// Exits the application normally
+				ApplicationManager.exitNormally();
+				break;
+			}
+			
+			case PATIENT_FRAME : {
+				// Opens the user frame
+				openFrame(USER_FRAME);
+				break;
+			}
+			
+			case STUDY_FRAME : {
+				// Opens the patient frame
+				openFrame(PATIENT_FRAME);
+				break;
+			}
+			
+			case USER_FRAME : {
+				// Opens the log in frame
+				openFrame(LOG_IN_FRAME);
+				break;
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*public static void onErrorFrameClosed() {
+		if (! openingFrame)
+			// Exits the application abnormally
+			ApplicationManager.exitAbnormally();
+	}
+	
+	public static void onLogInFrameClosed() {
+		if (! openingFrame)
+			// Exits the application normally
+			ApplicationManager.exitNormally();
+	}
+	
+	public static void onPatientFrameClosed() {
+		if (! openingFrame)
+			// Opens the user frame
+			openUserFrame();
+	}
+	
+	public static void onStudyFrameClosed() {
+		if (! openingFrame)
+			// Opens the patient frame
+			openPatientFrame(PatientManager.getCurrentPatientId());
+	}
+	
+	public static void onUserFrameClosed() {
+		if (! openingFrame)
+			// Opens the log in frame
+			openLogInFrame();
+	}*/
+	
+	
+	
+	
+	
+	
+	/*public static void openNextFrame() {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				if (currentFrameIndex >= 0)
+					// Closes the current frame
+					closeFrame(currentFrameIndex);
+
+				// Opens the next frame
+				openFrame(currentFrameIndex + 1);
+			}
+		});
+	}
+	
+	public static void openPreviousFrame() {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Closes the current frame
+				closeFrame(currentFrameIndex);
+				
+				// Opens the previous frame
+				openFrame(currentFrameIndex - 1);
+			}
+		});
+	}
+	
+	private static void closeFrame(final int frameIndex) {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Gets the frame
+				GuiFrame frame = frames[frameIndex];
+				
+				// Constructs a new object of the frame's class
+				frames[frameIndex] = frame.getClass().newInstance();
+				
+				// Closes the frame
+				frame.close();
+			}
+		});
+	}
+	
+	private static void openFrame(final int frameIndex) {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				openingFrame = true;
+				
+				// Updates the current frame's index
+				currentFrameIndex = frameIndex;
+				
+				// Initializes the frame GUI
+				frames[frameIndex].initializeGui();
+			}
+		});
+	}*/
+	
+	
+	
+	
+	
+	
+	/*public static void openErrorFrame(final Exception exception) {
+		// TODO: hide current frame? (don't DISPOSE IT --> careful: loops --> close --> onClose --> ...)
+		
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				ErrorFrame frame = new ErrorFrame(exception);
+				frame.initializeGui();
+				currentFrame = frame;
+			}
+		});
+	}
+	
+	public static void openLogInFrame() {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				LogInFrame frame = new LogInFrame();
+				frame.initializeGui();
+				currentFrame = frame;
+			}
+		});
+	}
+	
+	public static void openPatientFrame(byte[] patientId) {
+		// Sets the current patient ID
+		PatientManager.setCurrentPatientId(patientId);
+		
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				PatientFrame frame = new PatientFrame();
+				frame.initializeGui();
+				currentFrame = frame;
+			}
+		});
+	}
+	
+	public static void openStudyFrame(byte[] studyId) {
+		// Sets the current study ID
+		StudyManager.setCurrentStudyId(studyId);
+		
+		openNextFrame();
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				UserFrame frame = new UserFrame();
+				frame.initializeGui();
+				currentFrame = frame;
+			}
+		});
+	}
+	
+	public static void openUserFrame() {
+		// Runs this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				// Creates the frame and shows it
+				UserFrame frame = new UserFrame();
+				frame.initializeGui();
+				currentFrame = frame;
+			}
+		});
+	}*/
+	
+}

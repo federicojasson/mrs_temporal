@@ -6,9 +6,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import utility.Utility;
+import javax.swing.SwingUtilities;
+import utilities.Utility;
 import workers.LogInUserDoctorWorker;
-import modules.GuiManager;
+import managers.ApplicationManager;
+import managers.GuiManager;
 
 public class LogInFrame extends GuiFrame {
 	
@@ -19,6 +21,9 @@ public class LogInFrame extends GuiFrame {
 
 	protected JPanel getMainPanel() {
 		// TODO
+		
+		idField = new JTextField();
+		passwordField = new JPasswordField();
 		
 		exitButton = new JButton("Salir");
 		
@@ -36,21 +41,41 @@ public class LogInFrame extends GuiFrame {
 			}
 		});
 		
-		// TODO
-		return new JPanel();
+		JPanel mainPanel = new JPanel();
+		mainPanel.add(idField);
+		mainPanel.add(passwordField);
+		mainPanel.add(exitButton);
+		mainPanel.add(logInUserDoctorButton);
+		
+		// TODO: debug
+		JButton closeButton = new JButton("cerrar");
+		closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GuiManager.closeCurrentFrame();
+			}
+		});
+		JButton nextButton = new JButton("siguiente");
+		nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GuiManager.openNewFrame(GuiManager.USER_FRAME);
+			}
+		});
+		mainPanel.add(closeButton);
+		mainPanel.add(nextButton);
+		
+		return mainPanel;
 	}
 
 	protected String getTitle() {
-		// TODO
-		return "";
+		return "MRS - Ingresar";
 	}
 
 	protected void onClose() {
-		GuiManager.onLogInFrameClosed();
+		GuiManager.closeCurrentFrame();
 	}
 	
 	private void onExit() {
-		close();
+		GuiManager.closeCurrentFrame();
 	}
 	
 	private void onLogInUserDoctor() {

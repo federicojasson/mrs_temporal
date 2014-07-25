@@ -1,0 +1,21 @@
+package managers;
+
+public class ErrorManager {
+	
+	private static Exception currentException;
+	
+	public static void notifyError(Exception exception) {
+		ErrorManager.exception = exception;
+		
+		// Prints error details
+		System.err.println("An error ocurred");
+		System.err.println();
+		System.err.println("Details");
+		System.err.println("--------------------------------");
+		exception.printStackTrace();
+		
+		// Opens an error frame
+		GuiManager.openFrame(GuiManager.ERROR_FRAME);
+	}
+	
+}

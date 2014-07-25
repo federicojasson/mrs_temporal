@@ -1,0 +1,28 @@
+package gui;
+
+import javax.swing.JPanel;
+import managers.ApplicationManager;
+import managers.GuiManager;
+
+public class ErrorFrame extends GuiFrame {
+	
+	public void setException(Exception exception) {
+		this.exception = exception;
+	}
+
+	protected JPanel getMainPanel() {
+		// TODO
+		return new JPanel();
+	}
+
+	protected String getTitle() {
+		return "MRS - Error";
+	}
+
+	protected void onClose() {
+		if (! GuiManager.isOpeningFrame())
+			// Exits the application abnormally
+			ApplicationManager.exitAbnormally();
+	}
+	
+}

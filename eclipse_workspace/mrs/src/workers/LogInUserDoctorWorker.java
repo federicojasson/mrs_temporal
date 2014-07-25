@@ -3,9 +3,8 @@ package workers;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.swing.SwingWorker;
-import utility.Utility;
-import modules.ApplicationManager;
-import modules.UserManager;
+import managers.ErrorManager;
+import managers.UserManager;
 
 public class LogInUserDoctorWorker extends SwingWorker<Boolean, Void> {
 	
@@ -23,9 +22,13 @@ public class LogInUserDoctorWorker extends SwingWorker<Boolean, Void> {
 			return UserManager.logInUserDoctor(id, password);
 		} catch (NoSuchAlgorithmException | SQLException exception) {
 			// An error occurred
-			ApplicationManager.notifyError(exception);
+			ErrorManager.notifyError(exception);
 			return false;
 		}
+	}
+	
+	protected void done() {
+		// TODO
 	}
 	
 }

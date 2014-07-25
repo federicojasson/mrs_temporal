@@ -1,0 +1,26 @@
+package gui;
+
+import javax.swing.JPanel;
+import managers.GuiManager;
+
+public class PatientFrame extends GuiFrame {
+
+	protected JPanel getMainPanel() {
+		// TODO
+		JPanel mainPanel = new JPanel();
+		
+		
+		
+		return mainPanel;
+	}
+
+	protected String getTitle() {
+		// TODO
+		return "";
+	}
+
+	protected void onClose() {
+		GuiManager.onPatientFrameClosed();
+	}
+	
+}
