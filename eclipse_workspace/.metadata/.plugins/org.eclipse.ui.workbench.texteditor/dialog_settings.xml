@@ -13,8 +13,9 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="as" key="selection"/>
+		<item value="showMe" key="selection"/>
 		<list key="findhistory">
+			<item value="showMe"/>
 			<item value="as"/>
 			<item value="= null"/>
 			<item value="dataUser"/>
@@ -22,7 +23,6 @@
 			<item value="for ("/>
 			<item value="conver"/>
 			<item value="password"/>
-			<item value="try"/>
 		</list>
 		<list key="replacehistory">
 			<item value="ID"/>

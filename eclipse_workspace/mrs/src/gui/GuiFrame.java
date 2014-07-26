@@ -24,12 +24,17 @@ public abstract class GuiFrame {
 			}
 		});
 		
-		frame.add(getMainPanel());
+		frame.setContentPane(getMainPanel());
 		frame.setTitle(getTitle());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.setResizable(false);
+	}
+	
+	protected JFrame getFrame() {
+		return frame;
 	}
 	
 	protected abstract JPanel getMainPanel();

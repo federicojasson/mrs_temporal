@@ -33,7 +33,7 @@ public class GuiManager {
 	}
 	
 	public static void closeCurrentFrame() {
-		// Runs this code in the event dispatch thread (EDT)
+		// Executes this code in the event dispatch thread (EDT)
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				// Closes the current frame
@@ -43,7 +43,7 @@ public class GuiManager {
 	}
 	
 	public static void openNewFrame(final int frameIndex) {
-		// Runs this code in the event dispatch thread (EDT)
+		// Executes this code in the event dispatch thread (EDT)
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				// Closes the current frame (if any is opened)
@@ -57,22 +57,22 @@ public class GuiManager {
 	}
 	
 	private static void closeCurrentFrame(boolean wasClosedByUser) {
-		// Gets the current frame
-		GuiFrame currentFrame = frames[currentFrameIndex];
-		
 		try {
+			// Gets the current frame
+			GuiFrame currentFrame = frames[currentFrameIndex];
+			
 			// Constructs a new object of the same class as the current frame
 			frames[currentFrameIndex] = currentFrame.getClass().newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			// Disposes the current frame
+			currentFrame.dispose();
+			
+			if (wasClosedByUser)
+				onCurrentFrameClosedByUser();
+		} catch (InstantiationException | IllegalAccessException exception) {
+			// An error occurred
+			ErrorManager.notifyError(exception);
 		}
-		
-		// Disposes the current frame
-		currentFrame.dispose();
-		
-		if (wasClosedByUser)
-			onCurrentFrameClosedByUser();
 	}
 	
 	private static void onCurrentFrameClosedByUser() {
