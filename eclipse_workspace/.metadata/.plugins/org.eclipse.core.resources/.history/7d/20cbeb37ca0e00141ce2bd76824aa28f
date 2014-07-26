@@ -1,0 +1,7 @@
+package entities;
+
+public class StudySummary {
+	
+	private StudyType type;
+	
+}

@@ -1,0 +1,9 @@
+package entities;
+
+public class StudySummary {
+	
+	private Date date;
+	private String observations;
+	private StudyType type;
+	
+}
