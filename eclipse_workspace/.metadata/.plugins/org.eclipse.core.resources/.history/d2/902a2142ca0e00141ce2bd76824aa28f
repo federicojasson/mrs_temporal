@@ -1,8 +1,0 @@
-package entities;
-
-public class StudySummary {
-	
-	private Date date;
-	private StudyType type;
-	
-}
