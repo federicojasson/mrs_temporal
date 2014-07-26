@@ -1,5 +1,6 @@
 package managers;
 
+import gui.AddPatientFrame;
 import gui.ErrorFrame;
 import gui.GuiFrame;
 import gui.LogInFrame;
@@ -10,13 +11,14 @@ import java.awt.EventQueue;
 
 public class GuiManager {
 	
-	public static final int ERROR_FRAME = 0;
-	public static final int LOG_IN_FRAME = 1;
-	public static final int PATIENT_FRAME = 2;
-	public static final int STUDY_FRAME = 3;
-	public static final int USER_FRAME = 4;
+	public static final int ADD_PATIENT_FRAME = 0;
+	public static final int ERROR_FRAME = 1;
+	public static final int LOG_IN_FRAME = 2;
+	public static final int PATIENT_FRAME = 3;
+	public static final int STUDY_FRAME = 4;
+	public static final int USER_FRAME = 5;
 	
-	private static final int FRAME_COUNT = 5;
+	private static final int FRAME_COUNT = 6;
 	
 	private static int currentFrameIndex; // Points to the current frame
 	private static GuiFrame[] frames;
@@ -24,6 +26,7 @@ public class GuiManager {
 	static {
 		// Initializes the frames
 		frames = new GuiFrame[FRAME_COUNT];
+		frames[ADD_PATIENT_FRAME] = new AddPatientFrame();
 		frames[ERROR_FRAME] = new ErrorFrame();
 		frames[LOG_IN_FRAME] = new LogInFrame();
 		frames[PATIENT_FRAME] = new PatientFrame();
@@ -42,7 +45,7 @@ public class GuiManager {
 		});
 	}
 	
-	public static void openNewFrame(final int frameIndex) {
+	public static void openFrame(final int frameId) {
 		// Executes this code in the event dispatch thread (EDT)
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -51,7 +54,7 @@ public class GuiManager {
 					closeCurrentFrame(false);
 				
 				// Opens the new frame
-				openFrame(frameIndex);
+				openNewFrame(frameId);
 			}
 		});
 	}
@@ -77,6 +80,12 @@ public class GuiManager {
 	
 	private static void onCurrentFrameClosedByUser() {
 		switch (currentFrameIndex) {
+			case ADD_PATIENT_FRAME : {
+				// Opens the user frame
+				openNewFrame(USER_FRAME);
+				break;
+			}
+			
 			case ERROR_FRAME : {
 				// Exits the application abnormally
 				ApplicationManager.exitAbnormally();
@@ -91,30 +100,30 @@ public class GuiManager {
 			
 			case PATIENT_FRAME : {
 				// Opens the user frame
-				openFrame(USER_FRAME);
+				openNewFrame(USER_FRAME);
 				break;
 			}
 			
 			case STUDY_FRAME : {
 				// Opens the patient frame
-				openFrame(PATIENT_FRAME);
+				openNewFrame(PATIENT_FRAME);
 				break;
 			}
 			
 			case USER_FRAME : {
 				// Opens the log in frame
-				openFrame(LOG_IN_FRAME);
+				openNewFrame(LOG_IN_FRAME);
 				break;
 			}
 		}
 	}
 	
-	private static void openFrame(int frameIndex) {
+	private static void openNewFrame(int frameId) {
 		// Updates the current frame's index
-		currentFrameIndex = frameIndex;
+		currentFrameIndex = frameId;
 		
 		// Initializes the frame GUI
-		frames[frameIndex].initialize();
+		frames[frameId].initialize();
 	}
 	
 }

@@ -31,7 +31,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 	public void logInUserDoctorCallback(Boolean userDoctorLoggedIn) {
 		if (userDoctorLoggedIn)
 			// Opens the user frame
-			GuiManager.openNewFrame(GuiManager.USER_FRAME);
+			GuiManager.openFrame(GuiManager.USER_FRAME);
 		else {
 			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos.\nPor favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
 			// TODO: show dialog to inform the user
@@ -48,6 +48,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		
 		JLabel labelId = new JLabel("Nombre de usuario:");
 		fieldId = new JTextField(10);
+		
 		JLabel labelPassword = new JLabel("Contraseña:");
 		fieldPassword = new JPasswordField(10);
 		
@@ -80,13 +81,13 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			}
 		});
 		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(buttonExit);
-		buttonPanel.add(buttonLogInUserDoctor);
+		JPanel panelButtons = new JPanel();
+		panelButtons.add(buttonExit);
+		panelButtons.add(buttonLogInUserDoctor);
 		
-		JPanel mainPanel = new JPanel();
-		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		mainPanel.setLayout(new FormLayout(new ColumnSpec[] {
+		JPanel panelMain = new JPanel();
+		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			ColumnSpec.decode("min:grow"),
 			FormFactory.GROWING_BUTTON_COLSPEC,
@@ -99,11 +100,11 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			FormFactory.DEFAULT_ROWSPEC,
 			RowSpec.decode("default:grow"),
 		}));
-		mainPanel.add(labelLogo, "2, 2, center, center");
-		mainPanel.add(fieldPanel, "2, 4, center, center");
-		mainPanel.add(buttonPanel, "2, 6, fill, fill");
+		panelMain.add(labelLogo, "2, 2, center, center");
+		panelMain.add(fieldPanel, "2, 4, center, center");
+		panelMain.add(panelButtons, "2, 6, fill, fill");
 		
-		return mainPanel;
+		return panelMain;
 	}
 
 	protected String getTitle() {
@@ -125,6 +126,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 	}
 	
 	private void onExit() {
+		// Closes the current frame
 		GuiManager.closeCurrentFrame();
 	}
 	
@@ -136,7 +138,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		String id = fieldId.getText();
 		byte[] password = Utility.charsToBytes(fieldPassword.getPassword()); // TODO: this maybe should be made in the worker
 		
-		// Performs the task in a worker thread
+		// Attempts to log in the user
 		LogInUserDoctorWorker worker = new LogInUserDoctorWorker(this, id, password);
 		worker.execute();
 	}

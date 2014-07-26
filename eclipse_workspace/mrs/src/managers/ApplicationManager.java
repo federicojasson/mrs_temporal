@@ -48,7 +48,7 @@ public class ApplicationManager {
 			DbmsManager.connect();
 			
 			// Opens the log in frame
-			GuiManager.openNewFrame(GuiManager.LOG_IN_FRAME);
+			GuiManager.openFrame(GuiManager.LOG_IN_FRAME);
 		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | UnsupportedLookAndFeelException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

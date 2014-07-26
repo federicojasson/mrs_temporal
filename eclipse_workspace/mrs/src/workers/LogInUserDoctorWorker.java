@@ -21,6 +21,7 @@ public class LogInUserDoctorWorker extends SwingWorker<Boolean, Void> {
 	
 	protected Boolean doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
+		
 		try {
 			// Attempts to log in the user
 			return UserManager.logInUserDoctor(id, password);
@@ -33,6 +34,7 @@ public class LogInUserDoctorWorker extends SwingWorker<Boolean, Void> {
 	
 	protected void done() {
 		// This code is executed in the event dispatch thread (EDT)
+		
 		try {
 			// Executes the caller's callback method
 			caller.logInUserDoctorCallback(get());

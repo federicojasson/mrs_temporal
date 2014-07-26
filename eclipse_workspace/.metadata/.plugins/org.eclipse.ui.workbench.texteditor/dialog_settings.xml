@@ -3,28 +3,31 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="211" key="DIALOG_Y_ORIGIN"/>
-		<item value="1274" key="DIALOG_X_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
+		<item value="1274" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="true" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="showMe" key="selection"/>
+		<item value="storedProcedures.put(&quot;" key="selection"/>
 		<list key="findhistory">
-			<item value="showMe"/>
-			<item value="as"/>
-			<item value="= null"/>
-			<item value="dataUser"/>
-			<item value="e)"/>
-			<item value="for ("/>
-			<item value="conver"/>
-			<item value="password"/>
+			<item value="storedProcedures.put(&quot;"/>
+			<item value="frameIndex"/>
+			<item value="patient"/>
+			<item value="insertPatient"/>
+			<item value="inserPatient"/>
+			<item value="viewPa"/>
+			<item value="buttonExit"/>
+			<item value="exit"/>
 		</list>
 		<list key="replacehistory">
+			<item value="private static final String = &quot;"/>
+			<item value="private static final String = "/>
+			<item value="frameId"/>
 			<item value="ID"/>
 			<item value=" ID"/>
 			<item value="UsersManager.getInstance().getStudyManager();"/>

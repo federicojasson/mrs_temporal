@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS patients (
 	birth_date DATE,
 	blood_type BINARY(1),
-	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	gender BINARY(1),
+	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	name VARCHAR(128),
 	user_id VARCHAR(32),
 	PRIMARY KEY(id),
@@ -134,8 +134,8 @@ END; !
 CREATE PROCEDURE insert_patient (
 	IN i_birth_date DATE,
 	IN i_blood_type BINARY(1),
-	IN i_id BINARY(16),
 	IN i_gender BINARY(1),
+	IN i_id BINARY(16),
 	IN i_name VARCHAR(128),
 	IN i_user_id VARCHAR(32)
 )
@@ -143,15 +143,15 @@ BEGIN
 	INSERT INTO patients (
 		birth_date,
 		blood_type,
-		id,
 		gender,
+		id,
 		name,
 		user_id
 	) VALUES (
 		i_birth_date,
 		i_blood_type,
-		i_id,
 		i_gender,
+		i_id,
 		i_name,
 		i_user_id
 	);

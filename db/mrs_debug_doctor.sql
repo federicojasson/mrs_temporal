@@ -7,8 +7,8 @@ FROM users_doctors_authentication_data;
 CALL insert_patient (
 	'1991-06-25',
 	'6',
-	UNHEX('6c6e05fa4e0845838ed839f913ea06d6'),
 	'M',
+	UNHEX('6c6e05fa4e0845838ed839f913ea06d6'),
 	'Federico',
 	'doctor'
 );
@@ -59,7 +59,7 @@ CALL delete_study_file (
 	UNHEX('9c3f374d8ed2443282c21afd974c4a96')
 );
 
-SELECT birth_date, blood_type, HEX(id) AS id, gender, name, user_id
+SELECT birth_date, blood_type, gender, HEX(id) AS id, name, user_id
 FROM patients
 WHERE user_id LIKE BINARY 'doctor';
 

@@ -30,7 +30,7 @@ public class ErrorManager {
 		printErrorDetails();
 		
 		// Opens an error frame
-		GuiManager.openNewFrame(GuiManager.ERROR_FRAME);
+		GuiManager.openFrame(GuiManager.ERROR_FRAME);
 	}
 	
 	private static void printErrorDetails() {
