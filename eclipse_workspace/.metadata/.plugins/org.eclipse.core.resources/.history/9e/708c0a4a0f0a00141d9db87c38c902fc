@@ -1,8 +1,0 @@
-package database;
-
-import entitiesManagers.PatientManager;
-import entitiesManagers.StudyManager;
-
-public class DatabaseConnector implements PatientManager, StudyManager{
-
-}

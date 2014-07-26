@@ -1,6 +1,0 @@
-package entities;
-
-public enum ExitStatus {
-	EXIT_SUCCESS,
-	EXIT_FAILURE
-}
