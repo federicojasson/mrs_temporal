@@ -34,32 +34,39 @@ import managers.UserManager;
 //TODO: enable and disable buttonViewPatient when a row is clicked
 public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 
+	private JButton buttonAddPatient;
+	private JButton buttonExit;
+	private JButton buttonViewPatient;
+	private JComboBox<String> comboBoxCriterion;
+	private JTextField fieldSearch;
 	private PatientTable tablePatients;
-	private String userId;
 	
 	public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
 		// Sets the patient summaries as the table model data
 		tablePatients.getModel().setPatientSummaries(patientSummaries);
+		
+		// Re-enables GUI interactions
+		enableGuiInteractions();
 	}
 	
 	public void initialize() {
-		// Gets the current user ID
-		userId = UserManager.getCurrentUserId();
-		
 		// Initializes the GUI
 		super.initialize();
 		
+		// Disables GUI interactions
+		disableGuiInteractions();
+		
 		// Gets the patient summaries
-		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(this, userId);
+		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(this, UserManager.getCurrentUserId());
 		worker.execute();
 	}
 	
-	protected JPanel getMainPanel() {		
+	protected JPanel getMainPanel() {
 		JLabel labelSearch = new JLabel("Búsqueda");
 		
-		JTextField fieldSearch = new JTextField();
+		fieldSearch = new JTextField();
 		fieldSearch.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent arg0) {
+			public void keyReleased(KeyEvent event) {
 				//fillPatients(dataSearchCriteria.getText()); TODO
 			}
 		});
@@ -67,9 +74,9 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		
 		JLabel labelCriterion = new JLabel("Criterio de búsqueda");
 		
-		JComboBox<String> comboBoxCriterion = new JComboBox<String>();
+		comboBoxCriterion = new JComboBox<String>();
 		comboBoxCriterion.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
+			public void itemStateChanged(ItemEvent event) {
 				//fillPatients(dataSearchCriteria.getText()); TODO
 			}
 		});
@@ -88,10 +95,10 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			ColumnSpec.decode("min:grow"),
+			ColumnSpec.decode("min:grow")
 		}, new RowSpec[] {
 			FormFactory.DEFAULT_ROWSPEC,
-			FormFactory.PARAGRAPH_GAP_ROWSPEC,
+			FormFactory.PARAGRAPH_GAP_ROWSPEC
 		}));
 		panelSearch.add(labelSearch, "1, 1, right, default");
 		panelSearch.add(fieldSearch, "3, 1, fill, default");
@@ -107,25 +114,25 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		});
 		
 		JScrollPane panelPatients = new JScrollPane(tablePatients);
-		panelPatients.setPreferredSize(new Dimension(800, 500));
+		panelPatients.setPreferredSize(new Dimension(800, 400));
 		
-		JButton buttonExit = new JButton("Salir");
+		buttonExit = new JButton("Salir");
 		buttonExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onExit();
 			}
 		});
 		
-		JButton buttonAddPatient = new JButton("Ingresar paciente");
+		buttonAddPatient = new JButton("Ingresar paciente");
 		buttonAddPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent event) {
 				onAddPatient();
 			}
 		});
 		
-		JButton buttonViewPatient = new JButton("Ver");
+		buttonViewPatient = new JButton("Ver paciente");
 		buttonViewPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent event) {
 				onViewPatient();
 			}
 		});
@@ -136,10 +143,10 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
-			FormFactory.BUTTON_COLSPEC,
+			FormFactory.BUTTON_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.PARAGRAPH_GAP_ROWSPEC,
-			FormFactory.DEFAULT_ROWSPEC,
+			FormFactory.DEFAULT_ROWSPEC
 		}));
 		panelButtons.add(buttonExit, "1, 2");
 		panelButtons.add(buttonAddPatient, "3, 2");
@@ -156,10 +163,31 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 	}
 
 	protected String getTitle() {
-		return "MRS - Usuario: " + userId;
+		return "MRS - Usuario: " + UserManager.getCurrentUserId();
+	}
+	
+	private void disableGuiInteractions() {
+		buttonAddPatient.setEnabled(false);
+		buttonExit.setEnabled(false);
+		buttonViewPatient.setEnabled(false);
+		comboBoxCriterion.setEnabled(false);
+		fieldSearch.setEnabled(false);
+		tablePatients.setEnabled(false);
+	}
+	
+	private void enableGuiInteractions() {
+		buttonAddPatient.setEnabled(true);
+		buttonExit.setEnabled(true);
+		buttonViewPatient.setEnabled(true);
+		comboBoxCriterion.setEnabled(true);
+		fieldSearch.setEnabled(true);
+		tablePatients.setEnabled(true);
 	}
 	
 	private void onAddPatient() {
+		// Nullifies the current patient ID
+		PatientManager.setCurrentPatientId(null);
+		
 		// Opens the add patient frame
 		GuiManager.openFrame(GuiManager.ADD_PATIENT_FRAME);
 	}

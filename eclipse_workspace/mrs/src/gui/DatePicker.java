@@ -12,9 +12,9 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -306,7 +306,7 @@ public class DatePicker extends JPanel {
 		 * fileName.replace("%20", " ").substring(1); ImageIcon icon = new
 		 * ImageIcon(fileName, description);
 		 */
-		ImageIcon icon = new ImageIcon(AddRecord.class.getResource(iconFile));
+		ImageIcon icon = new ImageIcon(StudyFrame.class.getResource(iconFile));
 		return icon;
 	}
 

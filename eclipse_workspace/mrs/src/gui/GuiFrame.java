@@ -18,8 +18,7 @@ public abstract class GuiFrame {
 		frame = new JFrame();
 		
 		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				// Executes an event method
+			public void windowClosing(WindowEvent event) {
 				onClose();
 			}
 		});

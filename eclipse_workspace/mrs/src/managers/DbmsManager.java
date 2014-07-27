@@ -2,28 +2,21 @@ package managers;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import entities.PatientSummary;
-import entities.StudySummary;
-import entities.StudyType;
-import entities.AuthenticationData;
 
 public class DbmsManager {
 	
-	public static final int GET_PATIENT_SUMMARIES = 0;
-	public static final int GET_STUDY_SUMMARIES = 1;
-	public static final int GET_STUDY_TYPES = 2;
-	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 3;
-	public static final int PATIENT_EXISTS = 4;
-	public static final int STUDY_EXISTS = 5;
+	public static final int GET_PATIENT = 0;
+	public static final int GET_PATIENT_SUMMARIES = 1;
+	public static final int GET_STUDY_SUMMARIES = 2;
+	public static final int GET_STUDY_TYPES = 3;
+	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 4;
+	public static final int PATIENT_EXISTS = 5;
+	public static final int STUDY_EXISTS = 6;
 	
 	public static final int DELETE_STUDY_FILE = 0;
 	public static final int INSERT_PATIENT = 1;
@@ -65,6 +58,13 @@ public class DbmsManager {
 		dbmsConnection = dataSource.getConnection();
 		
 		// Initializes the prepared statements
+		preparedStatements.put(GET_PATIENT, dbmsConnection.prepareStatement(
+			// TODO
+			/*"SELECT gender, id, name " +
+			"FROM patients " +
+			"WHERE user_id LIKE BINARY ?"*/
+		));
+		
 		preparedStatements.put(GET_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT gender, id, name " +
 			"FROM patients " +
@@ -72,7 +72,7 @@ public class DbmsManager {
 		));
 		
 		preparedStatements.put(GET_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
-			"SELECT studies.date, studies.id, study_types.description, study_types.id " +
+			"SELECT studies.date, studies.id, study_types.description " +
 			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
 			"WHERE studies.patient_id = ?"
 		));

@@ -27,7 +27,7 @@ public class ApplicationManager {
 		byte[] passwordHash = null;
 		try {
 			passwordHash = CryptographyManager.computePasswordHash(password, salt);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException exception) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

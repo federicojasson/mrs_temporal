@@ -56,11 +56,11 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		fieldPanel.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			ColumnSpec.decode("max(80dlu;min)"),
+			ColumnSpec.decode("max(80dlu;min)")
 		}, new RowSpec[] {
 			FormFactory.DEFAULT_ROWSPEC,
 			FormFactory.RELATED_GAP_ROWSPEC,
-			FormFactory.DEFAULT_ROWSPEC,
+			FormFactory.DEFAULT_ROWSPEC
 		}));
 		fieldPanel.add(labelId, "1, 1");
 		fieldPanel.add(fieldId, "3, 1");
@@ -69,14 +69,14 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		
 		buttonExit = new JButton("Salir");
 		buttonExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onExit();
 			}
 		});
 		
 		buttonLogInUserDoctor = new JButton("Ingresar");
 		buttonLogInUserDoctor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onLogInUserDoctor();
 			}
 		});
@@ -90,7 +90,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		panelMain.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			ColumnSpec.decode("min:grow"),
-			FormFactory.GROWING_BUTTON_COLSPEC,
+			FormFactory.GROWING_BUTTON_COLSPEC
 		}, new RowSpec[] {
 			RowSpec.decode("default:grow"),
 			FormFactory.DEFAULT_ROWSPEC,
@@ -98,7 +98,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			FormFactory.DEFAULT_ROWSPEC,
 			FormFactory.PARAGRAPH_GAP_ROWSPEC,
 			FormFactory.DEFAULT_ROWSPEC,
-			RowSpec.decode("default:grow"),
+			RowSpec.decode("default:grow")
 		}));
 		panelMain.add(labelLogo, "2, 2, center, center");
 		panelMain.add(fieldPanel, "2, 4, center, center");

@@ -6,9 +6,9 @@ public class StudyFrame extends GuiFrame {
 
 	protected JPanel getMainPanel() {
 		// TODO
-		JPanel mainPanel = new JPanel();
+		JPanel panelMain = new JPanel();
 		
-		return mainPanel;
+		return panelMain;
 	}
 
 	protected String getTitle() {

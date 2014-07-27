@@ -49,6 +49,36 @@ public class StudyManager {
 		// Commits the transaction
 		DbmsManager.commitTransaction();
 	}
+
+	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
+		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY_SUMMARIES);
+
+		try {
+			// Sets the input parameters
+			preparedStatement.setBytes(1, patientId);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+	
+			// Fetches the query results
+			while (resultSet.next()) {
+				Date date = resultSet.getDate("studies.date");
+				byte[] id = resultSet.getBytes("studies.id");
+				String studyTypeDescription = resultSet.getString("study_types.description");
+	
+				// Adds the study summary to the list
+				studySummaries.add(new StudySummary(date, id, studyTypeDescription));
+			}
+		} finally {
+			// Releases the statement resources
+			preparedStatement.clearParameters();
+		}
+
+		return studySummaries;
+	}
 	
 	public static void setCurrentStudyId(byte[] studyId) {
 		currentStudyId = studyId;
@@ -101,38 +131,6 @@ public class StudyManager {
 			// Releases the statement resources
 			storedProcedure.clearParameters();
 		}
-	}
-
-	private static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
-		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
-		
-		// Gets the prepared statement
-		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY_SUMMARIES);
-
-		try {
-			// Sets the input parameters
-			preparedStatement.setBytes(1, patientId);
-			
-			// Executes the prepared statement
-			ResultSet resultSet = preparedStatement.executeQuery();
-	
-			// Fetches the query results
-			while (resultSet.next()) {
-				Date date = resultSet.getDate("studies.date");
-				byte[] id = resultSet.getBytes("studies.id");
-				String studyTypeDescription = resultSet.getString("study_types.description");
-				byte[] studyTypeId = resultSet.getBytes("study_type.id");
-				StudyType studyType = new StudyType(studyTypeDescription, studyTypeId);
-	
-				// Adds the study summary to the list
-				studySummaries.add(new StudySummary(date, id, studyType));
-			}
-		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
-		}
-
-		return studySummaries;
 	}
 
 	private static List<StudyType> getStudyTypes() throws SQLException {

@@ -26,11 +26,10 @@ public class ErrorFrame extends GuiFrame {
 		errorDetailsFieldContainer.setViewportView(errorDetailsField);
 		
 		// TODO
-		JPanel mainPanel = new JPanel();
-		//mainPanel.setLayout();
-		mainPanel.add(errorDetailsFieldContainer);
+		JPanel panelMain = new JPanel();
+		panelMain.add(errorDetailsFieldContainer);
 		
-		return mainPanel;
+		return panelMain;
 	}
 
 	protected String getTitle() {

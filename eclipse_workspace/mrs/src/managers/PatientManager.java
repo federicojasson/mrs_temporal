@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import entities.Patient;
 import entities.PatientSummary;
 
 public class PatientManager {
@@ -37,6 +38,36 @@ public class PatientManager {
 	
 	public static byte[] getCurrentPatientId() {
 		return currentPatientId;
+	}
+	
+	public static Patient getPatient(byte[] id) throws SQLException {
+		Patient patient = null;
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_PATIENT);
+		
+		try {
+			// Sets the input parameters
+			//preparedStatement.setString(1, userId); TODO
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			// Fetches the query results
+			if (resultSet.next()) {
+				// TODO
+				//byte[] passwordHash = resultSet.getBytes("password_hash");
+				//byte[] salt = resultSet.getBytes("salt");
+	
+				// Initializes the patient object
+				patient = new Patient();
+			}
+		} finally {
+			// Releases the statement resources
+			preparedStatement.clearParameters();
+		}
+
+		return patient;
 	}
 	
 	public static List<PatientSummary> getPatientSummaries(String userId) throws SQLException {

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import utilities.Utility;
 import entities.PatientSummary;
 
 public class PatientTable extends JTable {
@@ -18,8 +17,8 @@ public class PatientTable extends JTable {
 	
 	public PatientTable() {
 		super(new PatientTableModel());
-		getColumnModel().getColumn(GENDER).setCellRenderer(new PatientTableGenderCellRenderer());
-		getColumnModel().getColumn(ID).setCellRenderer(new PatientTableIdCellRenderer());
+		getColumnModel().getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
+		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}
 	
 	public PatientTableModel getModel() {
@@ -75,28 +74,6 @@ public class PatientTable extends JTable {
 			
 			// Notifies that all data have changed
 			fireTableDataChanged();
-		}
-		
-	}
-	
-	private static class PatientTableGenderCellRenderer extends DefaultTableCellRenderer {
-		
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-			// The received object is of class Byte, not byte, so two castings have to be performed
-			char newValue = (char) (byte) value;
-			
-			return super.getTableCellRendererComponent(table, newValue, isSelected, hasFocus, row, column);
-		}
-		
-	}
-	
-	private static class PatientTableIdCellRenderer extends DefaultTableCellRenderer {
-		
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-			// Converts the patient ID to hexadecimal
-			String newValue = Utility.bytesToHexadecimal((byte[]) value);
-			
-			return super.getTableCellRendererComponent(table, newValue, isSelected, hasFocus, row, column);
 		}
 		
 	}

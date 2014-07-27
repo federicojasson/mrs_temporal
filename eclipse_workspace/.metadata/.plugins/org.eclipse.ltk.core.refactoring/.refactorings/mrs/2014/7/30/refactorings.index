@@ -53,3 +53,34 @@
 1406423793766	Delete element
 1406425371637	Delete element
 1406425374695	Delete element
+1406474056211	Rename local variable 'lblIdPaciente'
+1406474074786	Rename local variable 'dataId'
+1406474102373	Rename local variable 'lblNombre'
+1406474110539	Rename local variable 'dataNombre'
+1406474119153	Rename local variable 'lblSexo'
+1406474131782	Rename local variable 'dataSexo'
+1406474176122	Rename local variable 'lblFechaNac'
+1406474185720	Rename local variable 'dataFechaNac'
+1406474204486	Rename local variable 'fechaPanel'
+1406474222480	Rename local variable 'lblSangre'
+1406474327772	Rename local variable 'dataSangre'
+1406474366783	Rename local variable 'patientDataPane'
+1406474386903	Rename local variable 'lblBuscar'
+1406474431956	Rename local variable 'fieldBuscar'
+1406474470068	Rename local variable 'lblCampo'
+1406474480688	Rename local variable 'comboBox'
+1406474492299	Rename local variable 'search'
+1406474614166	Rename local variable 'records'
+1406474657686	Rename local variable 'scrollPane'
+1406474695814	Rename local variable 'recordsPane'
+1406474712429	Rename local variable 'btnAgregarEstudio'
+1406474727514	Rename local variable 'btnVerEstudio'
+1406474829171	Rename local variable 'btnVolver'
+1406474878351	Rename local variable 'bottomPane'
+1406475473545	Copy compilation unit
+1406475936447	Copy compilation unit
+1406483593098	Copy compilation unit
+1406483605420	Copy compilation unit
+1406485280948	Copy compilation unit
+1406485307009	Rename resource 'Patient.java'
+1406485349560	Copy compilation unit

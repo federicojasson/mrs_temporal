@@ -6,12 +6,12 @@ public class StudySummary {
 
 	private Date date;
 	private byte[] id;
-	private StudyType studyType;
+	private String studyTypeDescription;
 
-	public StudySummary(Date date, byte[] id, StudyType studyType) {
+	public StudySummary(Date date, byte[] id, String studyTypeDescription) {
 		this.date = date;
 		this.id = id;
-		this.studyType = studyType;
+		this.studyTypeDescription = studyTypeDescription;
 	}
 	
 	public Date getDate() {
@@ -22,8 +22,8 @@ public class StudySummary {
 		return id;
 	}
 	
-	public StudyType getStudyType() {
-		return studyType;
+	public String getStudyTypeDescription() {
+		return studyTypeDescription;
 	}
 
 }

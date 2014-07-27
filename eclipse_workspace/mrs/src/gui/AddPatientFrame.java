@@ -11,22 +11,22 @@ public class AddPatientFrame extends GuiFrame {
 	protected JPanel getMainPanel() {
 		JButton buttonCancel = new JButton("Cancelar");
 		buttonCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onCancel();
 			}
 		});
 		
 		JButton buttonAddPatient = new JButton("Ingresar paciente");
 		buttonAddPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onAddPatient();
 			}
 		});
 		
 		// TODO
-		JPanel mainPanel = new JPanel();
+		JPanel panelMain = new JPanel();
 		
-		return mainPanel;
+		return panelMain;
 	}
 
 	protected String getTitle() {
