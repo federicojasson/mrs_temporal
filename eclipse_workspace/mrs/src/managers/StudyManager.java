@@ -129,7 +129,7 @@ public class StudyManager {
 			}
 		} finally {
 			// Releases the statement resources
-			preparedStatement.close();
+			preparedStatement.clearParameters();
 		}
 
 		return studySummaries;
@@ -155,7 +155,7 @@ public class StudyManager {
 			}
 		} finally {
 			// Releases the statement resources
-			preparedStatement.close();
+			preparedStatement.clearParameters();
 		}
 
 		return studyTypes;

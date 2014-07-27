@@ -80,7 +80,7 @@ public class DatePicker extends JPanel {
 
 	protected JTextField textField;
 
-	protected List<ActionListener> popupListeners = new ArrayList<ActionListener>();
+	protected List<ActionListener> popupListeners = new LinkedList<ActionListener>();
 
 	protected Popup popup;
 	protected SimpleDateFormat dayName = new SimpleDateFormat("d");

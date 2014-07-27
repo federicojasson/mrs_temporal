@@ -55,7 +55,7 @@ public class UserManager {
 			}
 		} finally {
 			// Releases the statement resources
-			preparedStatement.close();
+			preparedStatement.clearParameters();
 		}
 		
 		return authenticationData;

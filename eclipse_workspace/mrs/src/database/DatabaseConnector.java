@@ -69,7 +69,7 @@ public class DatabaseConnector implements PatientManager, StudyManager {
 	
 	public List<String> getFiles(int study_id) {
 		//TODO
-		return new ArrayList<String>();
+		return new LinkedList<String>();
 	}
 	
 	public String getObservations(int study_id) {
@@ -80,7 +80,7 @@ public class DatabaseConnector implements PatientManager, StudyManager {
 	public List<Study> getPatientStudies(Patient patient) throws NoConnectedException {
 		// TODO Auto-generated method stub
 
-		List<Study> toReturn = new ArrayList<Study>();
+		List<Study> toReturn = new LinkedList<Study>();
 
 		for (int i = 0; i < 100; i++) {
 			Study current = new Study("Test", "12/30/2013", patient.getId());
@@ -99,7 +99,7 @@ public class DatabaseConnector implements PatientManager, StudyManager {
 	
 	public List<String> getStudyTypes() throws NoConnectedException {
 		// TODO Auto-generated method stub
-		List<String> lista = new ArrayList<String>();
+		List<String> lista = new LinkedList<String>();
 
 		for (int i = 0; i < 4; i++)
 			lista.add("Tipo de estudio " + i);
@@ -133,7 +133,7 @@ public class DatabaseConnector implements PatientManager, StudyManager {
 	public List<Patient> searchPatient(String searchCriteria, String field) throws NoConnectedException {
 		// TODO Auto-generated method stub
 
-		List<Patient> toReturn = new ArrayList<Patient>();
+		List<Patient> toReturn = new LinkedList<Patient>();
 
 		for (int i = 0; i < 100; i++) {
 			Patient test = new Patient(1000, "Paciente de Prueba " + i, "02/03/1956", 'm', "0+");
@@ -146,7 +146,7 @@ public class DatabaseConnector implements PatientManager, StudyManager {
 	public List<Study> searchPatientStudies(Patient patient, String searchCriteria, String field) throws NoConnectedException {
 		// TODO Auto-generated method stub
 
-		List<Study> toReturn = new ArrayList<Study>();
+		List<Study> toReturn = new LinkedList<Study>();
 
 		for (int i = 0; i < 100; i++) {
 			Study current = new Study("Test", "12/30/2013", patient.getId());

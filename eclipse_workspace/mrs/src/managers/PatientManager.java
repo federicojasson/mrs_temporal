@@ -51,10 +51,10 @@ public class PatientManager {
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
-	
+			
 			// Fetches the query results
 			while (resultSet.next()) {
-				byte gender = resultSet.getByte("gender");
+				byte gender = resultSet.getBytes("gender")[0];
 				byte[] id = resultSet.getBytes("id");
 				String name = resultSet.getString("name");
 	
@@ -63,7 +63,7 @@ public class PatientManager {
 			}
 		} finally {
 			// Releases the statement resources
-			preparedStatement.close();
+			preparedStatement.clearParameters();
 		}
 
 		return patientSummaries;
@@ -112,7 +112,7 @@ public class PatientManager {
 			patientExists = resultSet.getInt("count") == 1;
 		} finally {
 			// Releases the statement resources
-			preparedStatement.close();
+			preparedStatement.clearParameters();
 		}
 		
 		return patientExists;

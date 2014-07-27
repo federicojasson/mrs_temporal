@@ -17,10 +17,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableModel;
 import workers.GetPatientSummariesCaller;
 import workers.GetPatientSummariesWorker;
 import com.jgoodies.forms.factories.FormFactory;
@@ -36,17 +34,19 @@ import managers.UserManager;
 //TODO: enable and disable buttonViewPatient when a row is clicked
 public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 
+	private PatientTable tablePatients;
 	private String userId;
-	private TableModel tableModelPatients;
 	
 	public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
-		// TODO: fill table with patient summaries
+		// Sets the patient summaries as the table model data
+		tablePatients.getModel().setPatientSummaries(patientSummaries);
 	}
 	
 	public void initialize() {
 		// Gets the current user ID
 		userId = UserManager.getCurrentUserId();
 		
+		// Initializes the GUI
 		super.initialize();
 		
 		// Gets the patient summaries
@@ -77,7 +77,7 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 			"Nombre",
 			"Fecha de nacimiento",
 			"Sexo",
-			"Tipo de sangre"
+			"Grupo sanguíneo"
 		}));
 		
 		JPanel panelSearch = new JPanel();
@@ -98,7 +98,7 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		panelSearch.add(labelCriterion, "5, 1, right, default");
 		panelSearch.add(comboBoxCriterion, "7, 1, fill, default");
 		
-		JTable tablePatients = new JTable();
+		tablePatients = new PatientTable();
 		tablePatients.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
 				if (event.getClickCount() == 2)
@@ -170,18 +170,21 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 	}
 	
 	private void onViewPatient() {
-		// TODO: get patient ID somehow
-		/*
-		int row = dataPaceientes.getSelectedRow();
-		viewPatient(dataPacientes.get(row));
-		*/
-		byte[] patientId = null;
+		// Gets the selected row index (if any)
+		int selectedRowIndex = tablePatients.getSelectedRow();
 		
-		// Sets the patient ID as the current one
-		PatientManager.setCurrentPatientId(patientId);
-		
-		// Opens the patient frame
-		GuiManager.openFrame(GuiManager.PATIENT_FRAME);
+		if (selectedRowIndex >= 0) { // TODO: maybe it would be asured that a row is selected?
+			// A row has been selected
+			
+			// Gets the patient ID
+			byte[] patientId = (byte[]) tablePatients.getModel().getValueAt(selectedRowIndex, PatientTable.ID);
+			
+			// Sets the patient ID as the current one
+			PatientManager.setCurrentPatientId(patientId);
+			
+			// Opens the patient frame
+			GuiManager.openFrame(GuiManager.PATIENT_FRAME);
+		}
 	}
 	
 }
