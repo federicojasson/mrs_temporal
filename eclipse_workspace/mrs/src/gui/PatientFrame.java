@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -37,12 +38,12 @@ import managers.StudyManager;
 public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudySummariesCaller {
 
 	private JButton buttonAddStudy;
+	private JButton buttonDatePicker;
 	private JButton buttonGoBack;
 	private JButton buttonViewStudy;
 	private JComboBox<BloodType> comboBoxBloodType;
 	private JComboBox<String> comboBoxCriterion;
 	private JComboBox<Gender> comboBoxGender;
-	private DatePicker datePicker;
 	private JTextField fieldBirthDate;
 	private JTextField fieldId;
 	private JTextField fieldName;
@@ -106,7 +107,25 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		fieldBirthDate = new JTextField(10);
 		fieldBirthDate.setEditable(false);
 		
-		datePicker = new DatePicker();
+		DatePicker datePicker = new DatePicker();
+		datePicker.addPopupListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO
+				/*fieldBirthDate.setText(datePicker.getFormattedDate());
+				datePicker.popupHide();*/
+			}
+		});
+		
+		buttonDatePicker = new JButton(datePicker.getImage());
+		buttonDatePicker.setPreferredSize(new Dimension(30, 24)); // TODO: necessary?
+		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0)); // TODO: necessary?
+		buttonDatePicker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO
+				/*datePicker.setDate(fieldBirthDate.getText());
+				datePicker.popupShow(buttonDatePicker);*/
+			}
+		});
 		
 		JPanel panelBirthDate = new JPanel();
 		panelBirthDate.setLayout(new FormLayout(new ColumnSpec[] {
@@ -116,7 +135,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 			FormFactory.BUTTON_ROWSPEC
 		}));
 		panelBirthDate.add(fieldBirthDate, "1, 1, fill, default");
-		panelBirthDate.add(datePicker, "2, 1, default, default");
+		panelBirthDate.add(buttonDatePicker, "2, 1, default, default");
 		
 		JLabel labelBloodType = new JLabel("Grupo sanguíneo");
 		

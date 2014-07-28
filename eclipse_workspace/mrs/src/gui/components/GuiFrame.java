@@ -40,6 +40,24 @@ public abstract class GuiFrame {
 	
 	protected abstract String getTitle();
 	
+	protected void repack() {
+		// Gets the current dimensions
+		int currentWidth = frame.getWidth();
+		int currentHeight = frame.getHeight();
+		
+		// Resizes the frame
+		frame.pack();
+		
+		// Gets the new dimensions
+		int newWidth = frame.getWidth();
+		int newHeight = frame.getHeight();
+		
+		// Moves the frame to keep the same center as before
+		int x = (int) (frame.getX() - (newWidth - currentWidth) / 2.0);
+		int y = (int) (frame.getY() - (newHeight - currentHeight) / 2.0);
+		frame.setBounds(x, y, newWidth, newHeight);
+	}
+	
 	private void onClose() {
 		GuiManager.closeCurrentFrame();
 	}

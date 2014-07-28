@@ -49,6 +49,10 @@ public class StudyManager {
 		// Commits the transaction
 		DbmsManager.commitTransaction();
 	}
+	
+	public static byte[] getCurrentStudyId() {
+		return currentStudyId;
+	}
 
 	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
 		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
