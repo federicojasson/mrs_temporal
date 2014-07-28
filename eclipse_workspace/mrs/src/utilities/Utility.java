@@ -1,10 +1,18 @@
 package utilities;
 
 import java.nio.charset.Charset;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Utility {
-	
+
 	private static final char[] HEXADECIMAL_VALUES = "0123456789ABCDEF".toCharArray();
+	
+	private static SimpleDateFormat formatter;
+	
+	static {
+		formatter = new SimpleDateFormat("dd/MM/yyyy");
+	}
 	
 	// TODO: debug (remove it before release)
 	public static byte[] hexStringToByteArray(String s) {
@@ -40,6 +48,10 @@ public class Utility {
 		System.arraycopy(b2, 0, b3, b1.length, b2.length);
 		
 		return b3;
+	}
+	
+	public static String formatDate(Date date) {
+		return formatter.format(date);
 	}
 
 }

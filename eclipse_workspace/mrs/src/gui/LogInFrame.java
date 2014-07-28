@@ -1,5 +1,8 @@
 package gui;
 
+import gui.components.GuiFrame;
+import gui.workers.LogInUserDoctorCaller;
+import gui.workers.LogInUserDoctorWorker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -16,8 +19,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import utilities.Utility;
-import workers.LogInUserDoctorCaller;
-import workers.LogInUserDoctorWorker;
 import managers.GuiManager;
 
 // TODO: validate input

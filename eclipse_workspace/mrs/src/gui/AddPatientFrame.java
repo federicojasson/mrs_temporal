@@ -1,5 +1,6 @@
 package gui;
 
+import gui.components.GuiFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;

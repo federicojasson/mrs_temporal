@@ -2,11 +2,11 @@ package managers;
 
 import gui.AddPatientFrame;
 import gui.ErrorFrame;
-import gui.GuiFrame;
 import gui.LogInFrame;
 import gui.PatientFrame;
 import gui.StudyFrame;
 import gui.UserFrame;
+import gui.components.GuiFrame;
 import java.awt.EventQueue;
 
 public class GuiManager {

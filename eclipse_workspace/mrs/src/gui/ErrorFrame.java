@@ -1,5 +1,6 @@
 package gui;
 
+import gui.components.GuiFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;

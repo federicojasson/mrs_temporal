@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import entities.BloodType;
 import entities.Patient;
 import entities.PatientSummary;
 
@@ -48,19 +49,20 @@ public class PatientManager {
 		
 		try {
 			// Sets the input parameters
-			//preparedStatement.setString(1, userId); TODO
+			preparedStatement.setBytes(1, id);
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
 			
 			// Fetches the query results
 			if (resultSet.next()) {
-				// TODO
-				//byte[] passwordHash = resultSet.getBytes("password_hash");
-				//byte[] salt = resultSet.getBytes("salt");
-	
+				Date birthDate = resultSet.getDate("birth_date");
+				byte bloodType = resultSet.getBytes("blood_type")[0];
+				byte gender = resultSet.getBytes("gender")[0];
+				String name = resultSet.getString("name");
+				
 				// Initializes the patient object
-				patient = new Patient();
+				patient = new Patient(birthDate, bloodType, gender, id, name);
 			}
 		} finally {
 			// Releases the statement resources

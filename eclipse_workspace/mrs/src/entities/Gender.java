@@ -4,6 +4,14 @@ public enum Gender {
 
 	FEMALE("Femenino", (byte) 'F'),
 	MALE("Masculino", (byte) 'M');
+	
+	public static Gender getConstant(byte value) {
+		switch (value) {
+			case 'F' : return FEMALE;
+			case 'M' : return MALE;
+			default : return null;
+		}
+	}
 
 	private String label;
 	private byte value;

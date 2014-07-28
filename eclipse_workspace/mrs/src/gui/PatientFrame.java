@@ -18,13 +18,18 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import entities.BloodType;
+import entities.Gender;
 import entities.Patient;
 import entities.StudySummary;
+import gui.components.DatePicker;
+import gui.components.GuiFrame;
+import gui.components.StudyTable;
+import gui.workers.GetPatientCaller;
+import gui.workers.GetPatientWorker;
+import gui.workers.GetStudySummariesCaller;
+import gui.workers.GetStudySummariesWorker;
 import utilities.Utility;
-import workers.GetPatientCaller;
-import workers.GetPatientWorker;
-import workers.GetStudySummariesCaller;
-import workers.GetStudySummariesWorker;
 import managers.GuiManager;
 import managers.PatientManager;
 import managers.StudyManager;
@@ -34,9 +39,9 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	private JButton buttonAddStudy;
 	private JButton buttonGoBack;
 	private JButton buttonViewStudy;
-	private JComboBox<String> comboBoxBloodType;
+	private JComboBox<BloodType> comboBoxBloodType;
 	private JComboBox<String> comboBoxCriterion;
-	private JComboBox<String> comboBoxGender;
+	private JComboBox<Gender> comboBoxGender;
 	private DatePicker datePicker;
 	private JTextField fieldBirthDate;
 	private JTextField fieldId;
@@ -45,7 +50,11 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	private StudyTable tableStudies;
 
 	public void getPatientCallback(Patient patient) {
-		// TODO
+		comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
+		comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
+		//fieldBirthDate.setText(); TODO: what format uses datepicker?
+		fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
+		fieldName.setText(patient.getName());
 	}
 
 	public void getStudySummariesCallback(List<StudySummary> studySummaries) {
@@ -90,8 +99,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		
 		JLabel labelGender = new JLabel("Sexo");
 		
-		comboBoxGender = new JComboBox<String>();
-		//comboBoxGender.setModel(this.sexos); TODO
+		comboBoxGender = new JComboBox<Gender>(Gender.values());
 		
 		JLabel labelBirthDate = new JLabel("Fecha de nacimiento");
 
@@ -112,8 +120,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		
 		JLabel labelBloodType = new JLabel("Grupo sanguíneo");
 		
-		comboBoxBloodType = new JComboBox<String>();
-		//comboBoxBloodType.setModel(this.tiposSangre); TODO
+		comboBoxBloodType = new JComboBox<BloodType>(BloodType.values());
 		
 		JPanel panelPatient = new JPanel();
 		panelPatient.setLayout(new FormLayout(new ColumnSpec[] {

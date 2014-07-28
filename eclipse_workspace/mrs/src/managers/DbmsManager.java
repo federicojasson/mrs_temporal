@@ -59,10 +59,9 @@ public class DbmsManager {
 		
 		// Initializes the prepared statements
 		preparedStatements.put(GET_PATIENT, dbmsConnection.prepareStatement(
-			// TODO
-			/*"SELECT gender, id, name " +
+			"SELECT birth_date, blood_type, gender, name " +
 			"FROM patients " +
-			"WHERE user_id LIKE BINARY ?"*/
+			"WHERE id = ?"
 		));
 		
 		preparedStatements.put(GET_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
