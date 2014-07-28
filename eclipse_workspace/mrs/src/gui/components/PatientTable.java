@@ -1,10 +1,9 @@
 package gui.components;
 
-import java.awt.Component;
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import entities.PatientSummary;
 
 public class PatientTable extends JTable {
@@ -17,6 +16,8 @@ public class PatientTable extends JTable {
 	
 	public PatientTable() {
 		super(new PatientTableModel());
+
+		// Sets cell renderers for specific type data
 		getColumnModel().getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
 		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}

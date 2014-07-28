@@ -2,6 +2,7 @@ package gui.components;
 
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import entities.StudySummary;
 
@@ -15,6 +16,8 @@ public class StudyTable extends JTable {
 	
 	public StudyTable() {
 		super(new StudyTableModel());
+		
+		// Sets cell renderers for specific type data
 		getColumnModel().getColumn(DATE).setCellRenderer(new DateTableCellRenderer());
 		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}

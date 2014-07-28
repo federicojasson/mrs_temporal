@@ -18,7 +18,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -114,6 +117,13 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 					onViewPatient();
 			}
 		});
+		tablePatients.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tablePatients.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				if (! event.getValueIsAdjusting())
+					onSelectRow();
+			}
+		});
 		
 		JScrollPane panelPatients = new JScrollPane(tablePatients);
 		panelPatients.setPreferredSize(new Dimension(800, 400));
@@ -178,6 +188,7 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 	}
 	
 	private void enableGuiInteractions() {
+		// TODO: no debería ser true, debería ser el valor anterior que tenía
 		buttonAddPatient.setEnabled(true);
 		buttonExit.setEnabled(true);
 		buttonViewPatient.setEnabled(true);
@@ -199,22 +210,31 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		GuiManager.closeCurrentFrame();
 	}
 	
-	private void onViewPatient() {
+	private void onSelectRow() { // TODO: change name?
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tablePatients.getSelectedRow();
+		System.out.println(selectedRowIndex);
 		
-		if (selectedRowIndex >= 0) { // TODO: maybe it would be asured that a row is selected?
+		if (selectedRowIndex < 0)
+			// No row has been selected
+			buttonViewPatient.setEnabled(false);
+		else
 			// A row has been selected
-			
-			// Gets the patient ID
-			byte[] patientId = (byte[]) tablePatients.getModel().getValueAt(selectedRowIndex, PatientTable.ID);
-			
-			// Sets the patient ID as the current one
-			PatientManager.setCurrentPatientId(patientId);
-			
-			// Opens the patient frame
-			GuiManager.openFrame(GuiManager.PATIENT_FRAME);
-		}
+			buttonViewPatient.setEnabled(true);
+	}
+	
+	private void onViewPatient() {
+		// Gets the selected row index
+		int selectedRowIndex = tablePatients.getSelectedRow();
+		
+		// Gets the patient ID
+		byte[] patientId = (byte[]) tablePatients.getModel().getValueAt(selectedRowIndex, PatientTable.ID);
+		
+		// Sets the patient ID as the current one
+		PatientManager.setCurrentPatientId(patientId);
+		
+		// Opens the patient frame
+		GuiManager.openFrame(GuiManager.PATIENT_FRAME);
 	}
 	
 }

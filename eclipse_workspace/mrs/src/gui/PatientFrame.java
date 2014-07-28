@@ -14,7 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -204,6 +207,13 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 					onViewStudy();
 			}
 		});
+		tableStudies.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableStudies.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				if (! event.getValueIsAdjusting())
+					onSelectRow();
+			}
+		});
 		
 		JScrollPane panelStudies = new JScrollPane(tableStudies);
 		panelStudies.setPreferredSize(new Dimension(800, 200));
@@ -304,22 +314,31 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		GuiManager.closeCurrentFrame();
 	}
 	
-	private void onViewStudy() {
+	private void onSelectRow() { // TODO: change name?
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tableStudies.getSelectedRow();
+		System.out.println(selectedRowIndex);
 		
-		if (selectedRowIndex >= 0) { // TODO: maybe it would be asured that a row is selected?
+		if (selectedRowIndex < 0)
+			// No row has been selected
+			buttonViewStudy.setEnabled(false);
+		else
 			// A row has been selected
-			
-			// Gets the study ID
-			byte[] studyId = (byte[]) tableStudies.getModel().getValueAt(selectedRowIndex, StudyTable.ID);
-			
-			// Sets the study ID as the current one
-			StudyManager.setCurrentStudyId(studyId);
-			
-			// Opens the study frame
-			GuiManager.openFrame(GuiManager.STUDY_FRAME);
-		}
+			buttonViewStudy.setEnabled(true);
+	}
+	
+	private void onViewStudy() {
+		// Gets the selected row index
+		int selectedRowIndex = tableStudies.getSelectedRow();
+		
+		// Gets the study ID
+		byte[] studyId = (byte[]) tableStudies.getModel().getValueAt(selectedRowIndex, StudyTable.ID);
+		
+		// Sets the study ID as the current one
+		StudyManager.setCurrentStudyId(studyId);
+		
+		// Opens the study frame
+		GuiManager.openFrame(GuiManager.STUDY_FRAME);
 	}
 	
 }

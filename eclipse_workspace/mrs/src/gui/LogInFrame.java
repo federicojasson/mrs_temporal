@@ -34,8 +34,8 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			// Opens the user frame
 			GuiManager.openFrame(GuiManager.USER_FRAME);
 		else {
+			// Shows a dialog to inform the user that the user was not logged in
 			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos.\nPor favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
-			// TODO: show dialog to inform the user
 			
 			// Re-enables GUI interactions
 			enableGuiInteractions();
@@ -81,6 +81,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 				onLogInUserDoctor();
 			}
 		});
+		setDefaultButton(buttonLogInUserDoctor);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.add(buttonExit);
@@ -120,6 +121,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 	}
 	
 	private void enableGuiInteractions() {
+		// TODO: no debería ser true, debería ser el valor anterior que tenía
 		buttonExit.setEnabled(true);
 		buttonLogInUserDoctor.setEnabled(true);
 		fieldId.setEnabled(true);
@@ -137,7 +139,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		
 		// Gets user ID and password
 		String id = fieldId.getText();
-		byte[] password = Utility.charsToBytes(fieldPassword.getPassword()); // TODO: this maybe should be made in the worker
+		byte[] password = Utility.charsToBytes(fieldPassword.getPassword());
 		
 		// Attempts to log in the user
 		LogInUserDoctorWorker worker = new LogInUserDoctorWorker(this, id, password);

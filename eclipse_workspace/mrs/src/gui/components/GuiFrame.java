@@ -2,6 +2,7 @@ package gui.components;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import managers.GuiManager;
@@ -56,6 +57,10 @@ public abstract class GuiFrame {
 		int x = (int) (frame.getX() - (newWidth - currentWidth) / 2.0);
 		int y = (int) (frame.getY() - (newHeight - currentHeight) / 2.0);
 		frame.setBounds(x, y, newWidth, newHeight);
+	}
+	
+	protected void setDefaultButton(JButton button) {
+		frame.getRootPane().setDefaultButton(button);
 	}
 	
 	private void onClose() {
