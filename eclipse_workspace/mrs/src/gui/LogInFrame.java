@@ -24,8 +24,6 @@ import managers.GuiManager;
 // TODO: validate input
 public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 	
-	private JButton buttonExit;
-	private JButton buttonLogInUserDoctor;
 	private JTextField fieldId;
 	private JPasswordField fieldPassword;
 
@@ -37,8 +35,8 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			// Shows a dialog to inform the user that the user was not logged in
 			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos.\nPor favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
 			
-			// Re-enables GUI interactions
-			enableGuiInteractions();
+			// Restores the state of the disabled components
+			restoreComponentsState();
 		}
 	}
 
@@ -48,13 +46,17 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		labelLogo.setIcon(new ImageIcon(LogInFrame.class.getResource("/images/logo.png")));
 		
 		JLabel labelId = new JLabel("Nombre de usuario:");
+		
 		fieldId = new JTextField(10);
+		registerComponent("fieldId", fieldId);
 		
 		JLabel labelPassword = new JLabel("Contraseña:");
-		fieldPassword = new JPasswordField(10);
 		
-		JPanel fieldPanel = new JPanel();
-		fieldPanel.setLayout(new FormLayout(new ColumnSpec[] {
+		fieldPassword = new JPasswordField(10);
+		registerComponent("fieldPassword", fieldPassword);
+		
+		JPanel panelFields = new JPanel();
+		panelFields.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 			ColumnSpec.decode("max(80dlu;min)")
@@ -63,24 +65,26 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			FormFactory.RELATED_GAP_ROWSPEC,
 			FormFactory.DEFAULT_ROWSPEC
 		}));
-		fieldPanel.add(labelId, "1, 1");
-		fieldPanel.add(fieldId, "3, 1");
-		fieldPanel.add(labelPassword, "1, 3");
-		fieldPanel.add(fieldPassword, "3, 3");
+		panelFields.add(labelId, "1, 1");
+		panelFields.add(fieldId, "3, 1");
+		panelFields.add(labelPassword, "1, 3");
+		panelFields.add(fieldPassword, "3, 3");
 		
-		buttonExit = new JButton("Salir");
+		JButton buttonExit = new JButton("Salir");
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onExit();
 			}
 		});
+		registerComponent("buttonExit", buttonExit);
 		
-		buttonLogInUserDoctor = new JButton("Ingresar");
+		JButton buttonLogInUserDoctor = new JButton("Ingresar");
 		buttonLogInUserDoctor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onLogInUserDoctor();
 			}
 		});
+		registerComponent("buttonLogInUserDoctor", buttonLogInUserDoctor);
 		setDefaultButton(buttonLogInUserDoctor);
 		
 		JPanel panelButtons = new JPanel();
@@ -103,7 +107,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			RowSpec.decode("default:grow")
 		}));
 		panelMain.add(labelLogo, "2, 2, center, center");
-		panelMain.add(fieldPanel, "2, 4, center, center");
+		panelMain.add(panelFields, "2, 4, center, center");
 		panelMain.add(panelButtons, "2, 6, fill, fill");
 		
 		return panelMain;
@@ -113,29 +117,14 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		return "MRS - Ingresar";
 	}
 	
-	private void disableGuiInteractions() {
-		buttonExit.setEnabled(false);
-		buttonLogInUserDoctor.setEnabled(false);
-		fieldId.setEnabled(false);
-		fieldPassword.setEnabled(false);
-	}
-	
-	private void enableGuiInteractions() {
-		// TODO: no debería ser true, debería ser el valor anterior que tenía
-		buttonExit.setEnabled(true);
-		buttonLogInUserDoctor.setEnabled(true);
-		fieldId.setEnabled(true);
-		fieldPassword.setEnabled(true);
-	}
-	
 	private void onExit() {
 		// Closes the current frame
 		GuiManager.closeCurrentFrame();
 	}
 	
 	private void onLogInUserDoctor() {
-		// Disables GUI interactions
-		disableGuiInteractions();
+		// Disables components
+		disableComponents();
 		
 		// Gets user ID and password
 		String id = fieldId.getText();

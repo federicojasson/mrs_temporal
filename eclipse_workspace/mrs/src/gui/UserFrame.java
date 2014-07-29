@@ -35,12 +35,9 @@ import managers.GuiManager;
 import managers.PatientManager;
 import managers.UserManager;
 
-//TODO: only one row can be selected at a time
-//TODO: enable and disable buttonViewPatient when a row is clicked
+//TODO: validate input
 public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 
-	private JButton buttonAddPatient;
-	private JButton buttonExit;
 	private JButton buttonViewPatient;
 	private JComboBox<String> comboBoxCriterion;
 	private JTextField fieldSearch;
@@ -50,16 +47,16 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		// Sets the patient summaries as the table model data
 		tablePatients.getModel().setPatientSummaries(patientSummaries);
 		
-		// Re-enables GUI interactions
-		enableGuiInteractions();
+		// Restores the state of the disabled components
+		restoreComponentsState();
 	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Disables GUI interactions
-		disableGuiInteractions();
+		// Disables components
+		disableComponents();
 		
 		// Gets the patient summaries
 		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(this, UserManager.getCurrentUserId());
@@ -76,6 +73,7 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 			}
 		});
 		fieldSearch.setColumns(10);
+		registerComponent("fieldSearch", fieldSearch);
 		
 		JLabel labelCriterion = new JLabel("Criterio de búsqueda");
 		
@@ -91,6 +89,7 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 			"Sexo",
 			"Grupo sanguíneo"
 		}));
+		registerComponent("comboBoxCriterion", comboBoxCriterion);
 		
 		JPanel panelSearch = new JPanel();
 		panelSearch.setLayout(new FormLayout(new ColumnSpec[] {
@@ -121,33 +120,38 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		tablePatients.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 				if (! event.getValueIsAdjusting())
-					onSelectRow();
+					onSelectPatient();
 			}
 		});
+		registerComponent("tablePatients", tablePatients);
 		
 		JScrollPane panelPatients = new JScrollPane(tablePatients);
 		panelPatients.setPreferredSize(new Dimension(800, 400));
 		
-		buttonExit = new JButton("Salir");
+		JButton buttonExit = new JButton("Salir");
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onExit();
 			}
 		});
+		registerComponent("buttonExit", buttonExit);
 		
-		buttonAddPatient = new JButton("Ingresar paciente");
+		JButton buttonAddPatient = new JButton("Ingresar paciente");
 		buttonAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onAddPatient();
 			}
 		});
+		registerComponent("buttonAddPatient", buttonAddPatient);
 		
 		buttonViewPatient = new JButton("Ver paciente");
+		buttonViewPatient.setEnabled(false);
 		buttonViewPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onViewPatient();
 			}
 		});
+		registerComponent("buttonViewPatient", buttonViewPatient);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
@@ -178,25 +182,6 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		return "MRS - Usuario: " + UserManager.getCurrentUserId();
 	}
 	
-	private void disableGuiInteractions() {
-		buttonAddPatient.setEnabled(false);
-		buttonExit.setEnabled(false);
-		buttonViewPatient.setEnabled(false);
-		comboBoxCriterion.setEnabled(false);
-		fieldSearch.setEnabled(false);
-		tablePatients.setEnabled(false);
-	}
-	
-	private void enableGuiInteractions() {
-		// TODO: no debería ser true, debería ser el valor anterior que tenía
-		buttonAddPatient.setEnabled(true);
-		buttonExit.setEnabled(true);
-		buttonViewPatient.setEnabled(true);
-		comboBoxCriterion.setEnabled(true);
-		fieldSearch.setEnabled(true);
-		tablePatients.setEnabled(true);
-	}
-	
 	private void onAddPatient() {
 		// Nullifies the current patient ID
 		PatientManager.setCurrentPatientId(null);
@@ -210,10 +195,9 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		GuiManager.closeCurrentFrame();
 	}
 	
-	private void onSelectRow() { // TODO: change name?
+	private void onSelectPatient() {
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tablePatients.getSelectedRow();
-		System.out.println(selectedRowIndex);
 		
 		if (selectedRowIndex < 0)
 			// No row has been selected
