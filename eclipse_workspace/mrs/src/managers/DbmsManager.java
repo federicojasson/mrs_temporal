@@ -12,17 +12,19 @@ public class DbmsManager {
 	
 	public static final int GET_PATIENT = 0;
 	public static final int GET_PATIENT_SUMMARIES = 1;
-	public static final int GET_STUDY_SUMMARIES = 2;
-	public static final int GET_STUDY_TYPES = 3;
-	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 4;
-	public static final int PATIENT_EXISTS = 5;
-	public static final int STUDY_EXISTS = 6;
+	public static final int GET_STUDY = 2;
+	public static final int GET_STUDY_SUMMARIES = 3;
+	public static final int GET_STUDY_TYPES = 4;
+	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 5;
+	public static final int PATIENT_EXISTS = 6;
+	public static final int STUDY_EXISTS = 7;
 	
 	public static final int DELETE_STUDY_FILE = 0;
 	public static final int INSERT_PATIENT = 1;
 	public static final int INSERT_STUDY = 2;
 	public static final int INSERT_STUDY_FILE = 3;
-	public static final int UPDATE_STUDY = 4;
+	public static final int UPDATE_PATIENT = 4;
+	public static final int UPDATE_STUDY = 5;
 
 	private static final String DBMS_DATABASE_NAME = "mrs_db";
 	private static final String DBMS_PASSWORD = "mrs_password";
@@ -61,13 +63,21 @@ public class DbmsManager {
 		preparedStatements.put(GET_PATIENT, dbmsConnection.prepareStatement(
 			"SELECT birth_date, blood_type, gender, name " +
 			"FROM patients " +
-			"WHERE id = ?"
+			"WHERE id = ? " +
+			"LIMIT 1"
 		));
 		
 		preparedStatements.put(GET_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT gender, id, name " +
 			"FROM patients " +
 			"WHERE user_id LIKE BINARY ?"
+		));
+		
+		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
+			"SELECT date, observations " +
+			"FROM studies " +
+			"WHERE id = ? " +
+			"LIMIT 1"
 		));
 		
 		preparedStatements.put(GET_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
@@ -107,6 +117,7 @@ public class DbmsManager {
 		storedProcedures.put(INSERT_PATIENT, dbmsConnection.prepareCall("{CALL insert_patient(?, ?, ?, ?, ?, ?)}"));
 		storedProcedures.put(INSERT_STUDY, dbmsConnection.prepareCall("{CALL insert_study(?, ?, ?, ?, ?)}"));
 		storedProcedures.put(INSERT_STUDY_FILE, dbmsConnection.prepareCall("{CALL insert_study_file(?, ?, ?)}"));
+		storedProcedures.put(UPDATE_PATIENT, dbmsConnection.prepareCall("{CALL update_patient(?, ?, ?, ?, ?)}"));
 		storedProcedures.put(UPDATE_STUDY, dbmsConnection.prepareCall("{CALL update_study(?, ?)}"));
 	}
 	

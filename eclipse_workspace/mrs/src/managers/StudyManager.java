@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import entities.Patient;
+import entities.Study;
 import entities.StudySummary;
 import entities.StudyType;
 
@@ -53,6 +55,35 @@ public class StudyManager {
 	public static byte[] getCurrentStudyId() {
 		return currentStudyId;
 	}
+	
+	public static Study getStudy(byte[] id) throws SQLException {
+		Study study = null;
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY);
+		
+		try {
+			// Sets the input parameters
+			preparedStatement.setBytes(1, id);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			// Fetches the query results
+			if (resultSet.next()) {
+				Date date = resultSet.getDate("date");
+				String observations = resultSet.getString("observations");
+				
+				// Initializes the study object
+				study = new Study(date, id, observations);
+			}
+		} finally {
+			// Releases the statement resources
+			preparedStatement.clearParameters();
+		}
+
+		return study;
+	}
 
 	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
 		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
@@ -83,12 +114,34 @@ public class StudyManager {
 
 		return studySummaries;
 	}
+
+	public static List<StudyType> getStudyTypes() throws SQLException {
+		List<StudyType> studyTypes = new LinkedList<StudyType>();
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY_TYPES);
+
+		try {
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
 	
-	public static void setCurrentStudyId(byte[] studyId) {
-		currentStudyId = studyId;
+			// Fetches the query results
+			while (resultSet.next()) {
+				String description = resultSet.getString("description");
+				byte[] id = resultSet.getBytes("id");
+	
+				// Adds the study type to the list
+				studyTypes.add(new StudyType(description, id));
+			}
+		} finally {
+			// Releases the statement resources
+			preparedStatement.clearParameters();
+		}
+
+		return studyTypes;
 	}
 	
-	public static void updateStudy(String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws IOException, NoSuchAlgorithmException, SQLException {
+	public static void modifyStudy(String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws IOException, NoSuchAlgorithmException, SQLException {
 		// Removes the files from the application directory tree
 		for (File studyFile : studyFilesToRemove)
 			FileManager.removeStudyFile(currentStudyId, studyFile);
@@ -119,6 +172,10 @@ public class StudyManager {
 		// Commits the transaction
 		DbmsManager.commitTransaction();
 	}
+	
+	public static void setCurrentStudyId(byte[] studyId) {
+		currentStudyId = studyId;
+	}
 
 	private static void deleteStudyFile(String filename, byte[] studyId) throws SQLException {
 		// Gets the stored procedure
@@ -135,32 +192,6 @@ public class StudyManager {
 			// Releases the statement resources
 			storedProcedure.clearParameters();
 		}
-	}
-
-	private static List<StudyType> getStudyTypes() throws SQLException {
-		List<StudyType> studyTypes = new LinkedList<StudyType>();
-		
-		// Gets the prepared statement
-		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY_TYPES);
-
-		try {
-			// Executes the prepared statement
-			ResultSet resultSet = preparedStatement.executeQuery();
-	
-			// Fetches the query results
-			while (resultSet.next()) {
-				String description = resultSet.getString("description");
-				byte[] id = resultSet.getBytes("id");
-	
-				// Adds the study type to the list
-				studyTypes.add(new StudyType(description, id));
-			}
-		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
-		}
-
-		return studyTypes;
 	}
 
 	private static void insertStudy(Date date, byte[] id, String observations, byte[] patientId, byte[] studyTypeId) throws SQLException {

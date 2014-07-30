@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="javax.swing.table.DefaultTableColumnModel"/>
-<fullyQualifiedTypeName name="models.PatientTableColumnModel"/>
-<fullyQualifiedTypeName name="models.PatientTableModel"/>
-<fullyQualifiedTypeName name="gui.PatientTable.PatientTableModel"/>
-<fullyQualifiedTypeName name="javax.swing.table.TableCellRenderer"/>
-<fullyQualifiedTypeName name="java.util.LinkedList"/>
-<fullyQualifiedTypeName name="javax.swing.table.DefaultTableCellRenderer"/>
-<fullyQualifiedTypeName name="javax.swing.JTable"/>
-<fullyQualifiedTypeName name="gui.StudyTable"/>
-<fullyQualifiedTypeName name="managers.UserManager"/>
-<fullyQualifiedTypeName name="gui.PatientTable"/>
-<fullyQualifiedTypeName name="workers.GetStudySummariesWorker"/>
 <fullyQualifiedTypeName name="workers.GetStudySummariesCaller"/>
 <fullyQualifiedTypeName name="entities.StudySummary"/>
-<fullyQualifiedTypeName name="managers.PatientManager"/>
 <fullyQualifiedTypeName name="workers.GetPatientCaller"/>
 <fullyQualifiedTypeName name="entities.Patient"/>
 <fullyQualifiedTypeName name="entities.PatientSummary"/>
@@ -41,7 +25,6 @@
 <fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.layout.FormLayout"/>
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
-<fullyQualifiedTypeName name="managers.StudyManager"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.layout.RowSpec"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
 <fullyQualifiedTypeName name="javax.swing.border.EmptyBorder"/>
@@ -57,7 +40,24 @@
 <fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="utilities.Utility"/>
-<fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="gui.workers.UpdatePatientCaller"/>
+<fullyQualifiedTypeName name="gui.workers.UpdatePatientWorker"/>
+<fullyQualifiedTypeName name="managers.PatientManager"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="gui.AddStudyFrame"/>
+<fullyQualifiedTypeName name="gui.workers.ModifyStudyCaller"/>
+<fullyQualifiedTypeName name="gui.workers.ModifyStudyWorker"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="javax.swing.ComboBoxEditor"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyTypesCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyTypesWorker"/>
+<fullyQualifiedTypeName name="entities.StudyType"/>
+<fullyQualifiedTypeName name="managers.StudyManager"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyWorker"/>
+<fullyQualifiedTypeName name="entities.Study"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyCaller"/>
 </qualifiedTypeNameHistroy>

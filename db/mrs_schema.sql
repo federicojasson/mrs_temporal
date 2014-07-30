@@ -304,6 +304,27 @@ BEGIN
 END; !
 
 /*
+ *	Updates a patient's information.
+ */
+CREATE PROCEDURE update_patient (
+	IN i_birth_date DATE,
+	IN i_blood_type BINARY(1),
+	IN i_gender BINARY(1),
+	IN i_id BINARY(16),
+	IN i_name VARCHAR(128)
+)
+BEGIN
+	UPDATE patients
+	SET
+		birth_date = i_birth_date,
+		blood_type = i_blood_type,
+		gender = i_gender,
+		name = i_name
+	WHERE id = i_id
+	LIMIT 1;
+END; !
+
+/*
  *	Updates a study's information.
  */
 CREATE PROCEDURE update_study (
@@ -478,6 +499,10 @@ TO 'mrs_doctor'@'localhost';
 
 GRANT EXECUTE
 ON PROCEDURE mrs_db.insert_study_file
+TO 'mrs_doctor'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.update_patient
 TO 'mrs_doctor'@'localhost';
 
 GRANT EXECUTE

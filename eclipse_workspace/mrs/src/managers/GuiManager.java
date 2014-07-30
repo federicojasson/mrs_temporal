@@ -1,6 +1,7 @@
 package managers;
 
 import gui.AddPatientFrame;
+import gui.AddStudyFrame;
 import gui.ErrorFrame;
 import gui.LogInFrame;
 import gui.PatientFrame;
@@ -12,13 +13,14 @@ import java.awt.EventQueue;
 public class GuiManager {
 	
 	public static final int ADD_PATIENT_FRAME = 0;
-	public static final int ERROR_FRAME = 1;
-	public static final int LOG_IN_FRAME = 2;
-	public static final int PATIENT_FRAME = 3;
-	public static final int STUDY_FRAME = 4;
-	public static final int USER_FRAME = 5;
+	public static final int ADD_STUDY_FRAME = 1;
+	public static final int ERROR_FRAME = 2;
+	public static final int LOG_IN_FRAME = 3;
+	public static final int PATIENT_FRAME = 4;
+	public static final int STUDY_FRAME = 5;
+	public static final int USER_FRAME = 6;
 	
-	private static final int FRAME_COUNT = 6;
+	private static final int FRAME_COUNT = 7;
 	
 	private static int currentFrameIndex; // Points to the current frame
 	private static GuiFrame[] frames;
@@ -27,6 +29,7 @@ public class GuiManager {
 		// Initializes the frames
 		frames = new GuiFrame[FRAME_COUNT];
 		frames[ADD_PATIENT_FRAME] = new AddPatientFrame();
+		frames[ADD_STUDY_FRAME] = new AddStudyFrame();
 		frames[ERROR_FRAME] = new ErrorFrame();
 		frames[LOG_IN_FRAME] = new LogInFrame();
 		frames[PATIENT_FRAME] = new PatientFrame();
@@ -83,6 +86,12 @@ public class GuiManager {
 			case ADD_PATIENT_FRAME : {
 				// Opens the user frame
 				openNewFrame(USER_FRAME);
+				break;
+			}
+			
+			case ADD_STUDY_FRAME : {
+				// Opens the patient frame
+				openNewFrame(PATIENT_FRAME);
 				break;
 			}
 			

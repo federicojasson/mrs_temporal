@@ -14,14 +14,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -373,7 +372,7 @@ public class DatePicker extends JPanel {
 	}
 
 	public Date getDate() {
-		return currentDisplayDate.getTime();
+		return new Date(currentDisplayDate.getTimeInMillis());
 	}
 
 	public int getDay() {

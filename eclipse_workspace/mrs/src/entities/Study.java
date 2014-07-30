@@ -1,64 +1,29 @@
 package entities;
 
-import java.util.List;
-import entitiesManagers.UsersManager;
+import java.sql.Date;
 
 public class Study {
 	
-	private int id;
-	private String type;
-	private String date;
+	private Date date;
+	private byte[] id;
+	private String observations;
 	
-	private int patient_id;
-	
-	public Study(int id, String type, String date, int patient_id) {
+	public Study(Date date, byte[] id, String observations) {
+		this.date = date;
 		this.id = id;
-		this.type = type;
-		this.patient_id = patient_id;
-		this.date = date;
+		this.observations = observations;
 	}
 	
-	public Study(String type, String date, int patient_id) {
-		this.id = - 1;
-		this.type = type;
-		this.patient_id = patient_id;
-		this.date = date;
-	}
-
-	public void addFile(String file) {
-		UsersManager.getInstance().getStudyManager().addFile(this.id, file);
-	}
-
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-
-	public List<String> getFiles() {
-		return UsersManager.getInstance().getStudyManager().getFiles(this.id);
-	}
-
-	public int getId() {
+	
+	public byte[] getId() {
 		return id;
 	}
-
+	
 	public String getObservations() {
-		return UsersManager.getInstance().getStudyManager().getObservations(this.id);
-	}
-
-	public int getPatient_id() {
-		return patient_id;
-	}
-
-	public String getType() {
-		return type;
+		return observations;
 	}
 	
-	public void removeFile(String file) {
-		UsersManager.getInstance().getStudyManager().removeFile(this.id, file);
-	}
-	
-	public void setObservations(String observations) {
-		UsersManager.getInstance().getStudyManager().setObservations(this.id, observations);
-	}
-
 }

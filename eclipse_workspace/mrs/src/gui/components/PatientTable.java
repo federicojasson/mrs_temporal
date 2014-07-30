@@ -2,10 +2,10 @@ package gui.components;
 
 import java.util.List;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import entities.PatientSummary;
 
+@SuppressWarnings("serial")
 public class PatientTable extends JTable {
 
 	public static final int GENDER = 2;

@@ -4,3 +4,44 @@
 1406662642984	Rename method 'onSelectRow'
 1406662759136	Rename method 'onSelectRow'
 1406684685424	Rename local variable 'buttonEdit'
+1406724479764	Rename local variable 'buttonUpdate'
+1406724957003	Copy compilation unit
+1406724985448	Copy compilation unit
+1406726464973	Rename type 'UpdatePatientCaller'
+1406726476295	Rename type 'UpdatePatientWorker'
+1406726509843	Rename method 'updatePatientCallback'
+1406726545063	Rename field 'buttonSetUpdateMode'
+1406726552969	Rename field 'buttonUpdatePatient'
+1406726607734	Rename method 'onSetUpdateMode'
+1406726625900	Rename method 'onUpdatePatient'
+1406726638696	Rename method 'setUpdateMode'
+1406730517674	Rename local variable 'lblTipoDeEstudio'
+1406730528251	Rename local variable 'dataTipoEstudio'
+1406730603563	Rename local variable 'lblFecha'
+1406730626184	Rename local variable 'dataFechaNac'
+1406730647929	Rename local variable 'fechaPanel'
+1406730813598	Rename local variable 'basicDataPane'
+1406730824155	Rename local variable 'lblObservaciones'
+1406730833240	Rename local variable 'lblArchivos'
+1406730888520	Rename local variable 'dataObservaciones'
+1406730934624	Rename local variable 'scrollPane'
+1406730960272	Rename local variable 'btnAgregar'
+1406730994379	Rename local variable 'btnQuitar'
+1406731074335	Rename local variable 'archivosBotonesPane'
+1406731091974	Rename local variable 'panelButtonsFiles'
+1406731137298	Rename local variable 'centerPane'
+1406731168888	Rename local variable 'panelFiles'
+1406731181098	Rename local variable 'archivosPane'
+1406731192700	Rename local variable 'btnCancelar'
+1406731200826	Rename local variable 'btnAceptar'
+1406731221947	Rename local variable 'acceptButton'
+1406731233032	Rename local variable 'panel'
+1406733156124	Copy compilation unit
+1406733181400	Rename local variable 'buttonAddPatient'
+1406734593448	Copy compilation unit
+1406734612190	Copy compilation unit
+1406736571031	Copy compilation unit
+1406736634694	Copy compilation unit
+1406737111591	Copy compilation unit
+1406737131753	Rename resource 'Study.java'
+1406737196104	Copy compilation unit

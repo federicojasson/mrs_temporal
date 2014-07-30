@@ -183,9 +183,6 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 	}
 	
 	private void onAddPatient() {
-		// Nullifies the current patient ID
-		PatientManager.setCurrentPatientId(null);
-		
 		// Opens the add patient frame
 		GuiManager.openFrame(GuiManager.ADD_PATIENT_FRAME);
 	}

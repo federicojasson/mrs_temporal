@@ -6,8 +6,18 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
+import entities.Study;
+import entities.StudyType;
 import gui.components.DatePicker;
 import gui.components.GuiFrame;
+import gui.workers.GetStudyCaller;
+import gui.workers.GetStudyTypesCaller;
+import gui.workers.GetStudyTypesWorker;
+import gui.workers.GetStudyWorker;
+import gui.workers.ModifyStudyCaller;
+import gui.workers.ModifyStudyWorker;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,70 +29,116 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import utilities.Utility;
+import managers.GuiManager;
 import managers.StudyManager;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class StudyFrame extends GuiFrame {
+public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyTypesCaller, ModifyStudyCaller {
 	
-	private boolean addStudy;
+	private JButton buttonAddFile;
+	private JButton buttonDatePicker;
+	private JButton buttonModifyStudy;
+	private JButton buttonRemoveFile;
+	private JButton buttonSetModifyMode;
+	private JComboBox<StudyType> comboBoxStudyType;
+	private DatePicker datePicker;
+	private JTextField fieldDate;
+	private JTextField fieldId;
+	private HTMLEditorPane fieldObservations;
+	
+	public void getStudyCallback(Study study) {
+		// Sets the study's information
+		//comboBoxStudyType.setSelectedIndex(BloodType.getConstant(study.get()).ordinal()); TODO
+		datePicker.setDate(study.getDate());
+		fieldDate.setText(Utility.formatDate(study.getDate()));
+		fieldId.setText(Utility.bytesToHexadecimal(study.getId()));
+		fieldObservations.setText(study.getObservations());
+		
+		// Restores the state of the disabled components
+		restoreComponentsState();
+	}
+
+	public void getStudyTypesCallback(List<StudyType> studyTypes) {
+		// Adds the study types to the combo box
+		if (studyTypes.isEmpty())
+			;// TODO: notify error!
+		else
+			for (StudyType studyType : studyTypes)
+				comboBoxStudyType.addItem(studyType);
+	}
 	
 	public void initialize() {
-		// Checks if a new study has to be added
-		addStudy = StudyManager.getCurrentStudyId() == null;
-		
 		// Initializes the GUI
 		super.initialize();
+
+		// Disables components
+		disableComponents();
+		
+		// Gets the study types
+		GetStudyTypesWorker worker0 = new GetStudyTypesWorker(this);
+		worker0.execute();
+		
+		// Gets the stuy
+		GetStudyWorker worker1 = new GetStudyWorker(this, StudyManager.getCurrentStudyId());
+		worker1.execute();
+	}
+
+	public void modifyStudyCallback() {
+		// TODO
+		
 	}
 	
 	protected JPanel getMainPanel() {
-		JLabel lblTipoDeEstudio = new JLabel("Tipo de Estudio:");
+		// TODO: add to a panel
+		JLabel labelId = new JLabel("ID de estudio");
 		
-		JComboBox<String> dataTipoEstudio = new JComboBox<String>();
-		dataTipoEstudio.setPreferredSize(new Dimension(28, 23)); // TODO: necessary?
-		dataTipoEstudio.setEditable(true);
-		//dataTipoEstudio.setModel(this.tiposDeEstudio); TODO
+		// TODO: add to a panel
+		fieldId = new JTextField();
+		fieldId.setEditable(false);
+		fieldId.setColumns(10);
 		
-		JLabel lblFecha = new JLabel("Fecha:");
+		JLabel labelStudyType = new JLabel("Tipo de estudio");
 		
-		JTextField dataFechaNac = new JTextField(10);
+		comboBoxStudyType = new JComboBox<StudyType>();
+		comboBoxStudyType.setEnabled(false);
 		
-		DatePicker datePicker = new DatePicker();
+		JLabel labelDate = new JLabel("Fecha de realización");
+		
+		fieldDate = new JTextField(10);
+		fieldDate.setEditable(false);
+		
+		datePicker = new DatePicker();
 		datePicker.addPopupListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// TODO
-				/*dataFechaNac.setText(dp.getFormattedDate());
-				dp.popupHide();*/
+				onPickDate();
 			}
 		});
 		
-		JButton buttonDatePicker = new JButton(datePicker.getImage());
-		buttonDatePicker.setPreferredSize(new Dimension(30, 24)); // TODO: necessary?
-		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0)); // TODO: necessary?
+		buttonDatePicker = new JButton(datePicker.getImage());
+		buttonDatePicker.setEnabled(false);
+		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
+		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// TODO
-				/*dp.setDate(dataFechaNac.getText());
-				dp.popupShow(datePicker);*/
+				onDatePickerButtonAction();
 			}
 		});
 		
-		JPanel fechaPanel = new JPanel();
-		fechaPanel.setPreferredSize(new Dimension(200, 24)); // TODO: necessary?
-		fechaPanel.setLayout(new FormLayout(new ColumnSpec[] {
+		JPanel panelDate = new JPanel();
+		panelDate.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.PREF_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.BUTTON_ROWSPEC
 		}));
-		fechaPanel.add(dataFechaNac, "1, 1, fill, default");
-		fechaPanel.add(datePicker, "2, 1, default, default");
+		panelDate.add(fieldDate, "1, 1, fill, default");
+		panelDate.add(buttonDatePicker, "2, 1, default, default");
 		
-		JPanel basicDataPane = new JPanel();
-		basicDataPane.setMaximumSize(new Dimension(32767, 24)); // TODO: necessary?
-		basicDataPane.setLayout(new FormLayout(new ColumnSpec[] {
+		JPanel panelTop = new JPanel();
+		panelTop.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 			FormFactory.GROWING_BUTTON_COLSPEC,
@@ -94,55 +150,60 @@ public class StudyFrame extends GuiFrame {
 			FormFactory.DEFAULT_ROWSPEC,
 			FormFactory.PARAGRAPH_GAP_ROWSPEC
 		}));
-		basicDataPane.add(lblTipoDeEstudio, "1, 1, right, default");
-		basicDataPane.add(dataTipoEstudio, "3, 1, fill, default");
-		basicDataPane.add(lblFecha, "5, 1, right, default");
-		basicDataPane.add(fechaPanel, "7, 1, fill, default");
+		panelTop.add(labelStudyType, "1, 1, right, default");
+		panelTop.add(comboBoxStudyType, "3, 1, fill, default");
+		panelTop.add(labelDate, "5, 1, right, default");
+		panelTop.add(panelDate, "7, 1, fill, default");
 		
-		JLabel lblObservaciones = new JLabel("Observaciones:");
+		JLabel labelObservations = new JLabel("Observaciones");
 		
-		JLabel lblArchivos = new JLabel("Archivos:");
+		fieldObservations = new HTMLEditorPane();
+		fieldObservations.setEnabled(false);
 		
-		HTMLEditorPane dataObservaciones = new HTMLEditorPane();
+		JLabel labelFiles = new JLabel("Archivos");
 		
-		JScrollPane scrollPane = new JScrollPane(/*listOfFiles*/); // TODO
-		scrollPane.setPreferredSize(new Dimension(60, 110));
+		JScrollPane panelFilesContainer = new JScrollPane(/*listOfFiles*/); // TODO
+		panelFilesContainer.setPreferredSize(new Dimension(60, 110));
 		
+		// TODO
 		Image btnAgregarImg = new ImageIcon(StudyFrame.class.getResource("/images/file_add.png")).getImage();
 		Image btnAgregarNewimg = btnAgregarImg.getScaledInstance(25, 30, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon btnAgregarIcon = new ImageIcon(btnAgregarNewimg);
 		
-		JButton btnAgregar = new JButton();
-		btnAgregar.setIcon(btnAgregarIcon);
-		btnAgregar.addActionListener(new ActionListener() {
+		buttonAddFile = new JButton();
+		buttonAddFile.setEnabled(false);
+		buttonAddFile.setIcon(btnAgregarIcon);
+		buttonAddFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//AgregarArchivo(e); TODO
+				onAddFile();
 			}
 		});
 		
+		// TODO
 		Image btnQuitarImg = new ImageIcon(StudyFrame.class.getResource("/images/file_delete.png")).getImage();
 		Image btnQuitarNewimg = btnQuitarImg.getScaledInstance(25, 30, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon btnQuitarIcon = new ImageIcon(btnQuitarNewimg);
 		
-		JButton btnQuitar = new JButton();
-		btnQuitar.setIcon(btnQuitarIcon);
-		btnQuitar.addActionListener(new ActionListener() {
+		buttonRemoveFile = new JButton();
+		buttonRemoveFile.setEnabled(false);
+		buttonRemoveFile.setIcon(btnQuitarIcon);
+		buttonRemoveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//QuitarArchivo(e); TODO
+				onRemoveFile();
 			}
 		});
 		
-		JPanel archivosBotonesPane = new JPanel();
-		archivosBotonesPane.add(btnAgregar, " 1, 1");
-		archivosBotonesPane.add(btnQuitar, " 2, 1");
+		JPanel panelFileButtons = new JPanel();
+		panelFileButtons.add(buttonAddFile, " 1, 1");
+		panelFileButtons.add(buttonRemoveFile, " 2, 1");
 		
-		JPanel archivosPane = new JPanel();
-		archivosPane.setLayout(new BorderLayout(0, 0));
-		archivosPane.add(scrollPane, BorderLayout.CENTER);
-		archivosPane.add(archivosBotonesPane, BorderLayout.SOUTH);
+		JPanel panelFiles = new JPanel();
+		panelFiles.setLayout(new BorderLayout(0, 0));
+		panelFiles.add(panelFilesContainer, BorderLayout.CENTER);
+		panelFiles.add(panelFileButtons, BorderLayout.SOUTH);
 		
-		JPanel centerPane = new JPanel();
-		centerPane.setLayout(new FormLayout(new ColumnSpec[] {
+		JPanel panelCenter = new JPanel();
+		panelCenter.setLayout(new FormLayout(new ColumnSpec[] {
 			ColumnSpec.decode("max(620px;pref):grow"),
 			FormFactory.UNRELATED_GAP_COLSPEC,
 			ColumnSpec.decode("max(120px;pref):grow")
@@ -152,28 +213,36 @@ public class StudyFrame extends GuiFrame {
 			RowSpec.decode("fill:max(250px;default):grow"),
 			FormFactory.PARAGRAPH_GAP_ROWSPEC
 		}));
-		centerPane.add(lblObservaciones, "1, 1");
-		centerPane.add(lblArchivos, "3, 1");
-		centerPane.add(dataObservaciones, "1, 3");
-		centerPane.add(archivosPane, "3, 3, fill, fill");
+		panelCenter.add(labelObservations, "1, 1");
+		panelCenter.add(fieldObservations, "1, 3");
+		panelCenter.add(labelFiles, "3, 1");
+		panelCenter.add(panelFiles, "3, 3, fill, fill");
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
+		JButton buttonGoBack = new JButton("Volver");
+		buttonGoBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//Cancelar(e); TODO
+				onGoBack();
 			}
 		});
 		
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.addActionListener(new ActionListener() {
+		buttonSetModifyMode = new JButton("Modificar información");
+		buttonSetModifyMode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//Aceptar(e); TODO
+				onSetModifyMode();
 			}
 		});
 		
-		JPanel panel = new JPanel();
-		panel.setMaximumSize(new Dimension(32767, 60)); // TODO: necessary?
-		panel.setLayout(new FormLayout(new ColumnSpec[] {
+		buttonModifyStudy = new JButton("Aplicar cambios");
+		buttonModifyStudy.setEnabled(false);
+		buttonModifyStudy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				onModifyStudy();
+			}
+		});
+		
+		JPanel panelButtons = new JPanel();
+		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
+			FormFactory.BUTTON_COLSPEC,
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
@@ -181,24 +250,89 @@ public class StudyFrame extends GuiFrame {
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC
 		}));
-		panel.add(btnCancelar, "2, 1");
-		panel.add(btnAceptar, "4, 1");
+		panelButtons.add(buttonGoBack, "1, 1");
+		panelButtons.add(buttonSetModifyMode, "3, 1");
+		panelButtons.add(buttonModifyStudy, "5, 1");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new BoxLayout(panelMain, BoxLayout.Y_AXIS));
-		panelMain.add(basicDataPane);
-		panelMain.add(centerPane);
-		panelMain.add(panel);
+		panelMain.add(panelTop);
+		panelMain.add(panelCenter);
+		panelMain.add(panelButtons);
 		
 		return panelMain;
 	}
 
 	protected String getTitle() {
-		if (addStudy)
-			return "MRS - Ingresar estudio";
-		else
-			return "MRS - Estudio (" + Utility.bytesToHexadecimal(StudyManager.getCurrentStudyId()) + ")";
+		return "MRS - Estudio (" + Utility.bytesToHexadecimal(StudyManager.getCurrentStudyId()) + ")";
+	}
+	
+	private void onAddFile() {
+		// TODO
+	}
+	
+	private void onDatePickerButtonAction() {
+		// TODO: check if it is showing and toggle state (hide or show)
+		
+		// Shows the date picker popup
+		datePicker.popupShow(buttonDatePicker);
+	}
+	
+	private void onGoBack() {
+		// Closes the current frame
+		GuiManager.closeCurrentFrame();
+	}
+	
+	private void onModifyStudy() {
+		// Disables components
+		disableComponents();
+		
+		// Gets the study's information
+		// TODO
+		/*Date birthDate = datePicker.getDate();
+		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
+		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
+		String name = fieldName.getText();*/
+		String observations = null;
+		List<File> studyFilesToAdd = null;
+		List<File> studyFilesToRemove = null;
+		
+		// Modifies the study
+		ModifyStudyWorker worker = new ModifyStudyWorker(this, observations, studyFilesToAdd, studyFilesToRemove);
+		worker.execute();
+	}
+	
+	private void onPickDate() {
+		// Shows the picked date in the date field
+		fieldDate.setText(Utility.formatDate(datePicker.getDate()));
+		
+		// Hides the date picker popup
+		datePicker.popupHide();
+	}
+	
+	private void onRemoveFile() {
+		// TODO
+	}
+	
+	private void onSetModifyMode() {
+		// Sets the modify mode
+		setModifyMode();
+	}
+	
+	private void setModifyMode() {
+		// Enables the study's information fields that can be modified
+		buttonAddFile.setEnabled(true);
+		buttonDatePicker.setEnabled(true);
+		buttonRemoveFile.setEnabled(true);
+		comboBoxStudyType.setEnabled(true);
+		fieldObservations.setEnabled(true);
+		
+		// Enables the modify study button
+		buttonModifyStudy.setEnabled(true);
+		
+		// Disables the set modify mode button
+		buttonSetModifyMode.setEnabled(false);
 	}
 	
 }
