@@ -35,7 +35,7 @@ public class ErrorFrame extends GuiFrame {
 	
 	protected JPanel getMainPanel() {
 		JLabel labelIcon = new JLabel("");
-		labelIcon.setIcon(new ImageIcon(ErrorFrame.class.getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif")));
+		labelIcon.setIcon(new ImageIcon(getClass().getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif")));
 		
 		JLabel labelErrorMessage = new JLabel();
 		labelErrorMessage.setText("Se produjo un error y la aplicación debe cerrarse.");

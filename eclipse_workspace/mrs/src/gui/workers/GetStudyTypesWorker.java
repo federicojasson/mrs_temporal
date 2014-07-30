@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 import entities.StudyType;
+import exceptions.NoStudyTypesException;
 import managers.ErrorManager;
 import managers.StudyManager;
 
@@ -23,7 +24,7 @@ public class GetStudyTypesWorker extends SwingWorker<List<StudyType>, Void> {
 		try {
 			// Gets the study types
 			return StudyManager.getStudyTypes();
-		} catch (SQLException exception) {
+		} catch (NoStudyTypesException | SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);
 			return new LinkedList<StudyType>();

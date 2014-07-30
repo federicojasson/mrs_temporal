@@ -2,6 +2,7 @@ package utilities;
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Utility {
@@ -23,7 +24,11 @@ public class Utility {
                              + Character.digit(s.charAt(i+1), 16));
     }
     return data;
-}
+	}
+	
+	public static boolean areEqual(byte[] b1, byte[] b2) {
+		return Arrays.equals(b1, b2);
+	}
 	
 	public static String bytesToHexadecimal(byte[] bytes) {
 		char[] chars = new char[2 * bytes.length];

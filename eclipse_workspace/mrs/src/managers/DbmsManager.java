@@ -74,9 +74,9 @@ public class DbmsManager {
 		));
 		
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
-			"SELECT date, observations " +
-			"FROM studies " +
-			"WHERE id = ? " +
+			"SELECT studies.date, studies.observations, study_types.description " +
+			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
+			"WHERE studies.id = ? " +
 			"LIMIT 1"
 		));
 		

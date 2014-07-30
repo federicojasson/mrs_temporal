@@ -400,7 +400,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	private void setModifyMode() {
-		// Enables the patient's information fields that can be modified
+		// Enables some components
 		buttonDatePicker.setEnabled(true);
 		comboBoxBloodType.setEnabled(true);
 		comboBoxGender.setEnabled(true);
@@ -414,7 +414,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	private void setViewMode() {
-		// Disables the patient's information fields that can be modified
+		// Disables some components
 		buttonDatePicker.setEnabled(false);
 		comboBoxBloodType.setEnabled(false);
 		comboBoxGender.setEnabled(false);

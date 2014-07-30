@@ -43,7 +43,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 	protected JPanel getMainPanel() {
 		JLabel labelLogo = new JLabel("");
 		labelLogo.setHorizontalAlignment(SwingConstants.CENTER);
-		labelLogo.setIcon(new ImageIcon(LogInFrame.class.getResource("/images/logo.png")));
+		labelLogo.setIcon(new ImageIcon(getClass().getResource("/images/logo.png")));
 		
 		JLabel labelId = new JLabel("Nombre de usuario:");
 		

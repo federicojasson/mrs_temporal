@@ -10,10 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import entities.Patient;
 import entities.Study;
 import entities.StudySummary;
 import entities.StudyType;
+import exceptions.NoStudyTypesException;
 
 public class StudyManager {
 	
@@ -71,11 +71,12 @@ public class StudyManager {
 			
 			// Fetches the query results
 			if (resultSet.next()) {
-				Date date = resultSet.getDate("date");
-				String observations = resultSet.getString("observations");
+				Date date = resultSet.getDate("studies.date");
+				String observations = resultSet.getString("studies.observations");
+				String studyTypeDescription = resultSet.getString("study_types.description");
 				
 				// Initializes the study object
-				study = new Study(date, id, observations);
+				study = new Study(date, id, observations, studyTypeDescription);
 			}
 		} finally {
 			// Releases the statement resources
@@ -115,7 +116,7 @@ public class StudyManager {
 		return studySummaries;
 	}
 
-	public static List<StudyType> getStudyTypes() throws SQLException {
+	public static List<StudyType> getStudyTypes() throws NoStudyTypesException, SQLException {
 		List<StudyType> studyTypes = new LinkedList<StudyType>();
 		
 		// Gets the prepared statement
@@ -137,7 +138,11 @@ public class StudyManager {
 			// Releases the statement resources
 			preparedStatement.clearParameters();
 		}
-
+		
+		if (studyTypes.isEmpty())
+			// There are no study types
+			throw new NoStudyTypesException();
+		
 		return studyTypes;
 	}
 	

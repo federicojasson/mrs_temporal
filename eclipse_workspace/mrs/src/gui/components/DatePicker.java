@@ -318,7 +318,7 @@ public class DatePicker extends JPanel {
 		 * fileName.replace("%20", " ").substring(1); ImageIcon icon = new
 		 * ImageIcon(fileName, description);
 		 */
-		ImageIcon icon = new ImageIcon(StudyFrame.class.getResource(iconFile));
+		ImageIcon icon = new ImageIcon(getClass().getResource(iconFile));
 		return icon;
 	}
 
