@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -41,10 +42,12 @@ import managers.StudyManager;
 //TODO: validate input
 public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudySummariesCaller {
 
+	private JButton buttonDatePicker;
 	private JButton buttonViewStudy;
 	private JComboBox<BloodType> comboBoxBloodType;
 	private JComboBox<String> comboBoxCriterion;
 	private JComboBox<Gender> comboBoxGender;
+	private DatePicker datePicker;
 	private JTextField fieldBirthDate;
 	private JTextField fieldId;
 	private JTextField fieldName;
@@ -54,7 +57,8 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	public void getPatientCallback(Patient patient) {
 		comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
 		comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
-		//fieldBirthDate.setText(); TODO: what format uses datepicker?
+		datePicker.setDate(patient.getBirthDate());
+		fieldBirthDate.setText(Utility.formatDate(patient.getBirthDate()));
 		fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
 		fieldName.setText(patient.getName());
 	}
@@ -113,25 +117,23 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		fieldBirthDate.setEditable(false);
 		registerComponent("fieldBirthDate", fieldBirthDate);
 		
-		DatePicker datePicker = new DatePicker();
+		datePicker = new DatePicker();
 		datePicker.addPopupListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// TODO
-				/*fieldBirthDate.setText(datePicker.getFormattedDate());
-				datePicker.popupHide();*/
+				onPickDate();
 			}
 		});
 		
-		JButton buttonDatePicker = new JButton(datePicker.getImage());
-		buttonDatePicker.setPreferredSize(new Dimension(30, 24)); // TODO: necessary?
-		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0)); // TODO: necessary?
+		buttonDatePicker = new JButton(datePicker.getImage());
+		buttonDatePicker.setEnabled(false);
+		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
+		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// TODO
-				/*datePicker.setDate(fieldBirthDate.getText());
-				datePicker.popupShow(buttonDatePicker);*/
+				onDatePickerButtonAction();
 			}
 		});
+		registerComponent("buttonDatePicker", buttonDatePicker);
 		
 		JPanel panelBirthDate = new JPanel();
 		panelBirthDate.setLayout(new FormLayout(new ColumnSpec[] {
@@ -186,7 +188,11 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		JLabel labelCriterion = new JLabel("Criterio de búsqueda");
 		
 		comboBoxCriterion = new JComboBox<String>();
-		//comboBoxCriterion.setModel(this.filtros); TODO
+		comboBoxCriterion.setModel(new DefaultComboBoxModel<String>(new String[] {
+			"Cualquier campo",
+			"Tipo de estudio",
+			"Observaciones"
+		}));
 		registerComponent("comboBoxCriterion", comboBoxCriterion);
 		
 		JPanel panelSearch = new JPanel();
@@ -239,6 +245,23 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		});
 		registerComponent("buttonGoBack", buttonGoBack);
 		
+		JButton buttonSetUpdateMode = new JButton("Modificar información");
+		buttonSetUpdateMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				onSetUpdateMode();
+			}
+		});
+		registerComponent("buttonSetUpdateMode", buttonSetUpdateMode);
+		
+		JButton buttonUpdate = new JButton("Aplicar cambios");
+		buttonUpdate.setEnabled(false);
+		buttonUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				onUpdatePatient();
+			}
+		});
+		registerComponent("buttonUpdate", buttonUpdate);
+		
 		JButton buttonAddStudy = new JButton("Ingresar estudio");
 		buttonAddStudy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -262,14 +285,20 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
+			FormFactory.BUTTON_COLSPEC,
+			FormFactory.RELATED_GAP_COLSPEC,
+			FormFactory.BUTTON_COLSPEC,
+			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.BUTTON_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.PARAGRAPH_GAP_ROWSPEC,
 			FormFactory.DEFAULT_ROWSPEC
 		}));
 		panelButtons.add(buttonGoBack, "1, 2");
-		panelButtons.add(buttonAddStudy, "3, 2");
-		panelButtons.add(buttonViewStudy, "5, 2");
+		panelButtons.add(buttonSetUpdateMode, "3, 2");
+		panelButtons.add(buttonUpdate, "5, 2");
+		panelButtons.add(buttonAddStudy, "7, 2");
+		panelButtons.add(buttonViewStudy, "9, 2");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -293,9 +322,24 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		GuiManager.openFrame(GuiManager.STUDY_FRAME);
 	}
 	
+	private void onDatePickerButtonAction() {
+		// TODO: check if it is showing and toggle state (hide or show)
+		
+		// Shows the date picker popup
+		datePicker.popupShow(buttonDatePicker);
+	}
+	
 	private void onGoBack() {
 		// Closes the current frame
 		GuiManager.closeCurrentFrame();
+	}
+	
+	private void onPickDate() {
+		// Shows the picked date in the birth date field
+		fieldBirthDate.setText(Utility.formatDate(datePicker.getDate()));
+		
+		// Hides the date picker popup
+		datePicker.popupHide();
 	}
 	
 	private void onSelectStudy() {
@@ -308,6 +352,14 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		else
 			// A row has been selected
 			buttonViewStudy.setEnabled(true);
+	}
+	
+	private void onSetUpdateMode() {
+		// TODO
+	}
+	
+	private void onUpdatePatient() {
+		// TODO
 	}
 	
 	private void onViewStudy() {

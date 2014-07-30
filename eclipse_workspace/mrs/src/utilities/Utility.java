@@ -1,8 +1,8 @@
 package utilities;
 
 import java.nio.charset.Charset;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utility {
 

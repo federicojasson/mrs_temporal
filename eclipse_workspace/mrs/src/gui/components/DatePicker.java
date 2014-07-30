@@ -28,9 +28,12 @@ import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
+// TODO: método para ver si se está mostrando
+// TODO: clicks afuera del popup que lo cierren
 public class DatePicker extends JPanel {
 
-	public static void main(String[] args) {
+	// TODO: remove this
+	/*public static void main(String[] args) {
 		final JFrame frame = new JFrame("Date Picker");
 		Container pane = frame.getContentPane();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +68,7 @@ public class DatePicker extends JPanel {
 		frame.setFocusable(true);
 		frame.setResizable(true);
 		frame.setVisible(true);
-	}
+	}*/
 
 	private static final long serialVersionUID = 1L;
 	protected boolean controlsOnTop;
@@ -90,6 +93,7 @@ public class DatePicker extends JPanel {
 	protected String iconFile = "/images/datepicker.gif";
 
 	protected String[] weekdayNames = {
+		/*
 		"Sun",
 		"Mon",
 		"Tue",
@@ -97,6 +101,14 @@ public class DatePicker extends JPanel {
 		"Thu",
 		"Fri",
 		"Sat"
+		*/
+		"Dom",
+		"Lun",
+		"Mar",
+		"Mié",
+		"Jue",
+		"Vie",
+		"Sáb"
 	};
 
 	public DatePicker() {
@@ -369,7 +381,8 @@ public class DatePicker extends JPanel {
 	}
 
 	public String getFormattedDate() {
-		return Integer.toString(getMonth()) + "/" + Integer.toString(getDay()) + "/" + Integer.toString(getYear());
+		return new SimpleDateFormat("dd/MM/yyyy").format(currentDisplayDate.getTime());
+		//return Integer.toString(getMonth()) + "/" + Integer.toString(getDay()) + "/" + Integer.toString(getYear());
 	}
 
 	public ImageIcon getImage() {
@@ -382,7 +395,7 @@ public class DatePicker extends JPanel {
 
 	public Popup getPopup(Container c) {
 		if (popup == null) {
-			Point p = c.getLocation();
+			Point p = c.getLocationOnScreen();
 			PopupFactory factory = PopupFactory.getSharedInstance();
 			popup = factory.getPopup(c, this, p.x, p.y);
 		}
@@ -427,6 +440,12 @@ public class DatePicker extends JPanel {
 		createPanel();
 		validate();
 		repaint();
+	}
+	
+	public void setDate(Date date) {
+	  Calendar calendar = Calendar.getInstance();
+	  calendar.setTime(date);
+	  setDate(calendar);
 	}
 
 	public void setDate(Calendar date) {
