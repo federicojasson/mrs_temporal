@@ -45,3 +45,15 @@
 1406737111591	Copy compilation unit
 1406737131753	Rename resource 'Study.java'
 1406737196104	Copy compilation unit
+1406760150735	Copy compilation unit
+1406762841590	Rename local variable 'patientDataPane'
+1406763984946	Copy compilation unit
+1406764002192	Copy compilation unit
+1406764247157	Rename local variable 'lblNombre'
+1406764262765	Rename local variable 'dataNombre'
+1406764277458	Rename local variable 'lblSexo'
+1406764284566	Rename local variable 'dataSexo'
+1406764301706	Rename local variable 'lblFechaNac'
+1406764339774	Rename local variable 'panelDate'
+1406764355895	Rename local variable 'lblSangre'
+1406764368032	Rename local variable 'dataSangre'

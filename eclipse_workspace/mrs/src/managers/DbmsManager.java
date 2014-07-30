@@ -70,7 +70,8 @@ public class DbmsManager {
 		preparedStatements.put(GET_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT gender, id, name " +
 			"FROM patients " +
-			"WHERE user_id LIKE BINARY ?"
+			"WHERE user_id LIKE BINARY ? " +
+			"ORDER BY name ASC"
 		));
 		
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
@@ -83,7 +84,8 @@ public class DbmsManager {
 		preparedStatements.put(GET_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT studies.date, studies.id, study_types.description " +
 			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
-			"WHERE studies.patient_id = ?"
+			"WHERE studies.patient_id = ? " +
+			"ORDER BY studies.date DESC"
 		));
 		
 		preparedStatements.put(GET_STUDY_TYPES, dbmsConnection.prepareStatement(

@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
-<fullyQualifiedTypeName name="entities.Gender"/>
-<fullyQualifiedTypeName name="entities.BloodType"/>
-<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
-<fullyQualifiedTypeName name="managers.GuiManager"/>
-<fullyQualifiedTypeName name="javax.swing.ScrollPaneLayout"/>
-<fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
 <fullyQualifiedTypeName name="java.awt.Insets"/>
 <fullyQualifiedTypeName name="javax.swing.JTextField"/>
-<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.layout.ColumnSpec"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.layout.FormLayout"/>
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.layout.RowSpec"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
 <fullyQualifiedTypeName name="javax.swing.border.EmptyBorder"/>
 <fullyQualifiedTypeName name="javax.swing.BoxLayout"/>
@@ -34,8 +21,6 @@
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="gui.workers.UpdatePatientCaller"/>
 <fullyQualifiedTypeName name="gui.workers.UpdatePatientWorker"/>
-<fullyQualifiedTypeName name="managers.PatientManager"/>
-<fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="gui.AddStudyFrame"/>
 <fullyQualifiedTypeName name="gui.workers.ModifyStudyCaller"/>
 <fullyQualifiedTypeName name="gui.workers.ModifyStudyWorker"/>
@@ -43,7 +28,6 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="javax.swing.ComboBoxEditor"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyTypesWorker"/>
 <fullyQualifiedTypeName name="entities.StudyType"/>
 <fullyQualifiedTypeName name="managers.StudyManager"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyWorker"/>
@@ -60,4 +44,20 @@
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyTypesCaller"/>
 <fullyQualifiedTypeName name="javax.swing.JTextArea"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyTypesWorker"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="gui.workers.AddStudyWorker"/>
+<fullyQualifiedTypeName name="gui.workers.AddStudyCaller"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="com.jgoodies.forms.layout.FormLayout"/>
+<fullyQualifiedTypeName name="com.jgoodies.forms.layout.ColumnSpec"/>
+<fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
+<fullyQualifiedTypeName name="com.jgoodies.forms.layout.RowSpec"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="entities.Gender"/>
+<fullyQualifiedTypeName name="managers.PatientManager"/>
+<fullyQualifiedTypeName name="gui.workers.AddPatientWorker"/>
+<fullyQualifiedTypeName name="gui.workers.AddPatientCaller"/>
+<fullyQualifiedTypeName name="entities.BloodType"/>
 </qualifiedTypeNameHistroy>
