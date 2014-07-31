@@ -4,10 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -36,27 +32,26 @@ import managers.PatientManager;
 import managers.UserManager;
 
 //TODO: validate input
+//TODO: search
 public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 
 	private JButton buttonViewPatient;
-	private JComboBox<String> comboBoxCriterion;
-	private JTextField fieldSearch;
 	private PatientTable tablePatients;
 	
 	public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
-		// Sets the patient summaries as the table model data
-		tablePatients.getModel().setPatientSummaries(patientSummaries);
+		// Sets the patient summaries as the table data
+		tablePatients.setPatientSummaries(patientSummaries);
 		
-		// Restores the state of the disabled components
-		restoreComponentsState();
+		// Unlocks the frame
+		unlock();
 	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the patient summaries
 		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(this, UserManager.getCurrentUserId());
@@ -66,23 +61,12 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 	protected JPanel getMainPanel() {
 		JLabel labelSearch = new JLabel("Búsqueda");
 		
-		fieldSearch = new JTextField();
-		fieldSearch.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent event) {
-				//fillPatients(dataSearchCriteria.getText()); TODO
-			}
-		});
-		fieldSearch.setColumns(10);
+		JTextField fieldSearch = new JTextField();
 		registerComponent("fieldSearch", fieldSearch);
 		
 		JLabel labelCriterion = new JLabel("Criterio de búsqueda");
 		
-		comboBoxCriterion = new JComboBox<String>();
-		comboBoxCriterion.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent event) {
-				//fillPatients(dataSearchCriteria.getText()); TODO
-			}
-		});
+		JComboBox<String> comboBoxCriterion = new JComboBox<String>();
 		comboBoxCriterion.setModel(new DefaultComboBoxModel<String>(new String[] {
 			"Nombre",
 			"Fecha de nacimiento",
@@ -125,7 +109,7 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		});
 		registerComponent("tablePatients", tablePatients);
 		
-		JScrollPane panelPatients = new JScrollPane(tablePatients);
+		JScrollPane panelPatients = new JScrollPane(tablePatients, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		panelPatients.setPreferredSize(new Dimension(800, 400));
 		
 		JButton buttonExit = new JButton("Salir");
@@ -145,13 +129,13 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		registerComponent("buttonAddPatient", buttonAddPatient);
 		
 		buttonViewPatient = new JButton("Ver paciente");
-		buttonViewPatient.setEnabled(false);
 		buttonViewPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onViewPatient();
 			}
 		});
 		registerComponent("buttonViewPatient", buttonViewPatient);
+		setDefaultButton(buttonViewPatient);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
@@ -174,6 +158,8 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		panelMain.add(panelSearch, BorderLayout.NORTH);
 		panelMain.add(panelPatients, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
+		
+		onSelectPatient();
 		
 		return panelMain;
 	}
@@ -205,17 +191,19 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 	}
 	
 	private void onViewPatient() {
-		// Gets the selected row index
+		// Gets the selected row index (if any)
 		int selectedRowIndex = tablePatients.getSelectedRow();
 		
-		// Gets the patient ID
-		byte[] patientId = (byte[]) tablePatients.getModel().getValueAt(selectedRowIndex, PatientTable.ID);
-		
-		// Sets the patient ID as the current one
-		PatientManager.setCurrentPatientId(patientId);
-		
-		// Opens the patient frame
-		GuiManager.openFrame(GuiManager.PATIENT_FRAME);
+		if (selectedRowIndex >= 0) {
+			// Gets the patient ID
+			byte[] patientId = (byte[]) tablePatients.getValueAt(selectedRowIndex, PatientTable.ID);
+			
+			// Sets the patient ID as the current one
+			PatientManager.setCurrentPatientId(patientId);
+			
+			// Opens the patient frame
+			GuiManager.openFrame(GuiManager.PATIENT_FRAME);
+		}
 	}
 	
 }

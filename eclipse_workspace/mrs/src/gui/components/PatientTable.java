@@ -22,8 +22,16 @@ public class PatientTable extends JTable {
 		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}
 	
-	public PatientTableModel getModel() {
-		return (PatientTableModel) super.getModel();
+	public void setPatientSummaries(List<PatientSummary> patientSummaries) {
+		// Gets the table model
+		PatientTableModel tableModel = (PatientTableModel) getModel();
+		
+		// Fills the array with the patient summaries
+		tableModel.patientSummaries = new PatientSummary[patientSummaries.size()];
+		patientSummaries.toArray(tableModel.patientSummaries);
+		
+		// Notifies that all data have changed
+		tableModel.fireTableDataChanged();
 	}
 	
 	public static class PatientTableModel extends AbstractTableModel {
@@ -66,15 +74,6 @@ public class PatientTable extends JTable {
 				case NAME : return patientSummary.getName();
 				default : return null;
 			}
-		}
-		
-		public void setPatientSummaries(List<PatientSummary> patientSummaries) {
-			// Fills the array with the patient summaries
-			this.patientSummaries = new PatientSummary[patientSummaries.size()];
-			patientSummaries.toArray(this.patientSummaries);
-			
-			// Notifies that all data have changed
-			fireTableDataChanged();
 		}
 		
 	}

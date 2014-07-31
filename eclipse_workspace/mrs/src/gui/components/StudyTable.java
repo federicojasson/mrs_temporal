@@ -22,8 +22,16 @@ public class StudyTable extends JTable {
 		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}
 	
-	public StudyTableModel getModel() {
-		return (StudyTableModel) super.getModel();
+	public void setStudySummaries(List<StudySummary> studySummaries) {
+		// Gets the table model
+		StudyTableModel tableModel = (StudyTableModel) getModel();
+		
+		// Fills the array with the study summaries
+		tableModel.studySummaries = new StudySummary[studySummaries.size()];
+		studySummaries.toArray(tableModel.studySummaries);
+		
+		// Notifies that all data have changed
+		tableModel.fireTableDataChanged();
 	}
 	
 	public static class StudyTableModel extends AbstractTableModel {
@@ -66,15 +74,6 @@ public class StudyTable extends JTable {
 				case STUDY_TYPE_DESCRIPTION : return studySummary.getStudyTypeDescription();
 				default : return null;
 			}
-		}
-		
-		public void setStudySummaries(List<StudySummary> studySummaries) {
-			// Fills the array with the study summaries
-			this.studySummaries = new StudySummary[studySummaries.size()];
-			studySummaries.toArray(this.studySummaries);
-			
-			// Notifies that all data have changed
-			fireTableDataChanged();
 		}
 		
 	}

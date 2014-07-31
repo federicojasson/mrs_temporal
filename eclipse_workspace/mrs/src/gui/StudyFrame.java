@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -44,6 +45,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	private JTextField fieldId;
 	private JTextArea fieldObservations;
 	private JTextField fieldStudyTypeDescription;
+	private JList<File> listStudyFiles;
 	
 	public void getStudyCallback(Study study) {
 		// Sets the study's information
@@ -52,16 +54,16 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		fieldObservations.setText(study.getObservations());
 		fieldStudyTypeDescription.setText(study.getStudyTypeDescription());
 		
-		// Restores the state of the disabled components
-		restoreComponentsState();
+		// Unlocks the frame
+		unlock();
 	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the study
 		GetStudyWorker worker = new GetStudyWorker(this, StudyManager.getCurrentStudyId());
@@ -69,8 +71,8 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	}
 
 	public void modifyStudyCallback() {
-		// Restores the state of the disabled components
-		restoreComponentsState();
+		// Unlocks the frame
+		unlock();
 		
 		// Sets the view mode
 		setViewMode();
@@ -120,7 +122,6 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		fieldObservations = new JTextArea();
 		fieldObservations.setLineWrap(true);
 		fieldObservations.setWrapStyleWord(true);
-		fieldObservations.setEditable(false);
 		fieldObservations.setColumns(60);
 		fieldObservations.setRows(15);
 		registerComponent("fieldObservations", fieldObservations);
@@ -145,7 +146,10 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		
 		JLabel labelStudyFiles = new JLabel("Archivos");
 		
-		JScrollPane panelStudyFilesContainer = new JScrollPane();
+		// TODO: list
+		listStudyFiles = new JList<File>();
+		
+		JScrollPane panelStudyFilesContainer = new JScrollPane(listStudyFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		panelStudyFilesContainer.setPreferredSize(new Dimension(256, 256));
 		
 		Image imageButtonAddFile = new ImageIcon(getClass().getResource("/images/file_add.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
@@ -153,7 +157,6 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		ImageIcon iconButtonAddFile = new ImageIcon(imageButtonAddFile);
 		
 		buttonAddFile = new JButton();
-		buttonAddFile.setEnabled(false);
 		buttonAddFile.setIcon(iconButtonAddFile);
 		buttonAddFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -167,7 +170,6 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		ImageIcon iconButtonRemoveFile = new ImageIcon(imageButtonRemoveFile);
 		
 		buttonRemoveFile = new JButton();
-		buttonRemoveFile.setEnabled(false);
 		buttonRemoveFile.setIcon(iconButtonRemoveFile);
 		buttonRemoveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -209,13 +211,13 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		registerComponent("buttonSetModifyMode", buttonSetModifyMode);
 		
 		buttonModifyStudy = new JButton("Aplicar cambios");
-		buttonModifyStudy.setEnabled(false);
 		buttonModifyStudy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onModifyStudy();
 			}
 		});
 		registerComponent("buttonModifyStudy", buttonModifyStudy);
+		setDefaultButton(buttonModifyStudy);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
@@ -237,6 +239,8 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 		
+		setViewMode();
+		
 		return panelMain;
 	}
 
@@ -245,7 +249,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	}
 	
 	private void onAddFile() {
-		// TODO
+		// TODO: onAddFile()
 	}
 	
 	private void onGoBack() {
@@ -254,13 +258,13 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	}
 	
 	private void onModifyStudy() {
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the study's information
 		String observations = fieldObservations.getText();
-		List<File> studyFilesToAdd = new LinkedList<File>();// TODO
-		List<File> studyFilesToRemove = new LinkedList<File>();// TODO
+		List<File> studyFilesToAdd = new LinkedList<File>();// TODO: studyFilesToAdd
+		List<File> studyFilesToRemove = new LinkedList<File>();// TODO: studyFilesToRemove
 		
 		// Modifies the study
 		ModifyStudyWorker worker = new ModifyStudyWorker(this, observations, studyFilesToAdd, studyFilesToRemove);
@@ -268,7 +272,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	}
 	
 	private void onRemoveFile() {
-		// TODO
+		// TODO: onRemoveFile()
 	}
 	
 	private void onSetModifyMode() {
@@ -277,7 +281,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	}
 	
 	private void setModifyMode() {
-		// Enables some components
+		// Enables components
 		buttonAddFile.setEnabled(true);
 		buttonRemoveFile.setEnabled(true);
 		fieldObservations.setEditable(true);
@@ -290,7 +294,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, ModifyStudyC
 	}
 	
 	private void setViewMode() {
-		// Disables some components
+		// Disables components
 		buttonAddFile.setEnabled(false);
 		buttonRemoveFile.setEnabled(false);
 		fieldObservations.setEditable(false);

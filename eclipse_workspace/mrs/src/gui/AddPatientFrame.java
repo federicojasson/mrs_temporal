@@ -8,10 +8,12 @@ import gui.workers.AddPatientCaller;
 import gui.workers.AddPatientWorker;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -64,7 +66,11 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 			}
 		});
 		
-		buttonDatePicker = new JButton(datePicker.getImage());
+		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
+		
+		ImageIcon iconButtonDatePicker = new ImageIcon(imageButtonDatePicker);
+		
+		buttonDatePicker = new JButton(iconButtonDatePicker);
 		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
@@ -128,6 +134,7 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 			}
 		});
 		registerComponent("buttonAddPatient", buttonAddPatient);
+		setDefaultButton(buttonAddPatient);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
@@ -154,8 +161,8 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 	}
 	
 	private void onAddPatient() {
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the patient's information
 		Date birthDate = datePicker.getDate();
@@ -174,10 +181,12 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 	}
 	
 	private void onDatePickerButtonAction() {
-		// TODO: check if it is showing and toggle state (hide or show)
-		
-		// Shows the date picker popup
-		datePicker.popupShow(buttonDatePicker);
+		if (datePicker.isShowing())
+			// Hides the date picker popup
+			datePicker.hidePopup();
+		else
+			// Shows the date picker popup
+			datePicker.showPopup(buttonDatePicker);
 	}
 	
 	private void onPickDate() {
@@ -185,7 +194,7 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 		fieldBirthDate.setText(Utility.formatDate(datePicker.getDate()));
 		
 		// Hides the date picker popup
-		datePicker.popupHide();
+		datePicker.hidePopup();
 	}
 	
 }

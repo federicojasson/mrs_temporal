@@ -9,6 +9,7 @@ import gui.StudyFrame;
 import gui.UserFrame;
 import gui.components.GuiFrame;
 import java.awt.EventQueue;
+import javax.swing.JFileChooser;
 
 public class GuiManager {
 	
@@ -23,11 +24,15 @@ public class GuiManager {
 	private static final int FRAME_COUNT = 7;
 	
 	private static int currentFrameIndex; // Points to the current frame
+	private static JFileChooser fileChooser;
 	private static GuiFrame[] frames;
 	
 	static {
-		// Initializes the frames
+		currentFrameIndex = -1;
+		fileChooser = new JFileChooser();
 		frames = new GuiFrame[FRAME_COUNT];
+		
+		// Initializes the frames
 		frames[ADD_PATIENT_FRAME] = new AddPatientFrame();
 		frames[ADD_STUDY_FRAME] = new AddStudyFrame();
 		frames[ERROR_FRAME] = new ErrorFrame();
@@ -35,7 +40,6 @@ public class GuiManager {
 		frames[PATIENT_FRAME] = new PatientFrame();
 		frames[STUDY_FRAME] = new StudyFrame();
 		frames[USER_FRAME] = new UserFrame();
-		currentFrameIndex = -1;
 	}
 	
 	public static void closeCurrentFrame() {
@@ -46,6 +50,10 @@ public class GuiManager {
 				closeCurrentFrame(true);
 			}
 		});
+	}
+	
+	public static JFileChooser getFileChooser() {
+		return fileChooser;
 	}
 	
 	public static void openFrame(final int frameId) {

@@ -3,10 +3,13 @@ package gui;
 import entities.StudyType;
 import gui.components.DatePicker;
 import gui.components.GuiFrame;
+import gui.components.FileList;
 import gui.workers.AddStudyCaller;
 import gui.workers.AddStudyWorker;
 import gui.workers.GetStudyTypesCaller;
 import gui.workers.GetStudyTypesWorker;
+import gui.workers.OpenFileDirectoryCaller;
+import gui.workers.OpenFileDirectoryWorker;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -14,6 +17,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.Date;
 import java.util.LinkedList;
@@ -22,12 +27,16 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import utilities.Utility;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -37,13 +46,15 @@ import managers.GuiManager;
 
 //TODO: validate input
 //TODO: file management
-public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyTypesCaller {
+public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyTypesCaller, OpenFileDirectoryCaller {
 
 	private JButton buttonDatePicker;
+	private JButton buttonRemoveFile;
 	private JComboBox<StudyType> comboBoxStudyType;
 	private DatePicker datePicker;
 	private JTextField fieldDate;
 	private JTextArea fieldObservations;
+	private FileList listStudyFiles;
 
 	public void addStudyCallback() {
 		// Closes the current frame
@@ -55,31 +66,38 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		for (StudyType studyType : studyTypes)
 			comboBoxStudyType.addItem(studyType);
 		
-		// Restores the state of the disabled components
-		restoreComponentsState();
+		// Unlocks the frame
+		unlock();
 	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the study types
 		GetStudyTypesWorker worker = new GetStudyTypesWorker(this);
 		worker.execute();
+	}
+
+	public void openFileDirectoryCallback() {
+		// Unlocks the frame
+		unlock();
 	}
 	
 	protected JPanel getMainPanel() {
 		JLabel labelStudyType = new JLabel("Tipo de estudio");
 		
 		comboBoxStudyType = new JComboBox<StudyType>();
+		registerComponent("comboBoxStudyType", comboBoxStudyType);
 		
 		JLabel labelDate = new JLabel("Fecha de realización");
 		
 		fieldDate = new JTextField();
 		fieldDate.setEditable(false);
+		registerComponent("fieldDate", fieldDate);
 		
 		datePicker = new DatePicker();
 		datePicker.addPopupListener(new ActionListener() {
@@ -88,7 +106,11 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 			}
 		});
 		
-		buttonDatePicker = new JButton(datePicker.getImage());
+		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
+		
+		ImageIcon iconButtonDatePicker = new ImageIcon(imageButtonDatePicker);
+		
+		buttonDatePicker = new JButton(iconButtonDatePicker);
 		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
@@ -96,6 +118,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 				onDatePickerButtonAction();
 			}
 		});
+		registerComponent("buttonDatePicker", buttonDatePicker);
 		
 		JPanel panelDate = new JPanel();
 		panelDate.setLayout(new FormLayout(new ColumnSpec[] {
@@ -130,6 +153,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		fieldObservations.setWrapStyleWord(true);
 		fieldObservations.setColumns(60);
 		fieldObservations.setRows(15);
+		registerComponent("fieldObservations", fieldObservations);
 		
 		JScrollPane panelObservationsContainer = new JScrollPane(fieldObservations, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -150,8 +174,24 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		panelStudy.add(panelObservations);
 		
 		JLabel labelStudyFiles = new JLabel("Archivos");
+
+		listStudyFiles = new FileList();
+		listStudyFiles.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent event) {
+				if (event.getClickCount() == 2)
+					onViewStudyFile();
+			}
+		});
+		listStudyFiles.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		listStudyFiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				if (! event.getValueIsAdjusting())
+					onSelectStudyFile();
+			}
+		});
+		registerComponent("listStudyFiles", listStudyFiles);
 		
-		JScrollPane panelStudyFilesContainer = new JScrollPane();
+		JScrollPane panelStudyFilesContainer = new JScrollPane(listStudyFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		panelStudyFilesContainer.setPreferredSize(new Dimension(256, 256));
 		
 		Image imageButtonAddFile = new ImageIcon(getClass().getResource("/images/file_add.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
@@ -165,18 +205,20 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 				onAddFile();
 			}
 		});
+		registerComponent("buttonAddFile", buttonAddFile);
 		
 		Image imageButtonRemoveFile = new ImageIcon(getClass().getResource("/images/file_delete.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
 		
 		ImageIcon iconButtonRemoveFile = new ImageIcon(imageButtonRemoveFile);
 		
-		JButton buttonRemoveFile = new JButton();
+		buttonRemoveFile = new JButton();
 		buttonRemoveFile.setIcon(iconButtonRemoveFile);
 		buttonRemoveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onRemoveFile();
 			}
 		});
+		registerComponent("buttonRemoveFile", buttonRemoveFile);
 		
 		JPanel panelStudyFilesButtons = new JPanel();
 		panelStudyFilesButtons.setLayout(new GridLayout(1, 2));
@@ -200,6 +242,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 				onCancel();
 			}
 		});
+		registerComponent("buttonCancel", buttonCancel);
 		
 		JButton buttonAddStudy = new JButton("Ingresar estudio");
 		buttonAddStudy.addActionListener(new ActionListener() {
@@ -207,6 +250,8 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 				onAddStudy();
 			}
 		});
+		registerComponent("buttonAddStudy", buttonAddStudy);
+		setDefaultButton(buttonAddStudy);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
@@ -225,6 +270,8 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 		
+		onSelectStudyFile();
+		
 		return panelMain;
 	}
 
@@ -233,18 +280,25 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 	}
 	
 	private void onAddFile() {
-		// TODO
+		// Gets the file chooser and configures it
+		JFileChooser fileChooser = GuiManager.getFileChooser();
+		fileChooser.setMultiSelectionEnabled(true);
+		
+		// Shows the file selection dialog
+		if (fileChooser.showDialog(getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
+			// At least one file has been selected
+			listStudyFiles.addFiles(fileChooser.getSelectedFiles());
 	}
 	
 	private void onAddStudy() {
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the study's information
 		Date date = datePicker.getDate();
 		String observations = fieldObservations.getText();
 		byte[] studyTypeId = comboBoxStudyType.getItemAt(comboBoxStudyType.getSelectedIndex()).getId();
-		List<File> studyFiles = new LinkedList<File>(); // TODO
+		List<File> studyFiles = listStudyFiles.getFilesToAdd();
 		
 		// Adds the study
 		AddStudyWorker worker = new AddStudyWorker(this, date, observations, studyTypeId, studyFiles);
@@ -257,10 +311,12 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 	}
 	
 	private void onDatePickerButtonAction() {
-		// TODO: check if it is showing and toggle state (hide or show)
-		
-		// Shows the date picker popup
-		datePicker.popupShow(buttonDatePicker);
+		if (datePicker.isShowing())
+			// Hides the date picker popup
+			datePicker.hidePopup();
+		else
+			// Shows the date picker popup
+			datePicker.showPopup(buttonDatePicker);
 	}
 	
 	private void onPickDate() {
@@ -268,11 +324,38 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		fieldDate.setText(Utility.formatDate(datePicker.getDate()));
 		
 		// Hides the date picker popup
-		datePicker.popupHide();
+		datePicker.hidePopup();
 	}
 	
 	private void onRemoveFile() {
-		// TODO
+		// Removes the selected files
+		listStudyFiles.removeSelectedFiles();
+	}
+	
+	private void onSelectStudyFile() {
+		// Gets the selected item smallest index (if any)
+		int selectedItemIndex = listStudyFiles.getSelectedIndex();
+		
+		if (selectedItemIndex < 0)
+			// No row has been selected
+			buttonRemoveFile.setEnabled(false);
+		else
+			// At least one row has been selected
+			buttonRemoveFile.setEnabled(true);
+	}
+	
+	private void onViewStudyFile() {
+		// Gets the selected file with the smallest index (if any)
+		File file = listStudyFiles.getSelectedValue();
+		
+		if (file != null) {
+			// Locks the frame
+			lock();
+			
+			// Opens the file's directory
+			OpenFileDirectoryWorker worker = new OpenFileDirectoryWorker(this, file);
+			worker.execute();
+		}
 	}
 	
 }

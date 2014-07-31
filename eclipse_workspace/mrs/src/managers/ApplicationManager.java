@@ -28,7 +28,6 @@ public class ApplicationManager {
 		try {
 			passwordHash = CryptographyManager.computePasswordHash(password, salt);
 		} catch (NoSuchAlgorithmException exception) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(Utility.bytesToHexadecimal(passwordHash));*/

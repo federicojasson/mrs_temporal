@@ -57,3 +57,23 @@
 1406764339774	Rename local variable 'panelDate'
 1406764355895	Rename local variable 'lblSangre'
 1406764368032	Rename local variable 'dataSangre'
+1406775448063	Move method
+1406775454618	Move method
+1406775458170	Move method
+1406775461519	Move method
+1406775463884	Move method
+1406775467397	Move method
+1406775470845	Move method
+1406776423135	Rename field 'currentDisplayDate'
+1406776433979	Rename field 'isShowing'
+1406776449148	Rename field 'prevMonth'
+1406776457795	Rename field 'nextMonth'
+1406776465494	Rename field 'prevYear'
+1406776473077	Rename field 'nextYear'
+1406776499525	Rename field 'textField'
+1406818397590	Rename field 'componentsDisabled'
+1406818416876	Move method
+1406818420063	Move method
+1406832003852	Copy compilation unit
+1406832028824	Copy compilation unit
+1406834868220	Rename compilation unit 'StudyFileList.java'

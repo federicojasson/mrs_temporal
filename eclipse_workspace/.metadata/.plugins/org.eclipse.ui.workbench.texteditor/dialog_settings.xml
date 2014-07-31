@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="panelBirth" key="selection"/>
+		<item value="configure" key="selection"/>
 		<list key="findhistory">
-			<item value="panelBirth"/>
-			<item value="ORDER"/>
-			<item value="closes"/>
-			<item value="system."/>
-			<item value="studyType"/>
-			<item value="px"/>
-			<item value="fieldObservations"/>
-			<item value="fieldId"/>
+			<item value="configure"/>
+			<item value="JFilechoo"/>
+			<item value="item"/>
+			<item value="study"/>
+			<item value="study file"/>
+			<item value="row"/>
+			<item value="unlock"/>
+			<item value="catch"/>
 		</list>
 		<list key="replacehistory">
 			<item value="event)"/>

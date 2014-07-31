@@ -16,7 +16,7 @@ public class Utility {
 	}
 	
 	// TODO: debug (remove it before release)
-	public static byte[] hexStringToByteArray(String s) {
+	/*public static byte[] hexStringToByteArray(String s) {
     int len = s.length();
     byte[] data = new byte[len / 2];
     for (int i = 0; i < len; i += 2) {
@@ -24,7 +24,7 @@ public class Utility {
                              + Character.digit(s.charAt(i+1), 16));
     }
     return data;
-	}
+	}*/
 	
 	public static boolean areEqual(byte[] b1, byte[] b2) {
 		return Arrays.equals(b1, b2);

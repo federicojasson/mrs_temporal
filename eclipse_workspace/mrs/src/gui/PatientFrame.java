@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import java.sql.Date;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -43,6 +45,7 @@ import managers.PatientManager;
 import managers.StudyManager;
 
 //TODO: validate input
+//TODO: search
 public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudySummariesCaller, ModifyPatientCaller {
 
 	private JButton buttonDatePicker;
@@ -50,13 +53,11 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	private JButton buttonSetModifyMode;
 	private JButton buttonViewStudy;
 	private JComboBox<BloodType> comboBoxBloodType;
-	private JComboBox<String> comboBoxCriterion;
 	private JComboBox<Gender> comboBoxGender;
 	private DatePicker datePicker;
 	private JTextField fieldBirthDate;
 	private JTextField fieldId;
 	private JTextField fieldName;
-	private JTextField fieldSearch;
 	private StudyTable tableStudies;
 
 	public void getPatientCallback(Patient patient) {
@@ -70,19 +71,19 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 
 	public void getStudySummariesCallback(List<StudySummary> studySummaries) {
-		// Sets the study summaries as the table model data
-		tableStudies.getModel().setStudySummaries(studySummaries);
+		// Sets the study summaries as the table data
+		tableStudies.setStudySummaries(studySummaries);
 		
-		// Restores the state of the disabled components
-		restoreComponentsState();
+		// Unlocks the frame
+		unlock();
 	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the current patient ID
 		byte[] patientId = PatientManager.getCurrentPatientId();
@@ -97,8 +98,8 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	public void modifyPatientCallback() {
-		// Restores the state of the disabled components
-		restoreComponentsState();
+		// Unlocks the frame
+		unlock();
 		
 		// Sets the view mode
 		setViewMode();
@@ -109,25 +110,21 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		
 		fieldId = new JTextField();
 		fieldId.setEditable(false);
-		fieldId.setColumns(10);
 		registerComponent("fieldId", fieldId);
 		
 		JLabel labelName = new JLabel("Nombre");
 		
 		fieldName = new JTextField();
-		fieldName.setEditable(false);
-		fieldName.setColumns(10);
 		registerComponent("fieldName", fieldName);
 		
 		JLabel labelGender = new JLabel("Sexo");
 		
 		comboBoxGender = new JComboBox<Gender>(Gender.values());
-		comboBoxGender.setEnabled(false);
 		registerComponent("comboBoxGender", comboBoxGender);
 		
 		JLabel labelBirthDate = new JLabel("Fecha de nacimiento");
 
-		fieldBirthDate = new JTextField(10);
+		fieldBirthDate = new JTextField();
 		fieldBirthDate.setEditable(false);
 		registerComponent("fieldBirthDate", fieldBirthDate);
 		
@@ -138,8 +135,11 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 			}
 		});
 		
-		buttonDatePicker = new JButton(datePicker.getImage());
-		buttonDatePicker.setEnabled(false);
+		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
+		
+		ImageIcon iconButtonDatePicker = new ImageIcon(imageButtonDatePicker);
+		
+		buttonDatePicker = new JButton(iconButtonDatePicker);
 		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
@@ -162,7 +162,6 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		JLabel labelBloodType = new JLabel("Grupo sanguíneo");
 		
 		comboBoxBloodType = new JComboBox<BloodType>(BloodType.values());
-		comboBoxBloodType.setEnabled(false);
 		registerComponent("comboBoxBloodType", comboBoxBloodType);
 		
 		JPanel panelPatient = new JPanel();
@@ -195,13 +194,12 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		
 		JLabel labelSearch = new JLabel("Búsqueda");
 		
-		fieldSearch = new JTextField();
-		fieldSearch.setColumns(10);
+		JTextField fieldSearch = new JTextField();
 		registerComponent("fieldSearch", fieldSearch);
 		
 		JLabel labelCriterion = new JLabel("Criterio de búsqueda");
 		
-		comboBoxCriterion = new JComboBox<String>();
+		JComboBox<String> comboBoxCriterion = new JComboBox<String>();
 		comboBoxCriterion.setModel(new DefaultComboBoxModel<String>(new String[] {
 			"Cualquier campo",
 			"Tipo de estudio",
@@ -243,7 +241,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		});
 		registerComponent("tableStudies", tableStudies);
 		
-		JScrollPane panelStudies = new JScrollPane(tableStudies);
+		JScrollPane panelStudies = new JScrollPane(tableStudies, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		panelStudies.setPreferredSize(new Dimension(800, 200));
 		
 		JPanel panelSearchStudies = new JPanel();
@@ -259,23 +257,6 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		});
 		registerComponent("buttonGoBack", buttonGoBack);
 		
-		JButton buttonAddStudy = new JButton("Ingresar estudio");
-		buttonAddStudy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				onAddStudy();
-			}
-		});
-		registerComponent("buttonAddStudy", buttonAddStudy);
-		
-		buttonViewStudy = new JButton("Ver estudio");
-		buttonViewStudy.setEnabled(false);
-		buttonViewStudy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				onViewStudy();
-			}
-		});
-		registerComponent("buttonViewStudy", buttonViewStudy);
-		
 		buttonSetModifyMode = new JButton("Modificar información");
 		buttonSetModifyMode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -285,13 +266,29 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		registerComponent("buttonSetModifyMode", buttonSetModifyMode);
 		
 		buttonModifyPatient = new JButton("Aplicar cambios");
-		buttonModifyPatient.setEnabled(false);
 		buttonModifyPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onModifyPatient();
 			}
 		});
 		registerComponent("buttonModifyPatient", buttonModifyPatient);
+		
+		JButton buttonAddStudy = new JButton("Ingresar estudio");
+		buttonAddStudy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				onAddStudy();
+			}
+		});
+		registerComponent("buttonAddStudy", buttonAddStudy);
+		
+		buttonViewStudy = new JButton("Ver estudio");
+		buttonViewStudy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				onViewStudy();
+			}
+		});
+		registerComponent("buttonViewStudy", buttonViewStudy);
+		setDefaultButton(buttonViewStudy);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
@@ -309,10 +306,10 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 			FormFactory.DEFAULT_ROWSPEC
 		}));
 		panelButtons.add(buttonGoBack, "1, 2");
-		panelButtons.add(buttonAddStudy, "3, 2");
-		panelButtons.add(buttonViewStudy, "5, 2");
-		panelButtons.add(buttonSetModifyMode, "7, 2");
-		panelButtons.add(buttonModifyPatient, "9, 2");
+		panelButtons.add(buttonSetModifyMode, "3, 2");
+		panelButtons.add(buttonModifyPatient, "5, 2");
+		panelButtons.add(buttonAddStudy, "7, 2");
+		panelButtons.add(buttonViewStudy, "9, 2");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -320,6 +317,9 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		panelMain.add(panelPatient);
 		panelMain.add(panelSearchStudies);
 		panelMain.add(panelButtons);
+		
+		onSelectStudy();
+		setViewMode();
 		
 		return panelMain;
 	}
@@ -334,10 +334,12 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	private void onDatePickerButtonAction() {
-		// TODO: check if it is showing and toggle state (hide or show)
-		
-		// Shows the date picker popup
-		datePicker.popupShow(buttonDatePicker);
+		if (datePicker.isShowing())
+			// Hides the date picker popup
+			datePicker.hidePopup();
+		else
+			// Shows the date picker popup
+			datePicker.showPopup(buttonDatePicker);
 	}
 	
 	private void onGoBack() {
@@ -346,8 +348,8 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	private void onModifyPatient() {
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets the patient's information
 		Date birthDate = datePicker.getDate();
@@ -365,7 +367,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		fieldBirthDate.setText(Utility.formatDate(datePicker.getDate()));
 		
 		// Hides the date picker popup
-		datePicker.popupHide();
+		datePicker.hidePopup();
 	}
 	
 	private void onSelectStudy() {
@@ -386,21 +388,23 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	private void onViewStudy() {
-		// Gets the selected row index
+		// Gets the selected row index (if any)
 		int selectedRowIndex = tableStudies.getSelectedRow();
 		
-		// Gets the study ID
-		byte[] studyId = (byte[]) tableStudies.getModel().getValueAt(selectedRowIndex, StudyTable.ID);
-		
-		// Sets the study ID as the current one
-		StudyManager.setCurrentStudyId(studyId);
-		
-		// Opens the study frame
-		GuiManager.openFrame(GuiManager.STUDY_FRAME);
+		if (selectedRowIndex >= 0) {
+			// Gets the study ID
+			byte[] studyId = (byte[]) tableStudies.getValueAt(selectedRowIndex, StudyTable.ID);
+			
+			// Sets the study ID as the current one
+			StudyManager.setCurrentStudyId(studyId);
+			
+			// Opens the study frame
+			GuiManager.openFrame(GuiManager.STUDY_FRAME);
+		}
 	}
 	
 	private void setModifyMode() {
-		// Enables some components
+		// Enables components
 		buttonDatePicker.setEnabled(true);
 		comboBoxBloodType.setEnabled(true);
 		comboBoxGender.setEnabled(true);
@@ -414,7 +418,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	private void setViewMode() {
-		// Disables some components
+		// Disables components
 		buttonDatePicker.setEnabled(false);
 		comboBoxBloodType.setEnabled(false);
 		comboBoxGender.setEnabled(false);

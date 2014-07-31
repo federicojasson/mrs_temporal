@@ -34,8 +34,9 @@ public class ErrorFrame extends GuiFrame {
 	}
 	
 	protected JPanel getMainPanel() {
-		JLabel labelIcon = new JLabel("");
-		labelIcon.setIcon(new ImageIcon(getClass().getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif")));
+		ImageIcon iconLabelIcon = new ImageIcon(getClass().getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif"));
+		
+		JLabel labelIcon = new JLabel(iconLabelIcon);
 		
 		JLabel labelErrorMessage = new JLabel();
 		labelErrorMessage.setText("Se produjo un error y la aplicación debe cerrarse.");
@@ -56,6 +57,8 @@ public class ErrorFrame extends GuiFrame {
 				onShowErrorDetails();
 			}
 		});
+		registerComponent("buttonShowErrorDetails", buttonShowErrorDetails);
+		setDefaultButton(buttonShowErrorDetails);
 		
 		JButton buttonOk = new JButton("Aceptar");
 		buttonOk.addActionListener(new ActionListener() {
@@ -63,6 +66,7 @@ public class ErrorFrame extends GuiFrame {
 				onOk();
 			}
 		});
+		registerComponent("buttonOk", buttonOk);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
@@ -73,6 +77,7 @@ public class ErrorFrame extends GuiFrame {
 		fieldErrorDetails.setEditable(false);
 		fieldErrorDetails.setColumns(80);
 		fieldErrorDetails.setRows(15);
+		registerComponent("fieldErrorDetails", fieldErrorDetails);
 		
 		panelErrorDetails = new JScrollPane(fieldErrorDetails, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -83,7 +88,6 @@ public class ErrorFrame extends GuiFrame {
 		panelMain.add(panelErrorDetails, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 		
-		// Hides the error details panel
 		onShowErrorDetails();
 		
 		return panelMain;

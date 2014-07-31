@@ -14,17 +14,22 @@ import managers.GuiManager;
 public abstract class GuiFrame {
 	
 	private Map<String, Component> components;
-	private boolean componentsDisabled;
 	private Map<String, Boolean> componentsState;
+	private String currentTitle;
 	private JFrame frame;
+	private boolean isLocked;
 	
 	public GuiFrame() {
 		components = new HashMap<String, Component>();
-		componentsDisabled = false;
 		componentsState = new HashMap<String, Boolean>();
+		isLocked = false;
 	}
 	
 	public void dispose() {
+		// Locks the frame before disposing it
+		lock();
+		
+		// Disposes the frame
 		frame.dispose();
 	}
 	
@@ -46,9 +51,20 @@ public abstract class GuiFrame {
 		frame.setResizable(false);
 	}
 	
-	protected void disableComponents() {
-		if (! componentsDisabled) {
-			componentsDisabled = true;
+	protected JFrame getFrame() {
+		return frame;
+	}
+	
+	protected abstract JPanel getMainPanel();
+	
+	protected abstract String getTitle();
+	
+	protected void lock() {
+		if (! isLocked) {
+			isLocked = true;
+			
+			// Saves the frame's current title
+			currentTitle = frame.getTitle();
 			
 			// Saves the current state of the components
 			for (Entry<String, Component> entry : components.entrySet()) {
@@ -60,20 +76,15 @@ public abstract class GuiFrame {
 				componentsState.put(componentId, component.isEnabled());
 			}
 			
+			// Changes the frame's title
+			frame.setTitle("MRS - Cargando...");
+			
 			// Disables all the components
 			for (Component component : components.values())
 				component.setEnabled(false);
 		}
 	}
-	
-	protected JFrame getFrame() {
-		return frame;
-	}
-	
-	protected abstract JPanel getMainPanel();
-	
-	protected abstract String getTitle();
-	
+
 	protected void registerComponent(String componentId, Component component) {
 		components.put(componentId, component);
 	}
@@ -96,9 +107,16 @@ public abstract class GuiFrame {
 		frame.setBounds(x, y, newWidth, newHeight);
 	}
 	
-	protected void restoreComponentsState() {
-		if (componentsDisabled) {
-			componentsDisabled = false;
+	protected void setDefaultButton(JButton button) {
+		frame.getRootPane().setDefaultButton(button);
+	}
+	
+	protected void unlock() {
+		if (isLocked) {
+			isLocked = false;
+			
+			// Restores the frame's title
+			frame.setTitle(currentTitle);
 			
 			// Restores the state of all the components
 			for (Entry<String, Component> entry : components.entrySet()) {
@@ -110,17 +128,18 @@ public abstract class GuiFrame {
 				component.setEnabled(componentsState.get(componentId));
 			}
 			
+			// Clears the frame's current title
+			currentTitle = null;
+			
 			// Clears the state of the components
 			componentsState.clear();
 		}
 	}
-	
-	protected void setDefaultButton(JButton button) {
-		frame.getRootPane().setDefaultButton(button);
-	}
-	
+
 	private void onClose() {
-		GuiManager.closeCurrentFrame();
+		if (! isLocked)
+			// The frame is not locked
+			GuiManager.closeCurrentFrame();
 	}
 	
 }

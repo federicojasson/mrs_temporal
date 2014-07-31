@@ -35,24 +35,25 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			// Shows a dialog to inform the user that the user was not logged in
 			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos.\nPor favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
 			
-			// Restores the state of the disabled components
-			restoreComponentsState();
+			// Unlocks the frame
+			unlock();
 		}
 	}
 
 	protected JPanel getMainPanel() {
-		JLabel labelLogo = new JLabel("");
+		ImageIcon iconLabelLogo = new ImageIcon(getClass().getResource("/images/logo.png"));
+		
+		JLabel labelLogo = new JLabel(iconLabelLogo);
 		labelLogo.setHorizontalAlignment(SwingConstants.CENTER);
-		labelLogo.setIcon(new ImageIcon(getClass().getResource("/images/logo.png")));
 		
 		JLabel labelId = new JLabel("Nombre de usuario:");
 		
-		fieldId = new JTextField(10);
+		fieldId = new JTextField();
 		registerComponent("fieldId", fieldId);
 		
 		JLabel labelPassword = new JLabel("Contraseña:");
 		
-		fieldPassword = new JPasswordField(10);
+		fieldPassword = new JPasswordField();
 		registerComponent("fieldPassword", fieldPassword);
 		
 		JPanel panelFields = new JPanel();
@@ -123,8 +124,8 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 	}
 	
 	private void onLogInUserDoctor() {
-		// Disables components
-		disableComponents();
+		// Locks the frame
+		lock();
 		
 		// Gets user ID and password
 		String id = fieldId.getText();
