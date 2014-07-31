@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
-<fullyQualifiedTypeName name="gui.workers.UpdatePatientCaller"/>
-<fullyQualifiedTypeName name="gui.workers.UpdatePatientWorker"/>
-<fullyQualifiedTypeName name="gui.AddStudyFrame"/>
-<fullyQualifiedTypeName name="gui.workers.ModifyStudyCaller"/>
-<fullyQualifiedTypeName name="gui.workers.ModifyStudyWorker"/>
-<fullyQualifiedTypeName name="java.awt.List"/>
-<fullyQualifiedTypeName name="javax.swing.ComboBoxEditor"/>
 <fullyQualifiedTypeName name="entities.StudyType"/>
 <fullyQualifiedTypeName name="managers.StudyManager"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyWorker"/>
@@ -50,9 +42,7 @@
 <fullyQualifiedTypeName name="java.awt.Desktop.Action"/>
 <fullyQualifiedTypeName name="managers.FileManager"/>
 <fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryWorker"/>
-<fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryCaller"/>
 <fullyQualifiedTypeName name="javax.swing.JList"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="gui.components.StudyFileList"/>
 <fullyQualifiedTypeName name="gui.components.PatientTable.PatientTableModel"/>
 <fullyQualifiedTypeName name="java.util.List"/>
@@ -60,4 +50,14 @@
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="managers.GuiManager"/>
 <fullyQualifiedTypeName name="javax.swing.JFileChooser"/>
+<fullyQualifiedTypeName name="javax.swing.AbstractListModel"/>
+<fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="javax.swing.table.TableColumn"/>
+<fullyQualifiedTypeName name="javax.swing.table.TableColumnModel"/>
+<fullyQualifiedTypeName name="gui.components.FileList"/>
+<fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryCaller"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyFilesWorker"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyFilesCaller"/>
 </qualifiedTypeNameHistroy>

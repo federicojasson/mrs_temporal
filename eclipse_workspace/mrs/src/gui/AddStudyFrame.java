@@ -21,7 +21,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.Date;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -45,7 +44,6 @@ import com.jgoodies.forms.layout.RowSpec;
 import managers.GuiManager;
 
 //TODO: validate input
-//TODO: file management
 public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyTypesCaller, OpenFileDirectoryCaller {
 
 	private JButton buttonDatePicker;
@@ -186,7 +184,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		listStudyFiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 				if (! event.getValueIsAdjusting())
-					onSelectStudyFile();
+					onSelectStudyFiles();
 			}
 		});
 		registerComponent("listStudyFiles", listStudyFiles);
@@ -202,7 +200,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		buttonAddFile.setIcon(iconButtonAddFile);
 		buttonAddFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				onAddFile();
+				onAddStudyFile();
 			}
 		});
 		registerComponent("buttonAddFile", buttonAddFile);
@@ -215,7 +213,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		buttonRemoveFile.setIcon(iconButtonRemoveFile);
 		buttonRemoveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				onRemoveFile();
+				onRemoveStudyFiles();
 			}
 		});
 		registerComponent("buttonRemoveFile", buttonRemoveFile);
@@ -270,7 +268,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 		
-		onSelectStudyFile();
+		onSelectStudyFiles();
 		
 		return panelMain;
 	}
@@ -279,7 +277,7 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		return "MRS - Ingresar estudio";
 	}
 	
-	private void onAddFile() {
+	private void onAddStudyFile() {
 		// Gets the file chooser and configures it
 		JFileChooser fileChooser = GuiManager.getFileChooser();
 		fileChooser.setMultiSelectionEnabled(true);
@@ -327,12 +325,12 @@ public class AddStudyFrame extends GuiFrame implements AddStudyCaller, GetStudyT
 		datePicker.hidePopup();
 	}
 	
-	private void onRemoveFile() {
-		// Removes the selected files
+	private void onRemoveStudyFiles() {
+		// Removes the selected study files
 		listStudyFiles.removeSelectedFiles();
 	}
 	
-	private void onSelectStudyFile() {
+	private void onSelectStudyFiles() {
 		// Gets the selected item smallest index (if any)
 		int selectedItemIndex = listStudyFiles.getSelectedIndex();
 		

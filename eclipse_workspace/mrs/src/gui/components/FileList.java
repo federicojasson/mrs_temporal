@@ -1,64 +1,121 @@
 package gui.components;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
 @SuppressWarnings("serial")
 public class FileList extends JList<File> {
-
-	private List<File> filesToAdd;
-	private List<File> filesToRemove;
-	private List<File> initialFiles;
 	
 	public FileList() {
-		initialFiles = new LinkedList<File>();
+		super(new FileListModel());
 	}
 	
 	public void addFiles(File[] files) {
-		// TODO: debug (remove it)
-		for (File file : files)
-			System.out.println(file);
+		// Gets the list model
+		FileListModel listModel = (FileListModel) getModel();
 		
-		for (File file : files)
-			filesToAdd.add(file);
+		// Adds the files
+		for (File file : files) {
+			listModel.files.add(file);
+			listModel.filesToAdd.add(file);
+		}
+		
+		// Notifies that data have changed
+		listModel.fireContentsChanged();
 	}
 	
 	public List<File> getFilesToAdd() {
-		return filesToAdd;
+		// Gets the list model
+		FileListModel listModel = (FileListModel) getModel();
+		
+		// Returns the files to add
+		return listModel.filesToAdd;
 	}
 	
 	public List<File> getFilesToRemove() {
-		return filesToRemove;
+		// Gets the list model
+		FileListModel listModel = (FileListModel) getModel();
+		
+		// Returns the files to remove
+		return listModel.filesToRemove;
+	}
+	
+	public void removeSelectedFiles() {
+		// Gets the list model
+		FileListModel listModel = (FileListModel) getModel();
+		
+		// Gets the selected files
+		List<File> selectedFiles = getSelectedValuesList();
+		
+		// Removes the files
+		for (File selectedFile : selectedFiles) {
+			listModel.files.remove(selectedFile);
+			
+			if (listModel.initialFiles.remove(selectedFile))
+				// The file was part of the initial set
+				listModel.filesToRemove.add(selectedFile);
+			else
+				// The file was a new one
+				listModel.filesToAdd.remove(selectedFile);
+		}
+
+		// Notifies that data have changed
+		listModel.fireContentsChanged();
+		
+		// Clears the list selection
+		clearSelection();
 	}
 	
 	public void setInitialFiles(List<File> initialFiles) {
-		this.initialFiles = initialFiles;
+		// Gets the list model
+		FileListModel listModel = (FileListModel) getModel();
+		
+		// Clears the file lists
+		listModel.files.clear();
+		listModel.filesToAdd.clear();
+		listModel.filesToRemove.clear();
+		listModel.initialFiles.clear();
+		
+		// Adds the files
+		for (File initialFile : initialFiles) {
+			listModel.files.add(initialFile);
+			listModel.initialFiles.add(initialFile);
+		}
+		
+		// Notifies that data have changed
+		listModel.fireContentsChanged();
 	}
 	
-	/*public List<File> getFiles() {
-		List<File> files = new LinkedList<File>();
-		ListModel<File> listModel = getModel();
+	private static class FileListModel extends AbstractListModel<File> {
+
+		private List<File> files;
+		private List<File> filesToAdd;
+		private List<File> filesToRemove;
+		private List<File> initialFiles;
 		
-		int size = listModel.getSize();
-		for (int i = 0; i < size; ++i)
-			files.add(listModel.getElementAt(i));
-		
-		return files;
-	}*/
-	
-	public void removeSelectedFiles() {
-		// Gets the selected file smallest index
-		int index = getSelectedIndex();
-		
-		while (index >= 0) {
-			// Removes the selected file
-			remove(index);
-			
-			// Gets the selected file smallest index
-			index = getSelectedIndex(); 
+		private FileListModel() {
+			files = new ArrayList<File>();
+			filesToAdd = new LinkedList<File>();
+			filesToRemove = new LinkedList<File>();
+			initialFiles = new LinkedList<File>();
 		}
+		
+		public File getElementAt(int index) {
+			return files.get(index);
+		}
+
+		public int getSize() {
+			return files.size();
+		}
+		
+		private void fireContentsChanged() {
+			fireContentsChanged(this, 0, files.size());
+		}
+		
 	}
 	
 }

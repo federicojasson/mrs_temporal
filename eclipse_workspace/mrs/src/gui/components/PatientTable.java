@@ -3,6 +3,7 @@ package gui.components;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumnModel;
 import entities.PatientSummary;
 
 @SuppressWarnings("serial")
@@ -17,9 +18,12 @@ public class PatientTable extends JTable {
 	public PatientTable() {
 		super(new PatientTableModel());
 
+		// Gets the table column model
+		TableColumnModel tableColumnModel = getColumnModel();
+		
 		// Sets cell renderers for specific type data
-		getColumnModel().getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
-		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
+		tableColumnModel.getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
+		tableColumnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}
 	
 	public void setPatientSummaries(List<PatientSummary> patientSummaries) {
@@ -30,11 +34,12 @@ public class PatientTable extends JTable {
 		tableModel.patientSummaries = new PatientSummary[patientSummaries.size()];
 		patientSummaries.toArray(tableModel.patientSummaries);
 		
-		// Notifies that all data have changed
+		// Notifies that data have changed
 		tableModel.fireTableDataChanged();
 	}
 	
-	public static class PatientTableModel extends AbstractTableModel {
+	private static class PatientTableModel extends AbstractTableModel {
+		
 		private static String[] columnNames;
 		
 		private PatientSummary[] patientSummaries;
@@ -47,7 +52,7 @@ public class PatientTable extends JTable {
 			columnNames[NAME] = "Nombre y apellido";
 		}
 		
-		public PatientTableModel() {
+		private PatientTableModel() {
 			patientSummaries = new PatientSummary[0];
 		}
 		

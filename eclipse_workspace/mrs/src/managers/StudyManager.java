@@ -19,7 +19,10 @@ public class StudyManager {
 	
 	private static byte[] currentStudyId;
 	
-	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFiles) throws IOException, NoSuchAlgorithmException, SQLException {
+	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFiles) throws NoSuchAlgorithmException, SQLException {
+		// Starts a transaction
+		DbmsManager.startTransaction();
+		
 		// Generates a study ID
 		byte[] id = CryptographyManager.generateRandomUuid();
 		
@@ -31,22 +34,11 @@ public class StudyManager {
 		// Gets the current patient ID
 		byte[] patientId = PatientManager.getCurrentPatientId();
 		
-		// Adds the files to the application directory tree
-		for (File studyFile : studyFiles)
-			FileManager.addStudyFile(id, studyFile);
-		
-		// Starts a transaction
-		DbmsManager.startTransaction();
+		// Adds the study files
+		addStudyFiles(id, studyFiles);
 		
 		// Inserts the study into the database
 		insertStudy(date, id, observations, patientId, studyTypeId);
-		
-		// Inserts the study files into the database
-		for (File studyFile : studyFiles) {
-			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
-			String filename = studyFile.getName();
-			insertStudyFile(checksum, filename, id);
-		}
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -146,33 +138,18 @@ public class StudyManager {
 		return studyTypes;
 	}
 	
-	public static void modifyStudy(String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws IOException, NoSuchAlgorithmException, SQLException {
-		// Removes the files from the application directory tree
-		for (File studyFile : studyFilesToRemove)
-			FileManager.removeStudyFile(currentStudyId, studyFile);
-		
-		// Adds the files to the application directory tree
-		for (File studyFile : studyFilesToAdd)
-			FileManager.addStudyFile(currentStudyId, studyFile);
-		
+	public static void modifyStudy(String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws NoSuchAlgorithmException, SQLException {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 		
+		// Removes the study files
+		removeStudyFiles(currentStudyId, studyFilesToRemove);
+		
+		// Adds the study files
+		addStudyFiles(currentStudyId, studyFilesToAdd);
+		
 		// Updates the study in the database
 		updateStudy(currentStudyId, observations);
-		
-		// Deletes the study files from the database
-		for (File studyFile : studyFilesToRemove) {
-			String filename = studyFile.getName();
-			deleteStudyFile(filename, currentStudyId);
-		}
-		
-		// Inserts the study files into the database
-		for (File studyFile : studyFilesToAdd) {
-			byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
-			String filename = studyFile.getName();
-			insertStudyFile(checksum, filename, currentStudyId);
-		}
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -180,6 +157,22 @@ public class StudyManager {
 	
 	public static void setCurrentStudyId(byte[] studyId) {
 		currentStudyId = studyId;
+	}
+	
+	private static void addStudyFiles(byte[] id, List<File> studyFiles) throws NoSuchAlgorithmException, SQLException {
+		for (File studyFile : studyFiles) {
+			try {
+				// Adds the study file to the application directory tree
+				FileManager.addStudyFile(id, studyFile);
+				
+				// Inserts the study file into the database
+				byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
+				String filename = studyFile.getName();
+				insertStudyFile(checksum, filename, id);
+			} catch (IOException exception) {
+				// There is nothing to be done
+			}
+		}
 	}
 
 	private static void deleteStudyFile(String filename, byte[] studyId) throws SQLException {
@@ -234,6 +227,17 @@ public class StudyManager {
 		} finally {
 			// Releases the statement resources
 			storedProcedure.clearParameters();
+		}
+	}
+	
+	private static void removeStudyFiles(byte[] id, List<File> studyFiles) throws SQLException {
+		for (File studyFile : studyFiles) {
+			// Removes the study file from the application directory tree
+			FileManager.removeStudyFile(id, studyFile);
+			
+			// Deletes the study file from the database
+			String filename = studyFile.getName();
+			deleteStudyFile(filename, id);
 		}
 	}
 	

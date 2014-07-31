@@ -32,7 +32,7 @@ public class AddStudyWorker extends SwingWorker<Void, Void> {
 		try {
 			// Adds the study
 			StudyManager.addStudy(date, observations, studyTypeId, studyFiles);
-		} catch (IOException | NoSuchAlgorithmException | SQLException exception) {
+		} catch (NoSuchAlgorithmException | SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);
 		}

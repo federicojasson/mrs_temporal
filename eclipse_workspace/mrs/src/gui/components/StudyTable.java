@@ -3,6 +3,8 @@ package gui.components;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import entities.StudySummary;
 
 @SuppressWarnings("serial")
@@ -17,9 +19,12 @@ public class StudyTable extends JTable {
 	public StudyTable() {
 		super(new StudyTableModel());
 		
+		// Gets the table column model
+		TableColumnModel tableColumnModel = getColumnModel();
+		
 		// Sets cell renderers for specific type data
-		getColumnModel().getColumn(DATE).setCellRenderer(new DateTableCellRenderer());
-		getColumnModel().getColumn(ID).setCellRenderer(new IdTableCellRenderer());
+		tableColumnModel.getColumn(DATE).setCellRenderer(new DateTableCellRenderer());
+		tableColumnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 	}
 	
 	public void setStudySummaries(List<StudySummary> studySummaries) {
@@ -30,11 +35,12 @@ public class StudyTable extends JTable {
 		tableModel.studySummaries = new StudySummary[studySummaries.size()];
 		studySummaries.toArray(tableModel.studySummaries);
 		
-		// Notifies that all data have changed
+		// Notifies that data have changed
 		tableModel.fireTableDataChanged();
 	}
 	
-	public static class StudyTableModel extends AbstractTableModel {
+	private static class StudyTableModel extends AbstractTableModel {
+		
 		private static String[] columnNames;
 		
 		private StudySummary[] studySummaries;
@@ -47,7 +53,7 @@ public class StudyTable extends JTable {
 			columnNames[STUDY_TYPE_DESCRIPTION] = "Tipo de estudio";
 		}
 		
-		public StudyTableModel() {
+		private StudyTableModel() {
 			studySummaries = new StudySummary[0];
 		}
 		

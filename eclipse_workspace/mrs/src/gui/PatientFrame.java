@@ -71,7 +71,7 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 
 	public void getStudySummariesCallback(List<StudySummary> studySummaries) {
-		// Sets the study summaries as the table data
+		// Sets the study summaries as the table's data
 		tableStudies.setStudySummaries(studySummaries);
 		
 		// Unlocks the frame

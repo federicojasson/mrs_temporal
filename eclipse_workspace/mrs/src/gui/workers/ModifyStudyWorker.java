@@ -29,7 +29,7 @@ public class ModifyStudyWorker extends SwingWorker<Void, Void> {
 		try {
 			// Modifies the study
 			StudyManager.modifyStudy(observations, studyFilesToAdd, studyFilesToRemove);
-		} catch (IOException | NoSuchAlgorithmException | SQLException exception) {
+		} catch (NoSuchAlgorithmException | SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);
 		}

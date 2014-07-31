@@ -15,6 +15,9 @@ public class PatientManager {
 	private static byte[] currentPatientId;
 	
 	public static void addPatient(Date birthDate, byte[] bloodType, byte[] gender, String name) throws SQLException {
+		// Starts a transaction
+		DbmsManager.startTransaction();
+		
 		// Generates a patient ID
 		byte[] id = CryptographyManager.generateRandomUuid();
 		
@@ -25,9 +28,6 @@ public class PatientManager {
 		
 		// Gets the current user ID
 		String userId = UserManager.getCurrentUserId();
-		
-		// Starts a transaction
-		DbmsManager.startTransaction();
 		
 		// Inserts the patient into the database
 		insertPatient(birthDate, bloodType, gender, id, name, userId);
