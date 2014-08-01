@@ -94,11 +94,10 @@ public class StudyManager {
 			// Fetches the query results
 			while (resultSet.next()) {
 				String filename = resultSet.getString("filename");
+				File studyFile = FileManager.getStudyFile(studyId, filename);
 				
-				// TODO: the pathname must be added
-				
-				// Adds the study summary to the list
-				studyFiles.add(new File(filename));
+				// Adds the study file to the list
+				studyFiles.add(studyFile);
 			}
 		} finally {
 			// Releases the statement resources

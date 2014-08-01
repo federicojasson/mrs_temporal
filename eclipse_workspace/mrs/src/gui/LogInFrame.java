@@ -33,7 +33,7 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 			GuiManager.openFrame(GuiManager.USER_FRAME);
 		else {
 			// Shows a dialog to inform the user that the user was not logged in
-			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos.\nPor favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos." + System.lineSeparator() + "Por favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
 			
 			// Unlocks the frame
 			unlock();

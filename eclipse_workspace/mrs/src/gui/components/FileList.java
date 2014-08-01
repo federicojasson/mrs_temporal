@@ -7,13 +7,15 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
-// TODO: cell renderer (show file names somehow else)
 // TODO: check if a file exists???????? only the name (not the path) ---> or maybe remove current files that are equal to the added ones?
 @SuppressWarnings("serial")
 public class FileList extends JList<File> {
 	
 	public FileList() {
 		super(new FileListModel());
+		
+		// Sets a cell renderer for the list
+		setCellRenderer(new FileListCellRenderer());
 	}
 	
 	public void addFiles(File[] files) {

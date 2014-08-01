@@ -324,7 +324,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 	}
 	
 	private void onSelectStudyFiles() {
-		// Gets the selected item smallest index (if any)
+		// Gets the selected smallest cell index (if any)
 		int selectedItemIndex = listStudyFiles.getSelectedIndex();
 		
 		if (selectedItemIndex < 0)
@@ -341,7 +341,7 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 	}
 	
 	private void onViewStudyFile() {
-		// Gets the selected file with the smallest index (if any)
+		// Gets the selected file with the smallest cell index (if any)
 		File file = listStudyFiles.getSelectedValue();
 		
 		if (file != null) {

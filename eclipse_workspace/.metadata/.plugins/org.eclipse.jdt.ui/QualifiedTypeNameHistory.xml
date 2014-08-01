@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="entities.StudyType"/>
-<fullyQualifiedTypeName name="managers.StudyManager"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyWorker"/>
-<fullyQualifiedTypeName name="entities.Study"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyCaller"/>
-<fullyQualifiedTypeName name="java.util.logging.ErrorManager"/>
-<fullyQualifiedTypeName name="managers.ErrorManager"/>
-<fullyQualifiedTypeName name="exceptions.NoStudyTypesException"/>
-<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
-<fullyQualifiedTypeName name="java.awt.GridLayout"/>
-<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
-<fullyQualifiedTypeName name="java.util.Arrays"/>
-<fullyQualifiedTypeName name="java.util.concurrent.LinkedBlockingDeque"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyTypesCaller"/>
 <fullyQualifiedTypeName name="javax.swing.JTextArea"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyTypesWorker"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
@@ -25,7 +11,6 @@
 <fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.layout.RowSpec"/>
 <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
-<fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="entities.Gender"/>
 <fullyQualifiedTypeName name="managers.PatientManager"/>
 <fullyQualifiedTypeName name="gui.workers.AddPatientWorker"/>
@@ -42,7 +27,6 @@
 <fullyQualifiedTypeName name="java.awt.Desktop.Action"/>
 <fullyQualifiedTypeName name="managers.FileManager"/>
 <fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryWorker"/>
-<fullyQualifiedTypeName name="javax.swing.JList"/>
 <fullyQualifiedTypeName name="gui.components.StudyFileList"/>
 <fullyQualifiedTypeName name="gui.components.PatientTable.PatientTableModel"/>
 <fullyQualifiedTypeName name="java.util.List"/>
@@ -57,7 +41,23 @@
 <fullyQualifiedTypeName name="javax.swing.table.TableColumnModel"/>
 <fullyQualifiedTypeName name="gui.components.FileList"/>
 <fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryCaller"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyFilesWorker"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyFilesCaller"/>
+<fullyQualifiedTypeName name="javax.swing.DefaultListCellRenderer"/>
+<fullyQualifiedTypeName name="java.awt.Component"/>
+<fullyQualifiedTypeName name="javax.swing.JList"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="javax.swing.ListCellRenderer"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="javax.swing.UIDefaults"/>
+<fullyQualifiedTypeName name="javax.swing.UIManager"/>
+<fullyQualifiedTypeName name="javax.swing.border.EmptyBorder"/>
+<fullyQualifiedTypeName name="javax.swing.border.CompoundBorder"/>
+<fullyQualifiedTypeName name="javax.swing.border.Border"/>
+<fullyQualifiedTypeName name="java.awt.Font"/>
+<fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
+<fullyQualifiedTypeName name="gui.components.FileListCellRenderer"/>
 </qualifiedTypeNameHistroy>
