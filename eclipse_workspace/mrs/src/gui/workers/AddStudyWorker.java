@@ -1,7 +1,6 @@
 package gui.workers;
 
 import java.io.File;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.sql.SQLException;

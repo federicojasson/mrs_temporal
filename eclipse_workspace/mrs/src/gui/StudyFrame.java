@@ -36,7 +36,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import utilities.Utility;
 import managers.GuiManager;
-import managers.PatientManager;
 import managers.StudyManager;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -92,6 +91,8 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 	}
 
 	public void modifyStudyCallback() {
+		// TODO: do something else (maybe reopen this frame), or reset inital files somehow
+		
 		// Unlocks the frame
 		unlock();
 		

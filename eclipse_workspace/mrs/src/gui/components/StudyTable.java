@@ -3,7 +3,6 @@ package gui.components;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import entities.StudySummary;
 

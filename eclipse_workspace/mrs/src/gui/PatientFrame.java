@@ -98,6 +98,8 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	}
 	
 	public void modifyPatientCallback() {
+		// TODO: maybe do something else (maybe reopen this frame)
+		
 		// Unlocks the frame
 		unlock();
 		

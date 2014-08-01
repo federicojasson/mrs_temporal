@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
-import entities.StudySummary;
 import managers.ErrorManager;
 import managers.StudyManager;
 
@@ -23,8 +22,14 @@ public class GetStudyFilesWorker extends SwingWorker<List<File>, Void> {
 	protected List<File> doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
 		
-		// Gets the study files
-		return StudyManager.getStudyFiles(studyId);
+		try {
+			// Gets the study files
+			return StudyManager.getStudyFiles(studyId);
+		} catch (SQLException exception) {
+			// An error occurred
+			ErrorManager.notifyError(exception);
+			return new LinkedList<File>();
+		}
 	}
 	
 	protected void done() {

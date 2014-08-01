@@ -13,11 +13,12 @@ public class DbmsManager {
 	public static final int GET_PATIENT = 0;
 	public static final int GET_PATIENT_SUMMARIES = 1;
 	public static final int GET_STUDY = 2;
-	public static final int GET_STUDY_SUMMARIES = 3;
-	public static final int GET_STUDY_TYPES = 4;
-	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 5;
-	public static final int PATIENT_EXISTS = 6;
-	public static final int STUDY_EXISTS = 7;
+	public static final int GET_STUDY_FILES = 3;
+	public static final int GET_STUDY_SUMMARIES = 4;
+	public static final int GET_STUDY_TYPES = 5;
+	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 6;
+	public static final int PATIENT_EXISTS = 7;
+	public static final int STUDY_EXISTS = 8;
 	
 	public static final int DELETE_STUDY_FILE = 0;
 	public static final int INSERT_PATIENT = 1;
@@ -79,6 +80,12 @@ public class DbmsManager {
 			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
 			"WHERE studies.id = ? " +
 			"LIMIT 1"
+		));
+		
+		preparedStatements.put(GET_STUDY_FILES, dbmsConnection.prepareStatement(
+			"SELECT filename " +
+			"FROM studies_files " +
+			"WHERE study_id = ?"
 		));
 		
 		preparedStatements.put(GET_STUDY_SUMMARIES, dbmsConnection.prepareStatement(

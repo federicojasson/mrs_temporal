@@ -77,6 +77,36 @@ public class StudyManager {
 
 		return study;
 	}
+	
+	public static List<File> getStudyFiles(byte[] studyId) throws SQLException {
+		List<File> studyFiles = new LinkedList<File>();
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY_FILES);
+		
+		try {
+			// Sets the input parameters
+			preparedStatement.setBytes(1, studyId);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+	
+			// Fetches the query results
+			while (resultSet.next()) {
+				String filename = resultSet.getString("filename");
+				
+				// TODO: the pathname must be added
+				
+				// Adds the study summary to the list
+				studyFiles.add(new File(filename));
+			}
+		} finally {
+			// Releases the statement resources
+			preparedStatement.clearParameters();
+		}
+		
+		return studyFiles;
+	}
 
 	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
 		List<StudySummary> studySummaries = new LinkedList<StudySummary>();

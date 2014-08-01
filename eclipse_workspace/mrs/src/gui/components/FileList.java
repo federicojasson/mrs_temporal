@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
+// TODO: cell renderer (show file names somehow else)
+// TODO: check if a file exists???????? only the name (not the path) ---> or maybe remove current files that are equal to the added ones?
 @SuppressWarnings("serial")
 public class FileList extends JList<File> {
 	
@@ -51,6 +53,9 @@ public class FileList extends JList<File> {
 		// Gets the selected files
 		List<File> selectedFiles = getSelectedValuesList();
 		
+		// Clears the list selection
+		clearSelection();
+		
 		// Removes the files
 		for (File selectedFile : selectedFiles) {
 			listModel.files.remove(selectedFile);
@@ -62,12 +67,9 @@ public class FileList extends JList<File> {
 				// The file was a new one
 				listModel.filesToAdd.remove(selectedFile);
 		}
-
+		
 		// Notifies that data have changed
 		listModel.fireContentsChanged();
-		
-		// Clears the list selection
-		clearSelection();
 	}
 	
 	public void setInitialFiles(List<File> initialFiles) {

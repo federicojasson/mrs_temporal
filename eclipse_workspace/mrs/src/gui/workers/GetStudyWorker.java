@@ -3,10 +3,8 @@ package gui.workers;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
-import entities.Patient;
 import entities.Study;
 import managers.ErrorManager;
-import managers.PatientManager;
 import managers.StudyManager;
 
 public class GetStudyWorker extends SwingWorker<Study, Void> {
