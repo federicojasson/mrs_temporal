@@ -46,7 +46,7 @@ import managers.StudyManager;
 
 //TODO: validate input
 //TODO: search
-public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudySummariesCaller, ModifyPatientCaller {
+public class PatientFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;
 	private JButton buttonModifyPatient;
@@ -59,52 +59,47 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 	private JTextField fieldId;
 	private JTextField fieldName;
 	private StudyTable tableStudies;
-
-	public void getPatientCallback(Patient patient) {
-		// Sets the patient's information
-		comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
-		comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
-		datePicker.setDate(patient.getBirthDate());
-		fieldBirthDate.setText(Utility.formatDate(patient.getBirthDate()));
-		fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
-		fieldName.setText(patient.getName());
-	}
-
-	public void getStudySummariesCallback(List<StudySummary> studySummaries) {
-		// Sets the study summaries as the table's data
-		tableStudies.setStudySummaries(studySummaries);
-		
-		// Unlocks the frame
-		unlock();
-	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Locks the frame
-		lock();
-		
-		// Gets the current patient ID
-		byte[] patientId = PatientManager.getCurrentPatientId();
-		
-		// Gets the patient
-		GetPatientWorker worker0 = new GetPatientWorker(this, patientId);
-		worker0.execute();
-		
-		// Gets the study summaries
-		GetStudySummariesWorker worker1 = new GetStudySummariesWorker(this, patientId);
-		worker1.execute();
-	}
-	
-	public void modifyPatientCallback() {
-		// TODO: maybe do something else (maybe reopen this frame)
-		
-		// Unlocks the frame
-		unlock();
+		// Disables the view study button
+		onSelectStudy();
 		
 		// Sets the view mode
 		setViewMode();
+		
+		// Locks the frame
+		lock();
+		
+		// Gets the patient
+		GetPatientCaller caller = new GetPatientCaller() {
+			public void getPatientCallback(Patient patient) {
+				// Sets the patient's information
+				comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
+				comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
+				datePicker.setDate(patient.getBirthDate());
+				fieldBirthDate.setText(Utility.formatDate(patient.getBirthDate()));
+				fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
+				fieldName.setText(patient.getName());
+				
+				// Gets the study summaries
+				GetStudySummariesCaller caller = new GetStudySummariesCaller() {
+					public void getStudySummariesCallback(List<StudySummary> studySummaries) {
+						// Sets the study summaries as the table's data
+						tableStudies.setStudySummaries(studySummaries);
+						
+						// Unlocks the frame
+						unlock();
+					}
+				};
+				GetStudySummariesWorker worker = new GetStudySummariesWorker(caller, PatientManager.getCurrentPatientId());
+				worker.execute();
+			}
+		};
+		GetPatientWorker worker = new GetPatientWorker(caller, PatientManager.getCurrentPatientId());
+		worker.execute();
 	}
 	
 	protected JPanel getMainPanel() {
@@ -320,9 +315,6 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		panelMain.add(panelSearchStudies);
 		panelMain.add(panelButtons);
 		
-		onSelectStudy();
-		setViewMode();
-		
 		return panelMain;
 	}
 
@@ -360,7 +352,16 @@ public class PatientFrame extends GuiFrame implements GetPatientCaller, GetStudy
 		String name = fieldName.getText();
 		
 		// Modifies the patient
-		ModifyPatientWorker worker = new ModifyPatientWorker(this, birthDate, bloodType, gender, name);
+		ModifyPatientCaller caller = new ModifyPatientCaller() {
+			public void modifyPatientCallback() {
+				// Unlocks the frame
+				unlock();
+				
+				// Sets the view mode
+				setViewMode();
+			}
+		};
+		ModifyPatientWorker worker = new ModifyPatientWorker(caller, birthDate, bloodType, gender, name);
 		worker.execute();
 	}
 	

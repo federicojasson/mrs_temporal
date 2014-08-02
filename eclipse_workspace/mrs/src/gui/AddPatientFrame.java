@@ -28,7 +28,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import managers.GuiManager;
 
 // TODO: validate input
-public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
+public class AddPatientFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;
 	private JComboBox<BloodType> comboBoxBloodType;
@@ -36,11 +36,6 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 	private DatePicker datePicker;
 	private JTextField fieldBirthDate;
 	private JTextField fieldName;
-
-	public void addPatientCallback() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
-	}
 	
 	protected JPanel getMainPanel() {
 		JLabel labelName = new JLabel("Nombre");
@@ -171,7 +166,13 @@ public class AddPatientFrame extends GuiFrame implements AddPatientCaller {
 		String name = fieldName.getText();
 		
 		// Adds the patient
-		AddPatientWorker worker = new AddPatientWorker(this, birthDate, bloodType, gender, name);
+		AddPatientCaller caller = new AddPatientCaller() {
+			public void addPatientCallback() {
+				// Closes the current frame
+				GuiManager.closeCurrentFrame();
+			}
+		};
+		AddPatientWorker worker = new AddPatientWorker(caller, birthDate, bloodType, gender, name);
 		worker.execute();
 	}
 	

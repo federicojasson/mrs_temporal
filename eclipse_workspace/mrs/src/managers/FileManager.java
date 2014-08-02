@@ -14,12 +14,9 @@ public class FileManager {
 	private static final int UUID_FRAGMENT_LENGTH = 4; // UUID_LENGTH / 8
 	private static final int UUID_LENGTH = 32;
 	
-public static void addStudyFile(byte[] studyId, File studyFileToAdd) throws IOException {
-		// Computes the study file path
-		String path = computeStudyFilePath(studyId, studyFileToAdd.getName());
-		
-		// Initializes a file for the path
-		File studyFile = new File(path);
+	public static void addStudyFile(String filename, byte[] studyId, File studyFileToAdd) throws IOException {
+		// Gets the study file
+		File studyFile = getStudyFile(filename, studyId);
 		
 		// Creates the necessary directories
 		studyFile.mkdirs();
@@ -27,15 +24,45 @@ public static void addStudyFile(byte[] studyId, File studyFileToAdd) throws IOEx
 		// Copies the study file
 		Files.copy(studyFileToAdd.toPath(), studyFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	}
+	
+	public static String getFilenameExtensionWithDot(String filename) {
+		// Searches the index of the last occurrence of a dot
+		int dotIndex = filename.lastIndexOf('.');
+		
+		if (dotIndex < 0)
+			// The filename doesn't have an extension
+			return "";
+		else
+			// The filename has an extension
+			return filename.substring(dotIndex);
+	}
+	
+	public static String getFilenameWithoutExtension(String filename) {
+		// Searches the index of the last occurrence of a dot
+		int dotIndex = filename.lastIndexOf('.');
+		
+		if (dotIndex < 0)
+			// The filename doesn't have an extension
+			return filename;
+		else
+			// The filename has an extension
+			return filename.substring(0, dotIndex);
+	}
 
-	public static File getStudyFile(byte[] studyId, String filename) {
-		// Computes the study file path
-		String path = computeStudyFilePath(studyId, filename);
+	public static File getStudyFile(String filename, byte[] studyId) {
+		// Converts the study ID to hexadecimal
+		String hexadecimalStudyId = Utility.bytesToHexadecimal(studyId);
+
+		// Computes the study directory path
+		String path = STUDIES_FILES_DIRECTORY + File.separator;
+		for (int i = 0; i < UUID_LENGTH; i += UUID_FRAGMENT_LENGTH)
+			path += hexadecimalStudyId.substring(i, i + UUID_FRAGMENT_LENGTH) + File.separator;
 		
-		// Initializes a file for the path
-		File studyFile = new File(path);
+		// Appends the filename
+		path += filename;
 		
-		return studyFile;
+		// Returns the study file
+		return new File(path);
 	}
 	
 	public static void openFileDirectory(File file) throws IOException {
@@ -57,33 +84,12 @@ public static void addStudyFile(byte[] studyId, File studyFileToAdd) throws IOEx
 		}
 	}
 	
-	public static void removeStudyFile(byte[] studyId, File studyFileToRemove) {
-		// Computes the study file path
-		String path = computeStudyFilePath(studyId, studyFileToRemove.getName());
-		
-		// Defining the path in this manner is a security control, to avoid
-		// accidentally deleting files outside the application directory
-		
-		// Initializes a file for the path
-		File studyFile = new File(path);
+	public static void removeStudyFile(String filename, byte[] studyId) {
+		// Gets the study file
+		File studyFile = getStudyFile(filename, studyId);
 		
 		// Deletes the study file
 		studyFile.delete();
-	}
-	
-	private static String computeStudyFilePath(byte[] studyId, String filename) {
-		// Converts the study ID to hexadecimal
-		String hexadecimalStudyId = Utility.bytesToHexadecimal(studyId);
-
-		// Computes the study directory path
-		String path = STUDIES_FILES_DIRECTORY + File.separator;
-		for (int i = 0; i < UUID_LENGTH; i += UUID_FRAGMENT_LENGTH)
-			path += hexadecimalStudyId.substring(i, i + UUID_FRAGMENT_LENGTH) + File.separator;
-		
-		// Appends the filename
-		path += filename;
-		
-		return path;
 	}
 	
 }

@@ -1,2 +1,11 @@
 1406916041217	Rename type 'FileCellRenderer'
 1406918233386	Rename local variable 'pathname'
+1406936191751	Rename field 'buttonShowErrorDetails'
+1406936202435	Rename method 'onShowErrorDetails'
+1406936533798	Rename field 'buttonRemoveFile'
+1406936550231	Rename local variable 'buttonAddFile'
+1406936580975	Rename field 'buttonAddFile'
+1406936587042	Rename field 'buttonRemoveFile'
+1406939172321	Delete element
+1406939197483	Delete element
+1406940904827	Delete element

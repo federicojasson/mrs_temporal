@@ -43,66 +43,54 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 // TODO: validate input
-public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFilesCaller, ModifyStudyCaller, OpenFileDirectoryCaller {
+public class StudyFrame extends GuiFrame {
 	
-	private JButton buttonAddFile;
+	private JButton buttonAddStudyFile;
 	private JButton buttonModifyStudy;
-	private JButton buttonRemoveFile;
+	private JButton buttonRemoveStudyFile;
 	private JButton buttonSetModifyMode;
 	private JTextField fieldDate;
 	private JTextField fieldId;
 	private JTextArea fieldObservations;
 	private JTextField fieldStudyTypeDescription;
 	private FileList listStudyFiles;
-	
-	public void getStudyCallback(Study study) {
-		// Sets the study's information
-		fieldDate.setText(Utility.formatDate(study.getDate()));
-		fieldId.setText(Utility.bytesToHexadecimal(study.getId()));
-		fieldObservations.setText(study.getObservations());
-		fieldStudyTypeDescription.setText(study.getStudyTypeDescription());
-	}
-	
-	public void getStudyFilesCallback(List<File> studyFiles) {
-		// Sets the study files as the list's initial data 
-		listStudyFiles.setInitialFiles(studyFiles);
-		
-		// Unlocks the frame
-		unlock();
-	}
+	private ListSelectionListener selectionListenerListStudyFilesModifyMode;
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
-
-		// Locks the frame
-		lock();
-		
-		// Gets the current study ID
-		byte[] studytId = StudyManager.getCurrentStudyId();
-		
-		// Gets the study
-		GetStudyWorker worker0 = new GetStudyWorker(this, studytId);
-		worker0.execute();
-		
-		// Gets the study files
-		GetStudyFilesWorker worker1 = new GetStudyFilesWorker(this, studytId);
-		worker1.execute();
-	}
-
-	public void modifyStudyCallback() {
-		// TODO: do something else (maybe reopen this frame), or reset inital files somehow
-		
-		// Unlocks the frame
-		unlock();
 		
 		// Sets the view mode
 		setViewMode();
-	}
-
-	public void openFileDirectoryCallback() {
-		// Unlocks the frame
-		unlock();
+		
+		// Locks the frame
+		lock();
+		
+		// Gets the study
+		GetStudyCaller caller = new GetStudyCaller() {
+			public void getStudyCallback(Study study) {
+				// Sets the study's information
+				fieldDate.setText(Utility.formatDate(study.getDate()));
+				fieldId.setText(Utility.bytesToHexadecimal(study.getId()));
+				fieldObservations.setText(study.getObservations());
+				fieldStudyTypeDescription.setText(study.getStudyTypeDescription());
+				
+				// Gets the study files
+				GetStudyFilesCaller caller = new GetStudyFilesCaller() {
+					public void getStudyFilesCallback(List<File> studyFiles) {
+						// Sets the study files as the list's initial data
+						listStudyFiles.setInitialFiles(studyFiles);
+						
+						// Unlocks the frame
+						unlock();
+					}
+				};
+				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller, StudyManager.getCurrentStudyId());
+				worker.execute();
+			}
+		};
+		GetStudyWorker worker = new GetStudyWorker(caller, StudyManager.getCurrentStudyId());
+		worker.execute();
 	}
 	
 	protected JPanel getMainPanel() {
@@ -173,18 +161,18 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 		
 		JLabel labelStudyFiles = new JLabel("Archivos");
 		
+		selectionListenerListStudyFilesModifyMode = new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				if (! event.getValueIsAdjusting())
+					onSelectStudyFiles();
+			}
+		};
+		
 		listStudyFiles = new FileList();
 		listStudyFiles.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
 				if (event.getClickCount() == 2)
 					onViewStudyFile();
-			}
-		});
-		listStudyFiles.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		listStudyFiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent event) {
-				if (! event.getValueIsAdjusting())
-					onSelectStudyFiles();
 			}
 		});
 		registerComponent("listStudyFiles", listStudyFiles);
@@ -196,32 +184,32 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 		
 		ImageIcon iconButtonAddFile = new ImageIcon(imageButtonAddFile);
 		
-		buttonAddFile = new JButton();
-		buttonAddFile.setIcon(iconButtonAddFile);
-		buttonAddFile.addActionListener(new ActionListener() {
+		buttonAddStudyFile = new JButton();
+		buttonAddStudyFile.setIcon(iconButtonAddFile);
+		buttonAddStudyFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onAddStudyFile();
 			}
 		});
-		registerComponent("buttonAddFile", buttonAddFile);
+		registerComponent("buttonAddFile", buttonAddStudyFile);
 		
 		Image imageButtonRemoveFile = new ImageIcon(getClass().getResource("/images/file_delete.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
 		
 		ImageIcon iconButtonRemoveFile = new ImageIcon(imageButtonRemoveFile);
 		
-		buttonRemoveFile = new JButton();
-		buttonRemoveFile.setIcon(iconButtonRemoveFile);
-		buttonRemoveFile.addActionListener(new ActionListener() {
+		buttonRemoveStudyFile = new JButton();
+		buttonRemoveStudyFile.setIcon(iconButtonRemoveFile);
+		buttonRemoveStudyFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onRemoveStudyFiles();
 			}
 		});
-		registerComponent("buttonRemoveFile", buttonRemoveFile);
+		registerComponent("buttonRemoveFile", buttonRemoveStudyFile);
 		
 		JPanel panelStudyFilesButtons = new JPanel();
 		panelStudyFilesButtons.setLayout(new GridLayout(1, 2));
-		panelStudyFilesButtons.add(buttonAddFile);
-		panelStudyFilesButtons.add(buttonRemoveFile);
+		panelStudyFilesButtons.add(buttonAddStudyFile);
+		panelStudyFilesButtons.add(buttonRemoveStudyFile);
 		
 		JPanel panelStudyFiles = new JPanel();
 		panelStudyFiles.setLayout(new BorderLayout(0, 5));
@@ -279,8 +267,6 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 		
-		setViewMode();
-		
 		return panelMain;
 	}
 
@@ -314,7 +300,26 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 		List<File> studyFilesToRemove = listStudyFiles.getFilesToRemove();
 		
 		// Modifies the study
-		ModifyStudyWorker worker = new ModifyStudyWorker(this, observations, studyFilesToAdd, studyFilesToRemove);
+		ModifyStudyCaller caller = new ModifyStudyCaller() {
+			public void modifyStudyCallback() {
+				// Gets the study files again
+				GetStudyFilesCaller caller = new GetStudyFilesCaller() {
+					public void getStudyFilesCallback(List<File> studyFiles) {
+						// Sets the study files as the list's initial data
+						listStudyFiles.setInitialFiles(studyFiles);
+						
+						// Unlocks the frame
+						unlock();
+						
+						// Sets the view mode
+						setViewMode();
+					}
+				};
+				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller, StudyManager.getCurrentStudyId());
+				worker.execute();
+			}
+		};
+		ModifyStudyWorker worker = new ModifyStudyWorker(caller, observations, studyFilesToAdd, studyFilesToRemove);
 		worker.execute();
 	}
 	
@@ -329,10 +334,10 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 		
 		if (selectedItemIndex < 0)
 			// No row has been selected
-			buttonRemoveFile.setEnabled(false);
+			buttonRemoveStudyFile.setEnabled(false);
 		else
 			// At least one row has been selected
-			buttonRemoveFile.setEnabled(true);
+			buttonRemoveStudyFile.setEnabled(true);
 	}
 	
 	private void onSetModifyMode() {
@@ -349,16 +354,26 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 			lock();
 			
 			// Opens the file's directory
-			OpenFileDirectoryWorker worker = new OpenFileDirectoryWorker(this, file);
+			OpenFileDirectoryCaller caller = new OpenFileDirectoryCaller() {
+				public void openFileDirectoryCallback() {
+					// Unlocks the frame
+					unlock();
+				}
+			};
+			OpenFileDirectoryWorker worker = new OpenFileDirectoryWorker(caller, file);
 			worker.execute();
 		}
 	}
 	
 	private void setModifyMode() {
+		// Changes the study files list selection behaviour
+		listStudyFiles.getSelectionModel().addListSelectionListener(selectionListenerListStudyFilesModifyMode);
+		listStudyFiles.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		listStudyFiles.clearSelection();
+		
 		// Enables components
-		buttonAddFile.setEnabled(true);
+		buttonAddStudyFile.setEnabled(true);
 		fieldObservations.setEditable(true);
-		listStudyFiles.setEnabled(true);
 		
 		// Enables the modify study button
 		buttonModifyStudy.setEnabled(true);
@@ -368,11 +383,15 @@ public class StudyFrame extends GuiFrame implements GetStudyCaller, GetStudyFile
 	}
 	
 	private void setViewMode() {
+		// Changes the study files list selection behaviour
+		listStudyFiles.getSelectionModel().removeListSelectionListener(selectionListenerListStudyFilesModifyMode);
+		listStudyFiles.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listStudyFiles.clearSelection();
+		
 		// Disables components
-		buttonAddFile.setEnabled(false);
-		buttonRemoveFile.setEnabled(false);
+		buttonAddStudyFile.setEnabled(false);
+		buttonRemoveStudyFile.setEnabled(false);
 		fieldObservations.setEditable(false);
-		listStudyFiles.setEnabled(false);
 		
 		// Disables the modify study button
 		buttonModifyStudy.setEnabled(false);

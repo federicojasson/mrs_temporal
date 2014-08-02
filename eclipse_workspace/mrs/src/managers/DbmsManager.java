@@ -19,6 +19,7 @@ public class DbmsManager {
 	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 6;
 	public static final int PATIENT_EXISTS = 7;
 	public static final int STUDY_EXISTS = 8;
+	public static final int STUDY_FILE_EXISTS = 9;
 	
 	public static final int DELETE_STUDY_FILE = 0;
 	public static final int INSERT_PATIENT = 1;
@@ -118,6 +119,13 @@ public class DbmsManager {
 			"SELECT COUNT(*) AS count " +
 			"FROM studies " +
 			"WHERE id = ? " +
+			"LIMIT 1"
+		));
+		
+		preparedStatements.put(STUDY_FILE_EXISTS, dbmsConnection.prepareStatement(
+			"SELECT COUNT(*) AS count " +
+			"FROM studies_files " +
+			"WHERE filename LIKE BINARY ? AND study_id = ? " +
 			"LIMIT 1"
 		));
 		

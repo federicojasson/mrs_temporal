@@ -22,23 +22,10 @@ import utilities.Utility;
 import managers.GuiManager;
 
 // TODO: validate input
-public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
+public class LogInFrame extends GuiFrame {
 	
 	private JTextField fieldId;
 	private JPasswordField fieldPassword;
-
-	public void logInUserDoctorCallback(Boolean userDoctorLoggedIn) {
-		if (userDoctorLoggedIn)
-			// Opens the user frame
-			GuiManager.openFrame(GuiManager.USER_FRAME);
-		else {
-			// Shows a dialog to inform the user that the user was not logged in
-			JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos." + System.lineSeparator() + "Por favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
-			
-			// Unlocks the frame
-			unlock();
-		}
-	}
 
 	protected JPanel getMainPanel() {
 		ImageIcon iconLabelLogo = new ImageIcon(getClass().getResource("/images/logo.png"));
@@ -132,7 +119,21 @@ public class LogInFrame extends GuiFrame implements LogInUserDoctorCaller {
 		byte[] password = Utility.charsToBytes(fieldPassword.getPassword());
 		
 		// Attempts to log in the user
-		LogInUserDoctorWorker worker = new LogInUserDoctorWorker(this, id, password);
+		LogInUserDoctorCaller caller = new LogInUserDoctorCaller() {
+			public void logInUserDoctorCallback(Boolean userDoctorLoggedIn) {
+				if (userDoctorLoggedIn)
+					// Opens the user frame
+					GuiManager.openFrame(GuiManager.USER_FRAME);
+				else {
+					// Shows a dialog to inform the user that the user was not logged in
+					JOptionPane.showMessageDialog(getFrame(), "Los datos ingresados (nombre de usuario y contraseña) son incorrectos." + System.lineSeparator() + "Por favor, inténtelo nuevamente.", "Acceso denegado", JOptionPane.WARNING_MESSAGE);
+					
+					// Unlocks the frame
+					unlock();
+				}
+			}
+		};
+		LogInUserDoctorWorker worker = new LogInUserDoctorWorker(caller, id, password);
 		worker.execute();
 	}
 	

@@ -15,11 +15,12 @@ import entities.StudySummary;
 import entities.StudyType;
 import exceptions.NoStudyTypesException;
 
+// TODO: problema con archivos con tilde repetidos (problema de LIKE BINARY en UTF8?)
 public class StudyManager {
 	
 	private static byte[] currentStudyId;
 	
-	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFiles) throws NoSuchAlgorithmException, SQLException {
+	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFilesToAdd) throws NoSuchAlgorithmException, SQLException {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 		
@@ -34,11 +35,11 @@ public class StudyManager {
 		// Gets the current patient ID
 		byte[] patientId = PatientManager.getCurrentPatientId();
 		
-		// Adds the study files
-		addStudyFiles(id, studyFiles);
-		
 		// Inserts the study into the database
 		insertStudy(date, id, observations, patientId, studyTypeId);
+		
+		// Adds the study files
+		addStudyFiles(id, studyFilesToAdd);
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -94,7 +95,7 @@ public class StudyManager {
 			// Fetches the query results
 			while (resultSet.next()) {
 				String filename = resultSet.getString("filename");
-				File studyFile = FileManager.getStudyFile(studyId, filename);
+				File studyFile = FileManager.getStudyFile(filename, studyId);
 				
 				// Adds the study file to the list
 				studyFiles.add(studyFile);
@@ -188,16 +189,27 @@ public class StudyManager {
 		currentStudyId = studyId;
 	}
 	
-	private static void addStudyFiles(byte[] id, List<File> studyFiles) throws NoSuchAlgorithmException, SQLException {
-		for (File studyFile : studyFiles) {
+	private static void addStudyFiles(byte[] id, List<File> studyFilesToAdd) throws NoSuchAlgorithmException, SQLException {
+		for (File studyFileToAdd : studyFilesToAdd) {
 			try {
+				byte[] checksum = CryptographyManager.computeFileChecksum(studyFileToAdd);
+				String filename = studyFileToAdd.getName();
+				
+				// If a study file with the same filename already exists, appends an index
+				String filenameWithoutExtension = FileManager.getFilenameWithoutExtension(filename);
+				String filenameExtensionWithDot = FileManager.getFilenameExtensionWithDot(filename);
+				String newFilename = filename;
+				int index = 0;
+				while (studyFileExists(newFilename, id)) { 
+					newFilename = filenameWithoutExtension + " (" + index + ")" + filenameExtensionWithDot;
+					index++;
+				}
+				
 				// Adds the study file to the application directory tree
-				FileManager.addStudyFile(id, studyFile);
+				FileManager.addStudyFile(newFilename, id, studyFileToAdd);
 				
 				// Inserts the study file into the database
-				byte[] checksum = CryptographyManager.computeFileChecksum(studyFile);
-				String filename = studyFile.getName();
-				insertStudyFile(checksum, filename, id);
+				insertStudyFile(checksum, newFilename, id);
 			} catch (IOException exception) {
 				// There is nothing to be done
 			}
@@ -259,13 +271,14 @@ public class StudyManager {
 		}
 	}
 	
-	private static void removeStudyFiles(byte[] id, List<File> studyFiles) throws SQLException {
-		for (File studyFile : studyFiles) {
+	private static void removeStudyFiles(byte[] id, List<File> studyFilesToRemove) throws SQLException {
+		for (File studyFileToRemove : studyFilesToRemove) {
+			String filename = studyFileToRemove.getName();
+			
 			// Removes the study file from the application directory tree
-			FileManager.removeStudyFile(id, studyFile);
+			FileManager.removeStudyFile(filename, id);
 			
 			// Deletes the study file from the database
-			String filename = studyFile.getName();
 			deleteStudyFile(filename, id);
 		}
 	}
@@ -292,6 +305,31 @@ public class StudyManager {
 		}
 		
 		return studyExists;
+	}
+	
+	private static boolean studyFileExists(String filename, byte[] studyId) throws SQLException {
+		boolean studyFileExists;
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.STUDY_FILE_EXISTS);
+		
+		try {
+			// Sets the input parameters
+			preparedStatement.setString(1, filename);
+			preparedStatement.setBytes(2, studyId);
+	
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+	
+			// Fetches the query results
+			resultSet.next();
+			studyFileExists = resultSet.getInt("count") == 1;
+		} finally {
+			// Releases the statement resources
+			preparedStatement.clearParameters();
+		}
+		
+		return studyFileExists;
 	}
 
 	private static void updateStudy(byte[] id, String observations) throws SQLException {

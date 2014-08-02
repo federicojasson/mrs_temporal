@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.swing.JTextArea"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyTypesWorker"/>
-<fullyQualifiedTypeName name="java.io.IOException"/>
-<fullyQualifiedTypeName name="gui.workers.AddStudyWorker"/>
-<fullyQualifiedTypeName name="gui.workers.AddStudyCaller"/>
-<fullyQualifiedTypeName name="java.sql.Date"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.layout.FormLayout"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.layout.ColumnSpec"/>
-<fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.layout.RowSpec"/>
 <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
 <fullyQualifiedTypeName name="entities.Gender"/>
 <fullyQualifiedTypeName name="managers.PatientManager"/>
 <fullyQualifiedTypeName name="gui.workers.AddPatientWorker"/>
-<fullyQualifiedTypeName name="gui.workers.AddPatientCaller"/>
 <fullyQualifiedTypeName name="entities.BloodType"/>
 <fullyQualifiedTypeName name="javax.swing.JComponent"/>
 <fullyQualifiedTypeName name="javax.swing.AbstractAction"/>
@@ -25,7 +15,6 @@
 <fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
 <fullyQualifiedTypeName name="java.awt.Desktop"/>
 <fullyQualifiedTypeName name="java.awt.Desktop.Action"/>
-<fullyQualifiedTypeName name="managers.FileManager"/>
 <fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryWorker"/>
 <fullyQualifiedTypeName name="gui.components.StudyFileList"/>
 <fullyQualifiedTypeName name="gui.components.PatientTable.PatientTableModel"/>
@@ -40,9 +29,7 @@
 <fullyQualifiedTypeName name="javax.swing.table.TableColumn"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableColumnModel"/>
 <fullyQualifiedTypeName name="gui.components.FileList"/>
-<fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryCaller"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyFilesWorker"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyFilesCaller"/>
 <fullyQualifiedTypeName name="javax.swing.DefaultListCellRenderer"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="javax.swing.JList"/>
@@ -60,4 +47,17 @@
 <fullyQualifiedTypeName name="java.awt.Font"/>
 <fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
 <fullyQualifiedTypeName name="gui.components.FileListCellRenderer"/>
+<fullyQualifiedTypeName name="gui.workers.AddPatientCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyTypesCaller"/>
+<fullyQualifiedTypeName name="gui.workers.AddStudyCaller"/>
+<fullyQualifiedTypeName name="gui.workers.LogInUserDoctorCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetPatientSummariesCaller"/>
+<fullyQualifiedTypeName name="gui.workers.ModifyPatientCaller"/>
+<fullyQualifiedTypeName name="gui.workers.ModifyStudyCaller"/>
+<fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetPatientCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudySummariesCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyFilesCaller"/>
+<fullyQualifiedTypeName name="managers.FileManager"/>
 </qualifiedTypeNameHistroy>

@@ -21,16 +21,15 @@ import managers.GuiManager;
 
 public class ErrorFrame extends GuiFrame {
 	
-	private JButton buttonShowErrorDetails;
-	private String errorDetails;
+	private JButton buttonToggleErrorDetails;
 	private JScrollPane panelErrorDetails;
 	
 	public void initialize() {
-		// Gets the error details
-		errorDetails = ErrorManager.getErrorDetails();
-		
 		// Initializes the GUI
 		super.initialize();
+		
+		// Hides the error details
+		onToggleErrorDetails();
 	}
 	
 	protected JPanel getMainPanel() {
@@ -51,14 +50,14 @@ public class ErrorFrame extends GuiFrame {
 		panelErrorMessage.add(labelIcon, "1, 1, fill, fill");
 		panelErrorMessage.add(labelErrorMessage, "2, 1, fill, fill");
 		
-		buttonShowErrorDetails = new JButton();
-		buttonShowErrorDetails.addActionListener(new ActionListener() {
+		buttonToggleErrorDetails = new JButton();
+		buttonToggleErrorDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				onShowErrorDetails();
+				onToggleErrorDetails();
 			}
 		});
-		registerComponent("buttonShowErrorDetails", buttonShowErrorDetails);
-		setDefaultButton(buttonShowErrorDetails);
+		registerComponent("buttonToggleErrorDetails", buttonToggleErrorDetails);
+		setDefaultButton(buttonToggleErrorDetails);
 		
 		JButton buttonOk = new JButton("Aceptar");
 		buttonOk.addActionListener(new ActionListener() {
@@ -70,10 +69,10 @@ public class ErrorFrame extends GuiFrame {
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		panelButtons.add(buttonShowErrorDetails);
+		panelButtons.add(buttonToggleErrorDetails);
 		panelButtons.add(buttonOk);
 		
-		JTextArea fieldErrorDetails = new JTextArea(errorDetails);
+		JTextArea fieldErrorDetails = new JTextArea(ErrorManager.getErrorDetails());
 		fieldErrorDetails.setEditable(false);
 		fieldErrorDetails.setColumns(80);
 		fieldErrorDetails.setRows(15);
@@ -88,8 +87,6 @@ public class ErrorFrame extends GuiFrame {
 		panelMain.add(panelErrorDetails, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 		
-		onShowErrorDetails();
-		
 		return panelMain;
 	}
 
@@ -102,16 +99,16 @@ public class ErrorFrame extends GuiFrame {
 		GuiManager.closeCurrentFrame();
 	}
 	
-	private void onShowErrorDetails() {
+	private void onToggleErrorDetails() {
 		// Checks if the error details panel is visible
 		boolean panelErrorDetailsIsVisible = panelErrorDetails.isVisible();
 		
 		if (panelErrorDetailsIsVisible)
 			// The error details panel will be hidden
-			buttonShowErrorDetails.setText("Más información");
+			buttonToggleErrorDetails.setText("Más información");
 		else
 			// The error details panel will be shown
-			buttonShowErrorDetails.setText("Menos información");
+			buttonToggleErrorDetails.setText("Menos información");
 		
 		// Toggles the error details panel visibility
 		panelErrorDetails.setVisible(! panelErrorDetailsIsVisible);

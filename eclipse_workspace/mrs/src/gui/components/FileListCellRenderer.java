@@ -37,8 +37,8 @@ public class FileListCellRenderer implements ListCellRenderer<File> {
 		Font listFont = defaultsGuiConfigurations.getFont("List.font");
 		
 		// Initializes the configurations
-		borderCell = new EmptyBorder(5, 5, 5, 5);
-		borderCellFocused = new CompoundBorder(defaultsGuiConfigurations.getBorder("List.focusCellHighlightBorder"), borderCell);
+		borderCell = new EmptyBorder(5, 10, 5, 10);
+		borderCellFocused = new CompoundBorder(defaultsGuiConfigurations.getBorder("List.focusCellHighlightBorder"), new EmptyBorder(4, 9, 4, 9));
 		colorCanonicalPathForeground = Color.GRAY;
 		colorCanonicalPathForegroundSelected = defaultsGuiConfigurations.getColor("List.selectionForeground");
 		colorCellBackground = defaultsGuiConfigurations.getColor("List.background");

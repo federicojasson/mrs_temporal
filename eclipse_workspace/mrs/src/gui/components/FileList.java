@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
-// TODO: check if a file exists???????? only the name (not the path) ---> or maybe remove current files that are equal to the added ones?
 @SuppressWarnings("serial")
 public class FileList extends JList<File> {
 	

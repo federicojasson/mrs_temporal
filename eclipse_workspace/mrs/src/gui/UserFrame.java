@@ -33,28 +33,32 @@ import managers.UserManager;
 
 //TODO: validate input
 //TODO: search
-public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
+public class UserFrame extends GuiFrame {
 
 	private JButton buttonViewPatient;
 	private PatientTable tablePatients;
-	
-	public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
-		// Sets the patient summaries as the table data
-		tablePatients.setPatientSummaries(patientSummaries);
-		
-		// Unlocks the frame
-		unlock();
-	}
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
 		
+		// Disables the view patient button
+		onSelectPatient();
+		
 		// Locks the frame
 		lock();
 		
 		// Gets the patient summaries
-		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(this, UserManager.getCurrentUserId());
+		GetPatientSummariesCaller caller = new GetPatientSummariesCaller() {
+			public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
+				// Sets the patient summaries as the table data
+				tablePatients.setPatientSummaries(patientSummaries);
+				
+				// Unlocks the frame
+				unlock();
+			}
+		};
+		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(caller, UserManager.getCurrentUserId());
 		worker.execute();
 	}
 	
@@ -158,8 +162,6 @@ public class UserFrame extends GuiFrame implements GetPatientSummariesCaller {
 		panelMain.add(panelSearch, BorderLayout.NORTH);
 		panelMain.add(panelPatients, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
-		
-		onSelectPatient();
 		
 		return panelMain;
 	}
