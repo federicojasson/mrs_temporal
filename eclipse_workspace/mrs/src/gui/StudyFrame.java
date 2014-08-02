@@ -21,6 +21,7 @@ import gui.workers.ModifyStudyCaller;
 import gui.workers.ModifyStudyWorker;
 import gui.workers.OpenFileDirectoryCaller;
 import gui.workers.OpenFileDirectoryWorker;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,7 +31,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import utilities.Utility;
@@ -261,7 +261,7 @@ public class StudyFrame extends GuiFrame {
 		panelButtons.add(buttonModifyStudy, "5, 1");
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new BorderLayout(0, 5));
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);

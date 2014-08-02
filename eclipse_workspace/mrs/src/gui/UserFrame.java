@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import com.jgoodies.forms.factories.FormFactory;
@@ -158,7 +158,7 @@ public class UserFrame extends GuiFrame {
 		panelButtons.add(buttonViewPatient, "5, 2");
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new BorderLayout(0, 0));
 		panelMain.add(panelSearch, BorderLayout.NORTH);
 		panelMain.add(panelPatients, BorderLayout.CENTER);

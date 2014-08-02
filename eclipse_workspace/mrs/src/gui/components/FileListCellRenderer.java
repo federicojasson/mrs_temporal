@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -13,8 +14,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 
 public class FileListCellRenderer implements ListCellRenderer<File> {
 
@@ -37,8 +36,8 @@ public class FileListCellRenderer implements ListCellRenderer<File> {
 		Font listFont = defaultsGuiConfigurations.getFont("List.font");
 		
 		// Initializes the configurations
-		borderCell = new EmptyBorder(5, 10, 5, 10);
-		borderCellFocused = new CompoundBorder(defaultsGuiConfigurations.getBorder("List.focusCellHighlightBorder"), new EmptyBorder(4, 9, 4, 9));
+		borderCell = BorderFactory.createEmptyBorder(5, 10, 5, 10);
+		borderCellFocused = BorderFactory.createCompoundBorder(defaultsGuiConfigurations.getBorder("List.focusCellHighlightBorder"), BorderFactory.createEmptyBorder(4, 9, 4, 9));
 		colorCanonicalPathForeground = Color.GRAY;
 		colorCanonicalPathForegroundSelected = defaultsGuiConfigurations.getColor("List.selectionForeground");
 		colorCellBackground = defaultsGuiConfigurations.getColor("List.background");

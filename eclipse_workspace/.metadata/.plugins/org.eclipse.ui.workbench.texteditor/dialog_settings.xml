@@ -3,36 +3,36 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="349" key="DIALOG_Y_ORIGIN"/>
-		<item value="383" key="DIALOG_HEIGHT"/>
 		<item value="1121" key="DIALOG_X_ORIGIN"/>
+		<item value="383" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="expandYear" key="selection"/>
 		<list key="findhistory">
-			<item value="clear"/>
-			<item value="getSelectionModel"/>
-			<item value="listStudyFiles"/>
-			<item value="selection"/>
-			<item value="addSelec"/>
-			<item value="mouseListener"/>
-			<item value="setMouse"/>
-			<item value="newFile"/>
+			<item value="expandYear"/>
+			<item value="pack"/>
+			<item value="Calendar calendar"/>
+			<item value="Calendar"/>
+			<item value="Utility"/>
+			<item value="&gt;&gt;"/>
+			<item value="&lt;&lt;"/>
+			<item value="&lt;"/>
 		</list>
 		<list key="replacehistory">
+			<item value="onButtonDatePickerAction"/>
+			<item value="fieldCurrentDate"/>
+			<item value="currentCalendar"/>
 			<item value=""/>
 			<item value="path"/>
 			<item value="event)"/>
 			<item value=".setEnabled(true);"/>
 			<item value=".setEnabled(false);"/>
-			<item value="private static final String = &quot;"/>
-			<item value="private static final String = "/>
-			<item value="frameId"/>
 		</list>
 	</section>
 </section>

@@ -5,6 +5,7 @@ import gui.workers.LogInUserDoctorCaller;
 import gui.workers.LogInUserDoctorWorker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -79,7 +79,7 @@ public class LogInFrame extends GuiFrame {
 		panelButtons.add(buttonLogInUserDoctor);
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			ColumnSpec.decode("min:grow"),

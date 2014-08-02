@@ -5,13 +5,13 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import gui.components.GuiFrame;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
@@ -81,7 +81,7 @@ public class ErrorFrame extends GuiFrame {
 		panelErrorDetails = new JScrollPane(fieldErrorDetails, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new BorderLayout(0, 5));
 		panelMain.add(panelErrorMessage, BorderLayout.NORTH);
 		panelMain.add(panelErrorDetails, BorderLayout.CENTER);

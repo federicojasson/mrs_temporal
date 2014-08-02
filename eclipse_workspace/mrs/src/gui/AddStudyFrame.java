@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +33,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import utilities.Utility;
@@ -86,16 +86,17 @@ public class AddStudyFrame extends GuiFrame {
 		
 		JLabel labelDate = new JLabel("Fecha de realización");
 		
-		fieldDate = new JTextField();
-		fieldDate.setEditable(false);
-		registerComponent("fieldDate", fieldDate);
-		
 		datePicker = new DatePicker();
 		datePicker.addPopupListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onPickDate();
 			}
 		});
+		
+		fieldDate = new JTextField();
+		fieldDate.setEditable(false);
+		fieldDate.setText(datePicker.getFormattedDate());
+		registerComponent("fieldDate", fieldDate);
 		
 		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
 		
@@ -106,7 +107,7 @@ public class AddStudyFrame extends GuiFrame {
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				onDatePickerButtonAction();
+				onButtonDatePickerAction();
 			}
 		});
 		registerComponent("buttonDatePicker", buttonDatePicker);
@@ -256,7 +257,7 @@ public class AddStudyFrame extends GuiFrame {
 		panelButtons.add(buttonAddStudy, "3, 1");
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new BorderLayout(0, 5));
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
@@ -298,18 +299,18 @@ public class AddStudyFrame extends GuiFrame {
 		worker.execute();
 	}
 	
-	private void onCancel() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
-	}
-	
-	private void onDatePickerButtonAction() {
+	private void onButtonDatePickerAction() {
 		if (datePicker.isShowing())
 			// Hides the date picker popup
 			datePicker.hidePopup();
 		else
 			// Shows the date picker popup
 			datePicker.showPopup(buttonDatePicker);
+	}
+	
+	private void onCancel() {
+		// Closes the current frame
+		GuiManager.closeCurrentFrame();
 	}
 	
 	private void onPickDate() {

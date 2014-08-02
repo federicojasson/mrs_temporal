@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -19,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import com.jgoodies.forms.factories.FormFactory;
@@ -120,10 +120,6 @@ public class PatientFrame extends GuiFrame {
 		registerComponent("comboBoxGender", comboBoxGender);
 		
 		JLabel labelBirthDate = new JLabel("Fecha de nacimiento");
-
-		fieldBirthDate = new JTextField();
-		fieldBirthDate.setEditable(false);
-		registerComponent("fieldBirthDate", fieldBirthDate);
 		
 		datePicker = new DatePicker();
 		datePicker.addPopupListener(new ActionListener() {
@@ -131,6 +127,11 @@ public class PatientFrame extends GuiFrame {
 				onPickDate();
 			}
 		});
+
+		fieldBirthDate = new JTextField();
+		fieldBirthDate.setEditable(false);
+		fieldBirthDate.setText(datePicker.getFormattedDate());
+		registerComponent("fieldBirthDate", fieldBirthDate);
 		
 		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
 		
@@ -141,7 +142,7 @@ public class PatientFrame extends GuiFrame {
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				onDatePickerButtonAction();
+				onButtonDatePickerAction();
 			}
 		});
 		registerComponent("buttonDatePicker", buttonDatePicker);
@@ -310,7 +311,7 @@ public class PatientFrame extends GuiFrame {
 		panelButtons.add(buttonViewStudy, "9, 2");
 		
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelMain.setLayout(new BoxLayout(panelMain, BoxLayout.Y_AXIS));
 		panelMain.add(panelPatient);
 		panelMain.add(panelSearchStudies);
@@ -328,7 +329,7 @@ public class PatientFrame extends GuiFrame {
 		GuiManager.openFrame(GuiManager.ADD_STUDY_FRAME);
 	}
 	
-	private void onDatePickerButtonAction() {
+	private void onButtonDatePickerAction() {
 		if (datePicker.isShowing())
 			// Hides the date picker popup
 			datePicker.hidePopup();

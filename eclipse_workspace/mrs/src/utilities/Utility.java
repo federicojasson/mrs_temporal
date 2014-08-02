@@ -9,10 +9,10 @@ public class Utility {
 
 	private static final char[] HEXADECIMAL_VALUES = "0123456789ABCDEF".toCharArray();
 	
-	private static SimpleDateFormat formatter;
+	private static SimpleDateFormat dateFormatter;
 	
 	static {
-		formatter = new SimpleDateFormat("dd/MM/yyyy");
+		dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 	}
 	
 	// TODO: debug (remove it before release)
@@ -56,7 +56,7 @@ public class Utility {
 	}
 	
 	public static String formatDate(Date date) {
-		return formatter.format(date);
+		return dateFormatter.format(date);
 	}
 
 }
