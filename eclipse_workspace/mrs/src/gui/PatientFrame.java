@@ -229,6 +229,7 @@ public class PatientFrame extends GuiFrame {
 					onViewStudy();
 			}
 		});
+		tableStudies.setRowHeight(24);
 		tableStudies.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableStudies.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {

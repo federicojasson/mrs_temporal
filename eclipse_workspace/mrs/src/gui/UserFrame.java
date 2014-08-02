@@ -104,6 +104,7 @@ public class UserFrame extends GuiFrame {
 					onViewPatient();
 			}
 		});
+		tablePatients.setRowHeight(24);
 		tablePatients.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tablePatients.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {

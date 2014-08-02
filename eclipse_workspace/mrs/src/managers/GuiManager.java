@@ -9,7 +9,9 @@ import gui.StudyFrame;
 import gui.UserFrame;
 import gui.components.GuiFrame;
 import java.awt.EventQueue;
+import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class GuiManager {
 	
@@ -32,6 +34,9 @@ public class GuiManager {
 		fileChooser = new JFileChooser();
 		frames = new GuiFrame[FRAME_COUNT];
 		
+		// Configures the file chooser
+		fileChooser.setMultiSelectionEnabled(true);
+		
 		// Initializes the frames
 		frames[ADD_PATIENT_FRAME] = new AddPatientFrame();
 		frames[ADD_STUDY_FRAME] = new AddStudyFrame();
@@ -52,10 +57,6 @@ public class GuiManager {
 		});
 	}
 	
-	public static JFileChooser getFileChooser() {
-		return fileChooser;
-	}
-	
 	public static void openFrame(final int frameId) {
 		// Executes this code in the event dispatch thread (EDT)
 		EventQueue.invokeLater(new Runnable() {
@@ -68,6 +69,27 @@ public class GuiManager {
 				openNewFrame(frameId);
 			}
 		});
+	}
+	
+	public static File[] showFileChooserDialog() {
+		// Gets the current frame
+		GuiFrame currentFrame = frames[currentFrameIndex];
+		
+		// Shows the file chooser dialog
+		if (fileChooser.showDialog(currentFrame.getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
+			// Action confirmed
+			return fileChooser.getSelectedFiles();
+		else
+			// Action canceled
+			return new File[0];
+	}
+	
+	public static void showWarningDialog(String title, String message) {
+		// Gets the current frame
+		GuiFrame currentFrame = frames[currentFrameIndex];
+		
+		// Shows the warning dialog
+		JOptionPane.showMessageDialog(currentFrame.getFrame(), message, title, JOptionPane.WARNING_MESSAGE);
 	}
 	
 	private static void closeCurrentFrame(boolean wasClosedByUser) {

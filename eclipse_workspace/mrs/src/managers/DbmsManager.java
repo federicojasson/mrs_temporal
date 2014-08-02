@@ -28,11 +28,14 @@ public class DbmsManager {
 	public static final int UPDATE_PATIENT = 4;
 	public static final int UPDATE_STUDY = 5;
 
+	private static final String DBMS_CHARACTER_ENCODING = "UTF-8";
 	private static final String DBMS_DATABASE_NAME = "mrs_db";
+	private static boolean DBMS_NO_ACCESS_TO_PROCEDURE_BODIES = true;
 	private static final String DBMS_PASSWORD = "mrs_password";
 	private static final int DBMS_PORT_NUMBER = 3306;
 	private static final String DBMS_SERVER_NAME = "localhost";
 	private static final String DBMS_USER = "mrs_doctor";
+	private static final boolean DBMS_USE_UNICODE = true;
 
 	private static Connection dbmsConnection;
 	private static Map<Integer, PreparedStatement> preparedStatements;
@@ -51,12 +54,14 @@ public class DbmsManager {
 	public static void connect() throws SQLException {
 		// Configures the DBMS connection
 		MysqlDataSource dataSource = new MysqlDataSource();
+		dataSource.setCharacterEncoding(DBMS_CHARACTER_ENCODING);
 		dataSource.setDatabaseName(DBMS_DATABASE_NAME);
+		dataSource.setNoAccessToProcedureBodies(DBMS_NO_ACCESS_TO_PROCEDURE_BODIES);
 		dataSource.setPassword(DBMS_PASSWORD);
 		dataSource.setPortNumber(DBMS_PORT_NUMBER);
 		dataSource.setServerName(DBMS_SERVER_NAME);
 		dataSource.setUser(DBMS_USER);
-		dataSource.setNoAccessToProcedureBodies(true);
+		dataSource.setUseUnicode(DBMS_USE_UNICODE);
 
 		// Connects to the DBMS
 		dbmsConnection = dataSource.getConnection();

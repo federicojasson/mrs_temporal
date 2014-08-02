@@ -33,6 +33,10 @@ public abstract class GuiFrame {
 		frame.dispose();
 	}
 	
+	public JFrame getFrame() {
+		return frame;
+	}
+	
 	public void initialize() {
 		frame = new JFrame();
 		
@@ -49,10 +53,6 @@ public abstract class GuiFrame {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setResizable(false);
-	}
-	
-	protected JFrame getFrame() {
-		return frame;
 	}
 	
 	protected abstract JPanel getMainPanel();

@@ -15,7 +15,6 @@ import entities.StudySummary;
 import entities.StudyType;
 import exceptions.NoStudyTypesException;
 
-// TODO: problema con archivos con tilde repetidos (problema de LIKE BINARY en UTF8?)
 public class StudyManager {
 	
 	private static byte[] currentStudyId;

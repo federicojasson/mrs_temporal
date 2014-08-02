@@ -26,7 +26,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -270,14 +269,12 @@ public class AddStudyFrame extends GuiFrame {
 	}
 	
 	private void onAddStudyFile() {
-		// Gets the file chooser and configures it
-		JFileChooser fileChooser = GuiManager.getFileChooser();
-		fileChooser.setMultiSelectionEnabled(true);
+		// Shows the file chooser dialog
+		File[] selectedFiles = GuiManager.showFileChooserDialog();
 		
-		// Shows the file selection dialog
-		if (fileChooser.showDialog(getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
+		if (selectedFiles.length > 0)
 			// At least one file has been selected
-			listStudyFiles.addFiles(fileChooser.getSelectedFiles());
+			listStudyFiles.addFiles(selectedFiles);
 	}
 	
 	private void onAddStudy() {
