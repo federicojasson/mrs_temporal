@@ -1,13 +1,13 @@
 package managers;
 
-import gui.AddPatientFrame;
-import gui.AddStudyFrame;
-import gui.ErrorFrame;
-import gui.LogInFrame;
-import gui.PatientFrame;
-import gui.StudyFrame;
-import gui.UserFrame;
-import gui.components.GuiFrame;
+import gui.frames.AddPatientFrame;
+import gui.frames.AddStudyFrame;
+import gui.frames.ErrorFrame;
+import gui.frames.GuiFrame;
+import gui.frames.LogInFrame;
+import gui.frames.PatientFrame;
+import gui.frames.StudyFrame;
+import gui.frames.UserFrame;
 import java.awt.EventQueue;
 import java.io.File;
 import javax.swing.JFileChooser;

@@ -1,9 +1,11 @@
 package gui.components;
 
+import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import entities.StudySummary;
 
 @SuppressWarnings("serial")
@@ -14,21 +16,26 @@ public class StudyTable extends JTable {
 	public static final int STUDY_TYPE_DESCRIPTION = 1;
 	
 	private static final int COLUMN_COUNT = 3;
+	private static final int ROW_HEADER_HEIGHT = 32;
+	private static final int ROW_HEIGHT = 24;
 	
 	public StudyTable() {
 		super(new StudyTableModel());
 		
-		// Gets the table column model
-		TableColumnModel tableColumnModel = getColumnModel();
-		
 		// Sets cell renderers for specific type data
-		tableColumnModel.getColumn(DATE).setCellRenderer(new DateTableCellRenderer());
-		tableColumnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
+		columnModel.getColumn(DATE).setCellRenderer(new DateTableCellRenderer());
+		columnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
+
+		// Applies other configurations
+		setRowHeight(ROW_HEIGHT);
+		tableHeader.setReorderingAllowed(false);
+		tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, ROW_HEADER_HEIGHT));
+		((DefaultTableCellRenderer) tableHeader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	
 	public void setStudySummaries(List<StudySummary> studySummaries) {
 		// Gets the table model
-		StudyTableModel tableModel = (StudyTableModel) getModel();
+		StudyTableModel tableModel = (StudyTableModel) dataModel;
 		
 		// Fills the array with the study summaries
 		tableModel.studySummaries = new StudySummary[studySummaries.size()];

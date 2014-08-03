@@ -1,9 +1,11 @@
 package gui.components;
 
+import java.awt.Dimension;
 import java.util.List;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import entities.PatientSummary;
 
 @SuppressWarnings("serial")
@@ -14,21 +16,26 @@ public class PatientTable extends JTable {
 	public static final int NAME = 1;
 	
 	private static final int COLUMN_COUNT = 3;
+	private static final int ROW_HEADER_HEIGHT = 32;
+	private static final int ROW_HEIGHT = 24;
 	
 	public PatientTable() {
 		super(new PatientTableModel());
-
-		// Gets the table column model
-		TableColumnModel tableColumnModel = getColumnModel();
 		
 		// Sets cell renderers for specific type data
-		tableColumnModel.getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
-		tableColumnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
+		columnModel.getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
+		columnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
+		
+		// Applies other configurations
+		setRowHeight(ROW_HEIGHT);
+		tableHeader.setReorderingAllowed(false);
+		tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, ROW_HEADER_HEIGHT));
+		((DefaultTableCellRenderer) tableHeader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	
 	public void setPatientSummaries(List<PatientSummary> patientSummaries) {
 		// Gets the table model
-		PatientTableModel tableModel = (PatientTableModel) getModel();
+		PatientTableModel tableModel = (PatientTableModel) dataModel;
 		
 		// Fills the array with the patient summaries
 		tableModel.patientSummaries = new PatientSummary[patientSummaries.size()];
