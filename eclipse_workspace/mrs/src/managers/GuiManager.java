@@ -71,25 +71,28 @@ public class GuiManager {
 		});
 	}
 	
-	public static File[] showFileChooserDialog() {
+	public static File[] showFileChooserDialog(GuiFrame callerFrame) {
 		// Gets the current frame
 		GuiFrame currentFrame = frames[currentFrameIndex];
 		
-		// Shows the file chooser dialog
-		if (fileChooser.showDialog(currentFrame.getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
-			// Action confirmed
-			return fileChooser.getSelectedFiles();
-		else
-			// Action canceled
-			return new File[0];
+		if (currentFrame == callerFrame)
+			// The caller frame is the current one
+			// Shows the file chooser dialog
+			if (fileChooser.showDialog(callerFrame.getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
+				// Action confirmed
+				return fileChooser.getSelectedFiles();
+		
+		return new File[0];
 	}
 	
-	public static void showWarningDialog(String title, String message) {
+	public static void showWarningDialog(GuiFrame callerFrame, String title, String message) {
 		// Gets the current frame
 		GuiFrame currentFrame = frames[currentFrameIndex];
 		
-		// Shows the warning dialog
-		JOptionPane.showMessageDialog(currentFrame.getFrame(), message, title, JOptionPane.WARNING_MESSAGE);
+		if (currentFrame == callerFrame)
+			// The caller frame is the current one
+			// Shows the warning dialog
+			JOptionPane.showMessageDialog(callerFrame.getFrame(), message, title, JOptionPane.WARNING_MESSAGE);
 	}
 	
 	private static void closeCurrentFrame(boolean wasClosedByUser) {

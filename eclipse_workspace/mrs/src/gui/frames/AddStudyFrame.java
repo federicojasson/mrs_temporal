@@ -272,7 +272,7 @@ public class AddStudyFrame extends GuiFrame {
 	
 	private void onAddStudyFile() {
 		// Shows the file chooser dialog
-		File[] selectedFiles = GuiManager.showFileChooserDialog();
+		File[] selectedFiles = GuiManager.showFileChooserDialog(this);
 		
 		if (selectedFiles.length > 0)
 			// At least one file has been selected

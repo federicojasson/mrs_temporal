@@ -125,7 +125,7 @@ public class LogInFrame extends GuiFrame {
 					GuiManager.openFrame(GuiManager.USER_FRAME);
 				else {
 					// Shows a dialog to inform the user that the user was not logged in
-					GuiManager.showWarningDialog("Acceso denegado", "Los datos ingresados (nombre de usuario y contraseña) son incorrectos." + System.lineSeparator() + "Por favor, inténtelo nuevamente.");
+					GuiManager.showWarningDialog(LogInFrame.this, "Acceso denegado", "Los datos ingresados (nombre de usuario y contraseña) son incorrectos." + System.lineSeparator() + "Por favor, inténtelo nuevamente.");
 					
 					// Unlocks the frame
 					unlock();
