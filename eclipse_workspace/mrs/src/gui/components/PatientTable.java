@@ -22,14 +22,15 @@ public class PatientTable extends JTable {
 	public PatientTable() {
 		super(new PatientTableModel());
 		
-		// Sets cell renderers for specific type data
+		// Sets cell renderers
+		setDefaultRenderer(Object.class, new MyDefaultTableCellRenderer());
 		columnModel.getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
 		columnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 		
 		// Applies other configurations
 		setRowHeight(ROW_HEIGHT);
-		tableHeader.setReorderingAllowed(false);
 		tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, ROW_HEADER_HEIGHT));
+		tableHeader.setReorderingAllowed(false);
 		((DefaultTableCellRenderer) tableHeader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	

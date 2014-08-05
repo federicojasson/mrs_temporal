@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.swing.JFileChooser"/>
-<fullyQualifiedTypeName name="javax.swing.AbstractListModel"/>
-<fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableColumn"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableColumnModel"/>
 <fullyQualifiedTypeName name="gui.components.FileList"/>
@@ -13,7 +9,6 @@
 <fullyQualifiedTypeName name="javax.swing.ListCellRenderer"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
-<fullyQualifiedTypeName name="java.awt.GridLayout"/>
 <fullyQualifiedTypeName name="javax.swing.UIDefaults"/>
 <fullyQualifiedTypeName name="javax.swing.UIManager"/>
 <fullyQualifiedTypeName name="javax.swing.border.EmptyBorder"/>
@@ -45,13 +40,10 @@
 <fullyQualifiedTypeName name="javax.swing.border.CompoundBorder"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="gui.components.GenderTableCellRenderer"/>
-<fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
-<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
 <fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
 <fullyQualifiedTypeName name="javax.swing.table.JTableHeader"/>
-<fullyQualifiedTypeName name="javax.swing.table.DefaultTableCellRenderer"/>
 <fullyQualifiedTypeName name="entities.Patient"/>
 <fullyQualifiedTypeName name="gui.workers.SearchPatientsCaller"/>
 <fullyQualifiedTypeName name="gui.workers.SearchPatientsWorker"/>
@@ -60,4 +52,12 @@
 <fullyQualifiedTypeName name="gui.workers.SearchStudySummariesCaller"/>
 <fullyQualifiedTypeName name="gui.workers.SearchStudySummariesWorker"/>
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="javax.swing.table.DefaultTableCellRenderer"/>
+<fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
+<fullyQualifiedTypeName name="gui.components.MyDefaultTableCellRenderer"/>
+<fullyQualifiedTypeName name="gui.components.HeaderTableCellRenderer"/>
+<fullyQualifiedTypeName name="javax.swing.table.TableCellRenderer"/>
+<fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
 </qualifiedTypeNameHistroy>

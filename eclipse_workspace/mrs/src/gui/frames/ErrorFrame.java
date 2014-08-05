@@ -64,8 +64,6 @@ public class ErrorFrame extends GuiFrame {
 		
 		JTextArea fieldErrorDetails = new JTextArea(ErrorManager.getErrorDetails());
 		fieldErrorDetails.setEditable(false);
-		fieldErrorDetails.setColumns(80);
-		fieldErrorDetails.setRows(15);
 		registerComponent("fieldErrorDetails", fieldErrorDetails);
 		
 		panelErrorDetails = new JScrollPane(fieldErrorDetails, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

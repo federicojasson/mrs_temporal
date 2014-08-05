@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getFrame" key="selection"/>
+		<item value="setLayout" key="selection"/>
 		<list key="findhistory">
-			<item value="getFrame"/>
-			<item value="patients"/>
-			<item value="listStudyFiles"/>
-			<item value="list"/>
-			<item value="DEFAULT_ROWSPEC"/>
-			<item value="Criterio"/>
-			<item value="get"/>
-			<item value="GuiManager.show"/>
+			<item value="setLayout"/>
+			<item value="WEST"/>
+			<item value="new Dimen"/>
+			<item value="agregar"/>
+			<item value="224"/>
+			<item value="new Dimension"/>
+			<item value="panelContent"/>
+			<item value="panelFields"/>
 		</list>
 		<list key="replacehistory">
 			<item value="MIN_ROWSPEC"/>

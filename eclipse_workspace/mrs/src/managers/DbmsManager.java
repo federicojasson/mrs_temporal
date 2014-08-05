@@ -30,7 +30,7 @@ public class DbmsManager {
 
 	private static final String DBMS_CHARACTER_ENCODING = "UTF-8";
 	private static final String DBMS_DATABASE_NAME = "mrs_db";
-	private static boolean DBMS_NO_ACCESS_TO_PROCEDURE_BODIES = true;
+	private static final boolean DBMS_NO_ACCESS_TO_PROCEDURE_BODIES = true;
 	private static final String DBMS_PASSWORD = "mrs_password";
 	private static final int DBMS_PORT_NUMBER = 3306;
 	private static final String DBMS_SERVER_NAME = "localhost";
@@ -68,7 +68,7 @@ public class DbmsManager {
 		
 		// Initializes the prepared statements
 		preparedStatements.put(GET_PATIENT, dbmsConnection.prepareStatement(
-			"SELECT birth_date, blood_type, gender, name " +
+			"SELECT birth_date, blood_type, gender, name, observations " +
 			"FROM patients " +
 			"WHERE id = ? " +
 			"LIMIT 1"
@@ -82,7 +82,7 @@ public class DbmsManager {
 		));
 		
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
-			"SELECT studies.date, studies.observations, study_types.description " +
+			"SELECT studies.causes, studies.date, studies.diagnosis, studies.indications, studies.observations, study_types.description " +
 			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
 			"WHERE studies.id = ? " +
 			"LIMIT 1"
@@ -136,11 +136,11 @@ public class DbmsManager {
 		
 		// Initializes the stored procedures' call statements
 		storedProcedures.put(DELETE_STUDY_FILE, dbmsConnection.prepareCall("{CALL delete_study_file(?, ?)}"));
-		storedProcedures.put(INSERT_PATIENT, dbmsConnection.prepareCall("{CALL insert_patient(?, ?, ?, ?, ?, ?)}"));
-		storedProcedures.put(INSERT_STUDY, dbmsConnection.prepareCall("{CALL insert_study(?, ?, ?, ?, ?)}"));
+		storedProcedures.put(INSERT_PATIENT, dbmsConnection.prepareCall("{CALL insert_patient(?, ?, ?, ?, ?, ?, ?)}"));
+		storedProcedures.put(INSERT_STUDY, dbmsConnection.prepareCall("{CALL insert_study(?, ?, ?, ?, ?, ?, ?, ?)}"));
 		storedProcedures.put(INSERT_STUDY_FILE, dbmsConnection.prepareCall("{CALL insert_study_file(?, ?, ?)}"));
-		storedProcedures.put(UPDATE_PATIENT, dbmsConnection.prepareCall("{CALL update_patient(?, ?, ?, ?, ?)}"));
-		storedProcedures.put(UPDATE_STUDY, dbmsConnection.prepareCall("{CALL update_study(?, ?)}"));
+		storedProcedures.put(UPDATE_PATIENT, dbmsConnection.prepareCall("{CALL update_patient(?, ?, ?, ?, ?, ?)}"));
+		storedProcedures.put(UPDATE_STUDY, dbmsConnection.prepareCall("{CALL update_study(?, ?, ?, ?, ?)}"));
 	}
 	
 	public static void disconnect() {

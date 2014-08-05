@@ -3,11 +3,10 @@ package gui.components;
 import java.awt.Component;
 import java.sql.Date;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import utilities.Utility;
 
 @SuppressWarnings("serial")
-public class DateTableCellRenderer extends DefaultTableCellRenderer {
+public class DateTableCellRenderer extends MyDefaultTableCellRenderer {
 	
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		// Formats the date

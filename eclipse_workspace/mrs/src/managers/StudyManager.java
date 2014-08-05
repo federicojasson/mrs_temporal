@@ -19,7 +19,7 @@ public class StudyManager {
 	
 	private static byte[] currentStudyId;
 	
-	public static void addStudy(Date date, String observations, byte[] studyTypeId, List<File> studyFilesToAdd) throws NoSuchAlgorithmException, SQLException {
+	public static void addStudy(String causes, Date date, String diagnosis, String indications, String observations, byte[] studyTypeId, List<File> studyFilesToAdd) throws NoSuchAlgorithmException, SQLException {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 		
@@ -35,7 +35,7 @@ public class StudyManager {
 		byte[] patientId = PatientManager.getCurrentPatientId();
 		
 		// Inserts the study into the database
-		insertStudy(date, id, observations, patientId, studyTypeId);
+		insertStudy(causes, date, diagnosis, id, indications, observations, patientId, studyTypeId);
 		
 		// Adds the study files
 		addStudyFiles(id, studyFilesToAdd);
@@ -63,12 +63,15 @@ public class StudyManager {
 			
 			// Fetches the query results
 			if (resultSet.next()) {
+				String causes = resultSet.getString("studies.causes");
 				Date date = resultSet.getDate("studies.date");
+				String diagnosis = resultSet.getString("studies.diagnosis");
+				String indications = resultSet.getString("studies.indications");
 				String observations = resultSet.getString("studies.observations");
 				String studyTypeDescription = resultSet.getString("study_types.description");
 				
 				// Initializes the study object
-				study = new Study(date, id, observations, studyTypeDescription);
+				study = new Study(causes, date, diagnosis, id, indications, observations, studyTypeDescription);
 			}
 		} finally {
 			// Releases the statement resources
@@ -167,7 +170,7 @@ public class StudyManager {
 		return studyTypes;
 	}
 	
-	public static void modifyStudy(String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws NoSuchAlgorithmException, SQLException {
+	public static void modifyStudy(String causes, String diagnosis, String indications, String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) throws NoSuchAlgorithmException, SQLException {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 		
@@ -178,7 +181,7 @@ public class StudyManager {
 		addStudyFiles(currentStudyId, studyFilesToAdd);
 		
 		// Updates the study in the database
-		updateStudy(currentStudyId, observations);
+		updateStudy(causes, diagnosis, currentStudyId, indications, observations);
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -232,17 +235,20 @@ public class StudyManager {
 		}
 	}
 
-	private static void insertStudy(Date date, byte[] id, String observations, byte[] patientId, byte[] studyTypeId) throws SQLException {
+	private static void insertStudy(String causes, Date date, String diagnosis, byte[] id, String indications, String observations, byte[] patientId, byte[] studyTypeId) throws SQLException {
 		// Gets the stored procedure
 		CallableStatement storedProcedure = DbmsManager.getStoredProcedure(DbmsManager.INSERT_STUDY);
 		
 		try {
 			// Sets the input parameters
-			storedProcedure.setDate(1, date);
-			storedProcedure.setBytes(2, id);
-			storedProcedure.setString(3, observations);
-			storedProcedure.setBytes(4, patientId);
-			storedProcedure.setBytes(5, studyTypeId);
+			storedProcedure.setString(1, causes);
+			storedProcedure.setDate(2, date);
+			storedProcedure.setString(3, diagnosis);
+			storedProcedure.setBytes(4, id);
+			storedProcedure.setString(5, indications);
+			storedProcedure.setString(6, observations);
+			storedProcedure.setBytes(7, patientId);
+			storedProcedure.setBytes(8, studyTypeId);
 			
 			// Executes the stored procedure
 			storedProcedure.execute();
@@ -331,14 +337,17 @@ public class StudyManager {
 		return studyFileExists;
 	}
 
-	private static void updateStudy(byte[] id, String observations) throws SQLException {
+	private static void updateStudy(String causes, String diagnosis, byte[] id, String indications, String observations) throws SQLException {
 		// Gets the stored procedure
 		CallableStatement storedProcedure = DbmsManager.getStoredProcedure(DbmsManager.UPDATE_STUDY);
 		
 		try {
 			// Sets the input parameters
-			storedProcedure.setBytes(1, id);
-			storedProcedure.setString(2, observations);
+			storedProcedure.setString(1, causes);
+			storedProcedure.setString(2, diagnosis);
+			storedProcedure.setBytes(3, id);
+			storedProcedure.setString(4, indications);
+			storedProcedure.setString(5, observations);
 			
 			// Executes the stored procedure
 			storedProcedure.execute();

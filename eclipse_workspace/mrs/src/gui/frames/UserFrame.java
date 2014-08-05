@@ -86,7 +86,7 @@ public class UserFrame extends GuiFrame {
 		registerComponent("comboBoxCriterion", comboBoxCriterion);
 		
 		JPanel panelSearch = new JPanel();
-		panelSearch.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Búsqueda de pacientes"), BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		panelSearch.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Búsqueda de pacientes"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelSearch.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
@@ -120,7 +120,7 @@ public class UserFrame extends GuiFrame {
 		registerComponent("tablePatients", tablePatients);
 		
 		JScrollPane panelPatients = new JScrollPane(tablePatients, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panelPatients.setPreferredSize(new Dimension(800, 400));
+		panelPatients.setPreferredSize(new Dimension(700, 370));
 		
 		JButton buttonExit = new JButton("Salir");
 		buttonExit.addActionListener(new ActionListener() {

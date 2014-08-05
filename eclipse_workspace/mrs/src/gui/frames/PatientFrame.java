@@ -18,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -58,6 +59,7 @@ public class PatientFrame extends GuiFrame {
 	private JTextField fieldBirthDate;
 	private JTextField fieldId;
 	private JTextField fieldName;
+	private JTextArea fieldObservations;
 	private StudyTable tableStudies;
 	
 	public void initialize() {
@@ -83,6 +85,7 @@ public class PatientFrame extends GuiFrame {
 				fieldBirthDate.setText(Utility.formatDate(patient.getBirthDate()));
 				fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
 				fieldName.setText(patient.getName());
+				fieldObservations.setText(patient.getObservations());
 				
 				// Gets the study summaries
 				GetStudySummariesCaller caller = new GetStudySummariesCaller() {
@@ -162,11 +165,12 @@ public class PatientFrame extends GuiFrame {
 		comboBoxBloodType = new JComboBox<BloodType>(BloodType.values());
 		registerComponent("comboBoxBloodType", comboBoxBloodType);
 		
-		JPanel panelPatient = new JPanel();
-		panelPatient.setLayout(new FormLayout(new ColumnSpec[] {
+		JPanel panelFields = new JPanel();
+		panelFields.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Información básica"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelFields.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			FormFactory.GROWING_BUTTON_COLSPEC
+			ColumnSpec.decode("fill:max(224px;default):grow")
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC,
 			FormFactory.NARROW_LINE_GAP_ROWSPEC,
@@ -178,16 +182,37 @@ public class PatientFrame extends GuiFrame {
 			FormFactory.NARROW_LINE_GAP_ROWSPEC,
 			FormFactory.MIN_ROWSPEC
 		}));
-		panelPatient.add(labelId, "1, 1, right, default");
-		panelPatient.add(fieldId, "3, 1, fill, default");
-		panelPatient.add(labelName, "1, 3, right, default");
-		panelPatient.add(fieldName, "3, 3, fill, default");
-		panelPatient.add(labelGender, "1, 5, right, default");
-		panelPatient.add(comboBoxGender, "3, 5, fill, default");
-		panelPatient.add(labelBirthDate, "1, 7, right, default");
-		panelPatient.add(panelBirthDate, "3, 7, fill, default");
-		panelPatient.add(labelBloodType, "1, 9, right, default");
-		panelPatient.add(comboBoxBloodType, "3, 9, fill, default");
+		panelFields.add(labelId, "1, 1, right, default");
+		panelFields.add(fieldId, "3, 1, fill, default");
+		panelFields.add(labelName, "1, 3, right, default");
+		panelFields.add(fieldName, "3, 3, fill, default");
+		panelFields.add(labelGender, "1, 5, right, default");
+		panelFields.add(comboBoxGender, "3, 5, fill, default");
+		panelFields.add(labelBirthDate, "1, 7, right, default");
+		panelFields.add(panelBirthDate, "3, 7, fill, default");
+		panelFields.add(labelBloodType, "1, 9, right, default");
+		panelFields.add(comboBoxBloodType, "3, 9, fill, default");
+		
+		fieldObservations = new JTextArea();
+		fieldObservations.setLineWrap(true);
+		fieldObservations.setWrapStyleWord(true);
+		registerComponent("fieldObservations", fieldObservations);
+		
+		JScrollPane panelObservationsContainer = new JScrollPane(fieldObservations, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JPanel panelObservations = new JPanel();
+		panelObservations.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Observaciones"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelObservations.setLayout(new FormLayout(new ColumnSpec[] {
+			ColumnSpec.decode("fill:max(256px;default):grow")
+		}, new RowSpec[] {
+			RowSpec.decode("fill:max(128px;default):grow")
+		}));
+		panelObservations.add(panelObservationsContainer, "1, 1");
+		
+		JPanel panelPatient = new JPanel();
+		panelPatient.setLayout(new BorderLayout(10, 0));
+		panelPatient.add(panelFields, BorderLayout.WEST);
+		panelPatient.add(panelObservations, BorderLayout.CENTER);
 		
 		JTextField fieldSearch = new JTextField();
 		registerComponent("fieldSearch", fieldSearch);
@@ -211,7 +236,7 @@ public class PatientFrame extends GuiFrame {
 		registerComponent("comboBoxCriterion", comboBoxCriterion);
 		
 		JPanel panelSearch = new JPanel();
-		panelSearch.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Búsqueda de pacientes"), BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+		panelSearch.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Búsqueda de estudios"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelSearch.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
@@ -245,7 +270,7 @@ public class PatientFrame extends GuiFrame {
 		registerComponent("tableStudies", tableStudies);
 		
 		JScrollPane panelStudies = new JScrollPane(tableStudies, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panelStudies.setPreferredSize(new Dimension(800, 200));
+		panelStudies.setPreferredSize(new Dimension(700, 200));
 		
 		JPanel panelSearchStudies = new JPanel();
 		panelSearchStudies.setLayout(new BorderLayout(0, 10));
@@ -359,6 +384,7 @@ public class PatientFrame extends GuiFrame {
 		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
 		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
 		String name = fieldName.getText();
+		String observations = fieldObservations.getText();
 		
 		// Modifies the patient
 		ModifyPatientCaller caller = new ModifyPatientCaller() {
@@ -370,7 +396,7 @@ public class PatientFrame extends GuiFrame {
 				setViewMode();
 			}
 		};
-		ModifyPatientWorker worker = new ModifyPatientWorker(caller, birthDate, bloodType, gender, name);
+		ModifyPatientWorker worker = new ModifyPatientWorker(caller, birthDate, bloodType, gender, name, observations);
 		worker.execute();
 	}
 	
@@ -439,6 +465,7 @@ public class PatientFrame extends GuiFrame {
 		comboBoxBloodType.setEnabled(true);
 		comboBoxGender.setEnabled(true);
 		fieldName.setEditable(true);
+		fieldObservations.setEditable(true);
 		
 		// Enables the modify patient button
 		buttonModifyPatient.setEnabled(true);
@@ -453,6 +480,7 @@ public class PatientFrame extends GuiFrame {
 		comboBoxBloodType.setEnabled(false);
 		comboBoxGender.setEnabled(false);
 		fieldName.setEditable(false);
+		fieldObservations.setEditable(false);
 		
 		// Disables the modify patient button
 		buttonModifyPatient.setEnabled(false);

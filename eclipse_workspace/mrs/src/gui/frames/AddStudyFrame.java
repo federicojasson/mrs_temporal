@@ -47,7 +47,10 @@ public class AddStudyFrame extends GuiFrame {
 	private JButton buttonRemoveStudyFile;
 	private JComboBox<StudyType> comboBoxStudyType;
 	private DatePicker datePicker;
+	private JTextArea fieldCauses;
 	private JTextField fieldDate;
+	private JTextArea fieldDiagnosis;
+	private JTextArea fieldIndications;
 	private JTextArea fieldObservations;
 	private FileList listStudyFiles;
 	
@@ -121,10 +124,11 @@ public class AddStudyFrame extends GuiFrame {
 		panelDate.add(buttonDatePicker, "2, 1, default, default");
 		
 		JPanel panelFields = new JPanel();
+		panelFields.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Información básica"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelFields.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			FormFactory.GROWING_BUTTON_COLSPEC
+			ColumnSpec.decode("fill:max(224px;default):grow")
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC,
 			FormFactory.NARROW_LINE_GAP_ROWSPEC,
@@ -135,34 +139,73 @@ public class AddStudyFrame extends GuiFrame {
 		panelFields.add(labelDate, "1, 3, right, default");
 		panelFields.add(panelDate, "3, 3, fill, default");
 		
-		JLabel labelObservations = new JLabel("Observaciones");
+		fieldCauses = new JTextArea();
+		fieldCauses.setLineWrap(true);
+		fieldCauses.setWrapStyleWord(true);
+		registerComponent("fieldCauses", fieldCauses);
+		
+		JScrollPane panelCausesContainer = new JScrollPane(fieldCauses, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JPanel panelCauses = new JPanel();
+		panelCauses.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Motivo del estudio / Síntomas"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelCauses.setLayout(new GridLayout());
+		panelCauses.add(panelCausesContainer);
+		
+		fieldDiagnosis = new JTextArea();
+		fieldDiagnosis.setLineWrap(true);
+		fieldDiagnosis.setWrapStyleWord(true);
+		registerComponent("fieldDiagnosis", fieldDiagnosis);
+		
+		JScrollPane panelDiagnosisContainer = new JScrollPane(fieldDiagnosis, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JPanel panelDiagnosis = new JPanel();
+		panelDiagnosis.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Diagnóstico"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelDiagnosis.setLayout(new GridLayout());
+		panelDiagnosis.add(panelDiagnosisContainer);
+		
+		fieldIndications = new JTextArea();
+		fieldIndications.setLineWrap(true);
+		fieldIndications.setWrapStyleWord(true);
+		registerComponent("fieldDiagnosis", fieldIndications);
+		
+		JScrollPane panelIndicationsContainer = new JScrollPane(fieldIndications, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JPanel panelIndications = new JPanel();
+		panelIndications.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Indicaciones"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelIndications.setLayout(new GridLayout());
+		panelIndications.add(panelIndicationsContainer);
 		
 		fieldObservations = new JTextArea();
 		fieldObservations.setLineWrap(true);
 		fieldObservations.setWrapStyleWord(true);
-		fieldObservations.setColumns(60);
-		fieldObservations.setRows(15);
 		registerComponent("fieldObservations", fieldObservations);
 		
 		JScrollPane panelObservationsContainer = new JScrollPane(fieldObservations, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		JPanel panelObservations = new JPanel();
-		panelObservations.setLayout(new FormLayout(new ColumnSpec[] {
-			ColumnSpec.decode("fill:max(256px;default):grow")
+		panelObservations.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Observaciones"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelObservations.setLayout(new GridLayout());
+		panelObservations.add(panelObservationsContainer);
+		
+		JPanel panelAreas = new JPanel();
+		panelAreas.setLayout(new FormLayout(new ColumnSpec[] {
+			ColumnSpec.decode("fill:max(224px;default):grow"),
+			FormFactory.RELATED_GAP_COLSPEC,
+			ColumnSpec.decode("fill:max(224px;default):grow")
 		}, new RowSpec[] {
-			FormFactory.MIN_ROWSPEC,
+			RowSpec.decode("fill:max(128px;default):grow"),
 			FormFactory.LINE_GAP_ROWSPEC,
-			RowSpec.decode("fill:max(256px;default):grow")
+			RowSpec.decode("fill:max(128px;default):grow")
 		}));
-		panelObservations.add(labelObservations, "1, 1");
-		panelObservations.add(panelObservationsContainer, "1, 3");
+		panelAreas.add(panelCauses, "1, 1");
+		panelAreas.add(panelDiagnosis, "3, 1");
+		panelAreas.add(panelIndications, "1, 3");
+		panelAreas.add(panelObservations, "3, 3");
 		
 		JPanel panelStudy = new JPanel();
 		panelStudy.setLayout(new BorderLayout(0, 10));
 		panelStudy.add(panelFields, BorderLayout.NORTH);
-		panelStudy.add(panelObservations, BorderLayout.CENTER);
-		
-		JLabel labelStudyFiles = new JLabel("Archivos");
+		panelStudy.add(panelAreas, BorderLayout.CENTER);
 
 		listStudyFiles = new FileList();
 		listStudyFiles.addMouseListener(new MouseAdapter() {
@@ -181,13 +224,12 @@ public class AddStudyFrame extends GuiFrame {
 		registerComponent("listStudyFiles", listStudyFiles);
 		
 		JScrollPane panelStudyFilesContainer = new JScrollPane(listStudyFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panelStudyFilesContainer.setPreferredSize(new Dimension(256, 256));
 		
 		Image imageButtonAddFile = new ImageIcon(getClass().getResource("/images/file_add.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
 		
 		ImageIcon iconButtonAddFile = new ImageIcon(imageButtonAddFile);
 		
-		JButton buttonAddStudyFile = new JButton("Agregar archivos...");
+		JButton buttonAddStudyFile = new JButton("Agregar...");
 		buttonAddStudyFile.setIcon(iconButtonAddFile);
 		buttonAddStudyFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -200,7 +242,7 @@ public class AddStudyFrame extends GuiFrame {
 		
 		ImageIcon iconButtonRemoveFile = new ImageIcon(imageButtonRemoveFile);
 		
-		buttonRemoveStudyFile = new JButton("Eliminar archivos");
+		buttonRemoveStudyFile = new JButton("Eliminar");
 		buttonRemoveStudyFile.setIcon(iconButtonRemoveFile);
 		buttonRemoveStudyFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -210,20 +252,26 @@ public class AddStudyFrame extends GuiFrame {
 		registerComponent("buttonRemoveFile", buttonRemoveStudyFile);
 		
 		JPanel panelStudyFilesButtons = new JPanel();
-		panelStudyFilesButtons.setLayout(new GridLayout(1, 2, 5, 0));
+		panelStudyFilesButtons.setLayout(new GridLayout(1, 2, 3, 0));
 		panelStudyFilesButtons.add(buttonAddStudyFile);
 		panelStudyFilesButtons.add(buttonRemoveStudyFile);
 		
 		JPanel panelStudyFiles = new JPanel();
-		panelStudyFiles.setLayout(new BorderLayout(0, 5));
-		panelStudyFiles.add(labelStudyFiles, BorderLayout.NORTH);
-		panelStudyFiles.add(panelStudyFilesContainer, BorderLayout.CENTER);
-		panelStudyFiles.add(panelStudyFilesButtons, BorderLayout.SOUTH);
+		panelStudyFiles.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Archivos"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelStudyFiles.setLayout(new FormLayout(new ColumnSpec[] {
+			ColumnSpec.decode("fill:max(128px;default):grow")
+		}, new RowSpec[] {
+			RowSpec.decode("fill:max(224px;default):grow"),
+			FormFactory.NARROW_LINE_GAP_ROWSPEC,
+			FormFactory.MIN_ROWSPEC
+		}));
+		panelStudyFiles.add(panelStudyFilesContainer, "1, 1");
+		panelStudyFiles.add(panelStudyFilesButtons, "1, 3");
 		
 		JPanel panelContent = new JPanel();
 		panelContent.setLayout(new BorderLayout(10, 0));
-		panelContent.add(panelStudy, BorderLayout.WEST);
-		panelContent.add(panelStudyFiles, BorderLayout.CENTER);
+		panelContent.add(panelStudy, BorderLayout.CENTER);
+		panelContent.add(panelStudyFiles, BorderLayout.EAST);
 		
 		JButton buttonCancel = new JButton("Cancelar");
 		buttonCancel.addActionListener(new ActionListener() {
@@ -284,7 +332,10 @@ public class AddStudyFrame extends GuiFrame {
 		lock();
 		
 		// Gets the study's information
+		String causes = fieldCauses.getText();
 		Date date = datePicker.getDate();
+		String diagnosis = fieldDiagnosis.getText();
+		String indications = fieldIndications.getText();
 		String observations = fieldObservations.getText();
 		byte[] studyTypeId = comboBoxStudyType.getItemAt(comboBoxStudyType.getSelectedIndex()).getId();
 		List<File> studyFiles = listStudyFiles.getFilesToAdd();
@@ -296,7 +347,7 @@ public class AddStudyFrame extends GuiFrame {
 				GuiManager.closeCurrentFrame();
 			}
 		};
-		AddStudyWorker worker = new AddStudyWorker(caller, date, observations, studyTypeId, studyFiles);
+		AddStudyWorker worker = new AddStudyWorker(caller, causes, date, diagnosis, indications, observations, studyTypeId, studyFiles);
 		worker.execute();
 	}
 	

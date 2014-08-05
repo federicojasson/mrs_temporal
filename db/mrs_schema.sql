@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS patients (
 	gender BINARY(1),
 	id BINARY(16), -- UUID: 128 bits = 16 bytes
 	name VARCHAR(128),
+	observations TEXT,
 	user_id VARCHAR(32),
 	PRIMARY KEY(id),
 	FOREIGN KEY(user_id) REFERENCES users(id)
@@ -67,8 +68,11 @@ CREATE TABLE IF NOT EXISTS study_types (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies (
+	causes TEXT,
 	date DATE,
+	diagnosis TEXT,
 	id BINARY(16), -- UUID: 128 bits = 16 bytesa
+	indications TEXT,
 	observations TEXT,
 	patient_id BINARY(16), -- UUID: 128 bits = 16 bytes
 	study_type_id BINARY(2),
@@ -117,6 +121,28 @@ WHERE role = 'R';
 DELIMITER !
 
 /*
+ *	Deletes a patient.
+ */
+CREATE PROCEDURE delete_patient (
+	IN i_id BINARY(16)
+)
+BEGIN
+	DELETE FROM patients
+	WHERE id = i_id;
+END; !
+
+/*
+ *	Deletes a study.
+ */
+CREATE PROCEDURE delete_study (
+	IN i_id BINARY(16)
+)
+BEGIN
+	DELETE FROM studies
+	WHERE id = i_id;
+END; !
+
+/*
  *	Deletes a study's file.
  */
 CREATE PROCEDURE delete_study_file (
@@ -129,6 +155,17 @@ BEGIN
 END; !
 
 /*
+ *	Deletes a user.
+ */
+CREATE PROCEDURE delete_user (
+	IN i_id VARCHAR(32)
+)
+BEGIN
+	DELETE FROM users
+	WHERE id LIKE BINARY i_id;
+END; !
+
+/*
  *	Inserts a patient.
  */
 CREATE PROCEDURE insert_patient (
@@ -137,6 +174,7 @@ CREATE PROCEDURE insert_patient (
 	IN i_gender BINARY(1),
 	IN i_id BINARY(16),
 	IN i_name VARCHAR(128),
+	IN i_observations TEXT,
 	IN i_user_id VARCHAR(32)
 )
 BEGIN
@@ -146,6 +184,7 @@ BEGIN
 		gender,
 		id,
 		name,
+		observations,
 		user_id
 	) VALUES (
 		i_birth_date,
@@ -153,6 +192,7 @@ BEGIN
 		i_gender,
 		i_id,
 		i_name,
+		i_observations,
 		i_user_id
 	);
 END; !
@@ -161,22 +201,31 @@ END; !
  *	Inserts a study.
  */
 CREATE PROCEDURE insert_study (
+	IN i_causes TEXT,
 	IN i_date DATE,
+	IN i_diagnosis TEXT,
 	IN i_id BINARY(16),
+	IN i_indications TEXT,
 	IN i_observations TEXT,
 	IN i_patient_id BINARY(16),
 	IN i_study_type_id BINARY(2)
 )
 BEGIN
 	INSERT INTO studies (
+		causes,
 		date,
+		diagnosis,
 		id,
+		indications,
 		observations,
 		patient_id,
 		study_type_id
 	) VALUES (
+		i_causes,
 		i_date,
+		i_diagnosis,
 		i_id,
+		i_indications,
 		i_observations,
 		i_patient_id,
 		i_study_type_id
@@ -244,66 +293,6 @@ BEGIN
 END; !
 
 /*
- *	Inserts a user with admin role.
- */
-CREATE PROCEDURE insert_user_admin (
-	IN i_id VARCHAR(32),
-	IN i_password_hash BINARY(64),
-	IN i_salt BINARY(64)
-)
-BEGIN
-	-- Initializes the user role
-	DECLARE v_role BINARY(1) DEFAULT 'A';
-	
-	CALL insert_user(
-		i_id,
-		i_password_hash,
-		v_role,
-		i_salt
-	);
-END; !
-
-/*
- *	Inserts a user with doctor role.
- */
-CREATE PROCEDURE insert_user_doctor (
-	IN i_id VARCHAR(32),
-	IN i_password_hash BINARY(64),
-	IN i_salt BINARY(64)
-)
-BEGIN
-	-- Initializes the user role
-	DECLARE v_role BINARY(1) DEFAULT 'D';
-	
-	CALL insert_user(
-		i_id,
-		i_password_hash,
-		v_role,
-		i_salt
-	);
-END; !
-
-/*
- *	Inserts a user with researcher role.
- */
-CREATE PROCEDURE insert_user_researcher (
-	IN i_id VARCHAR(32),
-	IN i_password_hash BINARY(64),
-	IN i_salt BINARY(64)
-)
-BEGIN
-	-- Initializes the user role
-	DECLARE v_role BINARY(1) DEFAULT 'R';
-	
-	CALL insert_user(
-		i_id,
-		i_password_hash,
-		v_role,
-		i_salt
-	);
-END; !
-
-/*
  *	Updates a patient's information.
  */
 CREATE PROCEDURE update_patient (
@@ -311,7 +300,8 @@ CREATE PROCEDURE update_patient (
 	IN i_blood_type BINARY(1),
 	IN i_gender BINARY(1),
 	IN i_id BINARY(16),
-	IN i_name VARCHAR(128)
+	IN i_name VARCHAR(128),
+	IN i_observations TEXT
 )
 BEGIN
 	UPDATE patients
@@ -319,7 +309,8 @@ BEGIN
 		birth_date = i_birth_date,
 		blood_type = i_blood_type,
 		gender = i_gender,
-		name = i_name
+		name = i_name,
+		observations = i_observations
 	WHERE id = i_id
 	LIMIT 1;
 END; !
@@ -328,12 +319,19 @@ END; !
  *	Updates a study's information.
  */
 CREATE PROCEDURE update_study (
+	IN i_causes TEXT,
+	IN i_diagnosis TEXT,
 	IN i_id BINARY(16),
+	IN i_indications TEXT,
 	IN i_observations TEXT
 )
 BEGIN
 	UPDATE studies
-	SET observations = i_observations
+	SET
+		causes = i_causes,
+		diagnosis = i_diagnosis,
+		indications = i_indications,
+		observations = i_observations
 	WHERE id = i_id
 	LIMIT 1;
 END; !
@@ -443,6 +441,42 @@ BEGIN
 	);
 END; !
 
+/*
+ *	Deletes all the patient's studies.
+ */
+CREATE TRIGGER before_delete_patient
+BEFORE DELETE ON patients
+FOR EACH ROW
+BEGIN
+	DELETE FROM studies
+	WHERE patient_id = OLD.id;
+END; !
+
+/*
+ *	Deletes all the study's files and histories.
+ */
+CREATE TRIGGER before_delete_study
+BEFORE DELETE ON studies
+FOR EACH ROW
+BEGIN
+	DELETE FROM studies_files
+	WHERE study_id = OLD.id;
+	
+	DELETE FROM studies_histories
+	WHERE study_id = OLD.id;
+END; !
+
+/*
+ *	Deletes all the user's patients.
+ */
+CREATE TRIGGER before_delete_user
+BEFORE DELETE ON users
+FOR EACH ROW
+BEGIN
+	DELETE FROM patients
+	WHERE user_id = OLD.id;
+END; !
+
 
 DELIMITER ;
 -- USERS AND PRIVILEGES ----------------------------------------------------------------------
@@ -457,19 +491,15 @@ REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_admin'@'localhost';
 
 GRANT EXECUTE
+ON PROCEDURE mrs_db.delete_user
+TO 'mrs_admin'@'localhost';
+
+GRANT EXECUTE
 ON PROCEDURE mrs_db.insert_study_type
 TO 'mrs_admin'@'localhost';
 
 GRANT EXECUTE
-ON PROCEDURE mrs_db.insert_user_admin
-TO 'mrs_admin'@'localhost';
-
-GRANT EXECUTE
-ON PROCEDURE mrs_db.insert_user_doctor
-TO 'mrs_admin'@'localhost';
-
-GRANT EXECUTE
-ON PROCEDURE mrs_db.insert_user_researcher
+ON PROCEDURE mrs_db.insert_user
 TO 'mrs_admin'@'localhost';
 
 GRANT SELECT
@@ -484,6 +514,14 @@ IDENTIFIED BY PASSWORD '*9A07BE73FB3B837FA8C1294636D9BBBC6307F8EA'; -- TODO: def
 
 REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_doctor'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.delete_patient
+TO 'mrs_doctor'@'localhost';
+
+GRANT EXECUTE
+ON PROCEDURE mrs_db.delete_study
+TO 'mrs_doctor'@'localhost';
 
 GRANT EXECUTE
 ON PROCEDURE mrs_db.delete_study_file

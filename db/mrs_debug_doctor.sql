@@ -10,28 +10,38 @@ CALL insert_patient (
 	'M',
 	UNHEX('6c6e05fa4e0845838ed839f913ea06d6'),
 	'Federico',
+	'Observaciones del paciente',
 	'doctor'
 );
 
 CALL insert_study (
+	'Síntomas',
 	'2014-07-16',
+	'Diagnóstico',
 	UNHEX('9c3f374d8ed2443282c21afd974c4a96'),
+	'Indicaciones',
 	'Observación 1',
 	UNHEX('6c6e05fa4e0845838ed839f913ea06d6'),
 	'BT'
 );
 
 CALL insert_study (
+	'Síntomas',
 	'2014-07-16',
+	'Diagnóstico',
 	UNHEX('8f3f374d8ed2443282c21afd974c4a96'),
+	'Indicaciones',
 	'Observación 2',
 	UNHEX('6c6e05fa4e0845838ed839f913ea06d6'),
 	'BT'
 );
 
 CALL insert_study (
+	'Síntomas',
 	'2014-07-16',
+	'Diagnóstico',
 	UNHEX('223f374d8ed2443282c21afd974c4a96'),
+	'Indicaciones',
 	'Observación 3',
 	UNHEX('6c6e05fa4e0845838ed839f913ea06d6'),
 	'ET'
@@ -50,7 +60,10 @@ CALL insert_study_file (
 );
 
 CALL update_study (
+	'Síntomas',
+	'Diagnóstico',
 	UNHEX('9c3f374d8ed2443282c21afd974c4a96'),
+	'Indicaciones',
 	'Observación 1'
 );
 
@@ -59,11 +72,11 @@ CALL delete_study_file (
 	UNHEX('9c3f374d8ed2443282c21afd974c4a96')
 );
 
-SELECT birth_date, blood_type, gender, HEX(id) AS id, name, user_id
+SELECT birth_date, blood_type, gender, HEX(id) AS id, name, observations, user_id
 FROM patients
 WHERE user_id LIKE BINARY 'doctor';
 
-SELECT date, HEX(id) AS id, observations, HEX(patient_id) AS patient_id, study_type_id
+SELECT causes, date, diagnosis, HEX(id) AS id, indications, observations, HEX(patient_id) AS patient_id, study_type_id
 FROM studies
 WHERE id = UNHEX('9c3f374d8ed2443282c21afd974c4a96')
 ORDER BY date DESC;

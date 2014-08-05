@@ -2,11 +2,10 @@ package gui.components;
 
 import java.awt.Component;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import entities.Gender;
 
 @SuppressWarnings("serial")
-public class GenderTableCellRenderer extends DefaultTableCellRenderer {
+public class GenderTableCellRenderer extends MyDefaultTableCellRenderer {
 	
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		// The received object is a byte array

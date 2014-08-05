@@ -18,6 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import utilities.Utility;
 import com.jgoodies.forms.factories.FormFactory;
@@ -35,6 +37,7 @@ public class AddPatientFrame extends GuiFrame {
 	private DatePicker datePicker;
 	private JTextField fieldBirthDate;
 	private JTextField fieldName;
+	private JTextArea fieldObservations;
 	
 	protected JPanel getMainPanel() {
 		JLabel labelName = new JLabel("Nombre:");
@@ -90,11 +93,12 @@ public class AddPatientFrame extends GuiFrame {
 		comboBoxBloodType = new JComboBox<BloodType>(BloodType.values());
 		registerComponent("comboBoxBloodType", comboBoxBloodType);
 		
-		JPanel panelContent = new JPanel();
-		panelContent.setLayout(new FormLayout(new ColumnSpec[] {
+		JPanel panelFields = new JPanel();
+		panelFields.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Información básica"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelFields.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.MIN_COLSPEC,
 			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			FormFactory.GROWING_BUTTON_COLSPEC
+			ColumnSpec.decode("fill:max(224px;default):grow")
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC,
 			FormFactory.NARROW_LINE_GAP_ROWSPEC,
@@ -104,14 +108,35 @@ public class AddPatientFrame extends GuiFrame {
 			FormFactory.NARROW_LINE_GAP_ROWSPEC,
 			FormFactory.MIN_ROWSPEC
 		}));
-		panelContent.add(labelName, "1, 1, right, default");
-		panelContent.add(fieldName, "3, 1, fill, default");
-		panelContent.add(labelGender, "1, 3, right, default");
-		panelContent.add(comboBoxGender, "3, 3, fill, default");
-		panelContent.add(labelBirthDate, "1, 5, right, default");
-		panelContent.add(panelBirthDate, "3, 5, fill, default");
-		panelContent.add(labelBloodType, "1, 7, right, default");
-		panelContent.add(comboBoxBloodType, "3, 7, fill, default");
+		panelFields.add(labelName, "1, 1, right, default");
+		panelFields.add(fieldName, "3, 1, fill, default");
+		panelFields.add(labelGender, "1, 3, right, default");
+		panelFields.add(comboBoxGender, "3, 3, fill, default");
+		panelFields.add(labelBirthDate, "1, 5, right, default");
+		panelFields.add(panelBirthDate, "3, 5, fill, default");
+		panelFields.add(labelBloodType, "1, 7, right, default");
+		panelFields.add(comboBoxBloodType, "3, 7, fill, default");
+		
+		fieldObservations = new JTextArea();
+		fieldObservations.setLineWrap(true);
+		fieldObservations.setWrapStyleWord(true);
+		registerComponent("fieldObservations", fieldObservations);
+		
+		JScrollPane panelObservationsContainer = new JScrollPane(fieldObservations, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JPanel panelObservations = new JPanel();
+		panelObservations.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Observaciones"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelObservations.setLayout(new FormLayout(new ColumnSpec[] {
+			ColumnSpec.decode("fill:max(256px;default):grow")
+		}, new RowSpec[] {
+			RowSpec.decode("fill:max(128px;default):grow")
+		}));
+		panelObservations.add(panelObservationsContainer, "1, 1");
+		
+		JPanel panelContent = new JPanel();
+		panelContent.setLayout(new BorderLayout(10, 0));
+		panelContent.add(panelFields, BorderLayout.WEST);
+		panelContent.add(panelObservations, BorderLayout.CENTER);
 		
 		JButton buttonCancel = new JButton("Cancelar");
 		buttonCancel.addActionListener(new ActionListener() {
@@ -155,7 +180,7 @@ public class AddPatientFrame extends GuiFrame {
 	}
 	
 	protected boolean isResizable() {
-		return false;
+		return true;
 	}
 	
 	private void onAddPatient() {
@@ -167,6 +192,7 @@ public class AddPatientFrame extends GuiFrame {
 		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
 		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
 		String name = fieldName.getText();
+		String observations = fieldObservations.getText();
 		
 		// Adds the patient
 		AddPatientCaller caller = new AddPatientCaller() {
@@ -175,7 +201,7 @@ public class AddPatientFrame extends GuiFrame {
 				GuiManager.closeCurrentFrame();
 			}
 		};
-		AddPatientWorker worker = new AddPatientWorker(caller, birthDate, bloodType, gender, name);
+		AddPatientWorker worker = new AddPatientWorker(caller, birthDate, bloodType, gender, name, observations);
 		worker.execute();
 	}
 	

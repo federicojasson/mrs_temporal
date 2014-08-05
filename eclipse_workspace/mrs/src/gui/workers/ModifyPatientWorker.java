@@ -13,13 +13,15 @@ public class ModifyPatientWorker extends SwingWorker<Void, Void> {
 	private ModifyPatientCaller caller;
 	private byte[] gender;
 	private String name;
+	private String observations;
 	
-	public ModifyPatientWorker(ModifyPatientCaller caller, Date birthDate, byte[] bloodType, byte[] gender, String name) {
+	public ModifyPatientWorker(ModifyPatientCaller caller, Date birthDate, byte[] bloodType, byte[] gender, String name, String observations) {
 		this.birthDate = birthDate;
 		this.bloodType = bloodType;
 		this.caller = caller;
 		this.gender = gender;
 		this.name = name;
+		this.observations = observations;
 	}
 	
 	protected Void doInBackground() {
@@ -27,7 +29,7 @@ public class ModifyPatientWorker extends SwingWorker<Void, Void> {
 		
 		try {
 			// Modifies the patient
-			PatientManager.modifyPatient(birthDate, bloodType, gender, name);
+			PatientManager.modifyPatient(birthDate, bloodType, gender, name, observations);
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

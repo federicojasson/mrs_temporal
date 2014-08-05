@@ -9,13 +9,15 @@ public class Patient {
 	private byte[] gender;
 	private byte[] id;
 	private String name;
+	private String observations;
 	
-	public Patient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name) {
+	public Patient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name, String observations) {
 		this.birthDate = birthDate;
 		this.bloodType = bloodType;
 		this.gender = gender;
 		this.id = id;
 		this.name = name;
+		this.observations = observations;
 	}
 	
 	public Date getBirthDate() {
@@ -36,6 +38,10 @@ public class Patient {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getObservations() {
+		return observations;
 	}
 	
 }

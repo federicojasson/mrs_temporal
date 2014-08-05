@@ -14,7 +14,7 @@ public class PatientManager {
 	
 	private static byte[] currentPatientId;
 	
-	public static void addPatient(Date birthDate, byte[] bloodType, byte[] gender, String name) throws SQLException {
+	public static void addPatient(Date birthDate, byte[] bloodType, byte[] gender, String name, String observations) throws SQLException {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 		
@@ -30,7 +30,7 @@ public class PatientManager {
 		String userId = UserManager.getCurrentUserId();
 		
 		// Inserts the patient into the database
-		insertPatient(birthDate, bloodType, gender, id, name, userId);
+		insertPatient(birthDate, bloodType, gender, id, name, observations, userId);
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -59,9 +59,10 @@ public class PatientManager {
 				byte[] bloodType = resultSet.getBytes("blood_type");
 				byte[] gender = resultSet.getBytes("gender");
 				String name = resultSet.getString("name");
+				String observations = resultSet.getString("observations");
 				
 				// Initializes the patient object
-				patient = new Patient(birthDate, bloodType, gender, id, name);
+				patient = new Patient(birthDate, bloodType, gender, id, name, observations);
 			}
 		} finally {
 			// Releases the statement resources
@@ -101,12 +102,12 @@ public class PatientManager {
 		return patientSummaries;
 	}
 	
-	public static void modifyPatient(Date birthDate, byte[] bloodType, byte[] gender, String name) throws SQLException {
+	public static void modifyPatient(Date birthDate, byte[] bloodType, byte[] gender, String name, String observations) throws SQLException {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 		
 		// Updates the patient in the database
-		updatePatient(birthDate, bloodType, gender, currentPatientId, name);
+		updatePatient(birthDate, bloodType, gender, currentPatientId, name, observations);
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -116,7 +117,7 @@ public class PatientManager {
 		currentPatientId = patientId;
 	}
 
-	private static void insertPatient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name, String userId) throws SQLException {
+	private static void insertPatient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name, String observations, String userId) throws SQLException {
 		// Gets the stored procedure
 		CallableStatement storedProcedure = DbmsManager.getStoredProcedure(DbmsManager.INSERT_PATIENT);
 		
@@ -127,7 +128,8 @@ public class PatientManager {
 			storedProcedure.setBytes(3, gender);
 			storedProcedure.setBytes(4, id);
 			storedProcedure.setString(5, name);
-			storedProcedure.setString(6, userId);
+			storedProcedure.setString(6, observations);
+			storedProcedure.setString(7, userId);
 			
 			// Executes the stored procedure
 			storedProcedure.execute();
@@ -161,7 +163,7 @@ public class PatientManager {
 		return patientExists;
 	}
 	
-	private static void updatePatient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name) throws SQLException {
+	private static void updatePatient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name, String observations) throws SQLException {
 		// Gets the stored procedure
 		CallableStatement storedProcedure = DbmsManager.getStoredProcedure(DbmsManager.UPDATE_PATIENT);
 		
@@ -172,6 +174,7 @@ public class PatientManager {
 			storedProcedure.setBytes(3, gender);
 			storedProcedure.setBytes(4, id);
 			storedProcedure.setString(5, name);
+			storedProcedure.setString(6, observations);
 			
 			// Executes the stored procedure
 			storedProcedure.execute();

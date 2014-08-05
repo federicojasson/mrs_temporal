@@ -11,12 +11,18 @@ import managers.StudyManager;
 public class ModifyStudyWorker extends SwingWorker<Void, Void> {
 	
 	private ModifyStudyCaller caller;
+	private String causes;
+	private String diagnosis;
+	private String indications;
 	private String observations;
 	private List<File> studyFilesToAdd;
 	private List<File> studyFilesToRemove;
 	
-	public ModifyStudyWorker(ModifyStudyCaller caller, String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) {
+	public ModifyStudyWorker(ModifyStudyCaller caller, String causes, String diagnosis, String indications, String observations, List<File> studyFilesToAdd, List<File> studyFilesToRemove) {
 		this.caller = caller;
+		this.causes = causes;
+		this.diagnosis = diagnosis;
+		this.indications = indications;
 		this.observations = observations;
 		this.studyFilesToAdd = studyFilesToAdd;
 		this.studyFilesToRemove = studyFilesToRemove;
@@ -27,7 +33,7 @@ public class ModifyStudyWorker extends SwingWorker<Void, Void> {
 		
 		try {
 			// Modifies the study
-			StudyManager.modifyStudy(observations, studyFilesToAdd, studyFilesToRemove);
+			StudyManager.modifyStudy(causes, diagnosis, indications, observations, studyFilesToAdd, studyFilesToRemove);
 		} catch (NoSuchAlgorithmException | SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

@@ -12,14 +12,20 @@ import managers.StudyManager;
 public class AddStudyWorker extends SwingWorker<Void, Void> {
 	
 	private AddStudyCaller caller;
+	private String causes;
 	private Date date;
+	private String diagnosis;
+	private String indications;
 	private String observations;
 	private List<File> studyFiles;
 	private byte[] studyTypeId; 
 	
-	public AddStudyWorker(AddStudyCaller caller, Date date, String observations, byte[] studyTypeId, List<File> studyFiles) {
+	public AddStudyWorker(AddStudyCaller caller, String causes, Date date, String diagnosis, String indications, String observations, byte[] studyTypeId, List<File> studyFiles) {
 		this.caller = caller;
+		this.causes = causes;
 		this.date = date;
+		this.diagnosis = diagnosis;
+		this.indications = indications;
 		this.observations = observations;
 		this.studyFiles = studyFiles;
 		this.studyTypeId = studyTypeId;
@@ -30,7 +36,7 @@ public class AddStudyWorker extends SwingWorker<Void, Void> {
 		
 		try {
 			// Adds the study
-			StudyManager.addStudy(date, observations, studyTypeId, studyFiles);
+			StudyManager.addStudy(causes, date, diagnosis, indications, observations, studyTypeId, studyFiles);
 		} catch (NoSuchAlgorithmException | SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);
