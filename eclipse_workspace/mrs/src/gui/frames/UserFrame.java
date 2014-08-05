@@ -61,7 +61,7 @@ public class UserFrame extends GuiFrame {
 				onSelectPatient();
 			}
 		};
-		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(caller, UserManager.getCurrentUserId());
+		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(caller);
 		worker.execute();
 	}
 	
@@ -211,6 +211,9 @@ public class UserFrame extends GuiFrame {
 			// No row has been selected
 			return;
 		
+		// Locks the frame
+		lock();
+		
 		// Gets the patient ID
 		byte[] patientId = (byte[]) tablePatients.getValueAt(selectedRowIndex, PatientTable.ID);
 		
@@ -218,9 +221,6 @@ public class UserFrame extends GuiFrame {
 		if (! GuiManager.showConfirmationDialog(this, "¿Eliminar paciente?", "Está a punto de eliminar un paciente y todos sus estudios asociados." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
 			// The action was canceled
 			return;
-		
-		// Locks the frame
-		lock();
 		
 		// Removes the patient
 		RemovePatientCaller caller = new RemovePatientCaller() {

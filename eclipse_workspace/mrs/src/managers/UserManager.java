@@ -54,8 +54,12 @@ public class UserManager {
 				authenticationData = new AuthenticationData(passwordHash, salt);
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		return authenticationData;

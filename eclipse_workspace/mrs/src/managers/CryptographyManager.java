@@ -31,8 +31,12 @@ public class CryptographyManager {
 			// Reads the file bytes
 			while (algorithmInputStream.read() != -1);
 		} finally {
-			// Closes the buffer
-			algorithmInputStream.close();
+			try {
+				// Closes the buffer
+				algorithmInputStream.close();
+			} catch (IOException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		// Computes the file checksum

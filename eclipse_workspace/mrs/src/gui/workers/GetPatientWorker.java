@@ -10,11 +10,9 @@ import managers.PatientManager;
 public class GetPatientWorker extends SwingWorker<Patient, Void> {
 	
 	private GetPatientCaller caller;
-	private byte[] patientId;
 	
-	public GetPatientWorker(GetPatientCaller caller, byte[] patientId) {
+	public GetPatientWorker(GetPatientCaller caller) {
 		this.caller = caller;
-		this.patientId = patientId;
 	}
 	
 	protected Patient doInBackground() {
@@ -22,7 +20,7 @@ public class GetPatientWorker extends SwingWorker<Patient, Void> {
 		
 		try {
 			// Gets the patient
-			return PatientManager.getPatient(patientId);
+			return PatientManager.getPatient();
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

@@ -12,11 +12,9 @@ import managers.StudyManager;
 public class GetStudySummariesWorker extends SwingWorker<List<StudySummary>, Void> {
 	
 	private GetStudySummariesCaller caller;
-	private byte[] patientId;
 	
-	public GetStudySummariesWorker(GetStudySummariesCaller caller, byte[] patientId) {
+	public GetStudySummariesWorker(GetStudySummariesCaller caller) {
 		this.caller = caller;
-		this.patientId = patientId;
 	}
 	
 	protected List<StudySummary> doInBackground() {
@@ -24,7 +22,7 @@ public class GetStudySummariesWorker extends SwingWorker<List<StudySummary>, Voi
 		
 		try {
 			// Gets the study summaries
-			return StudyManager.getStudySummaries(patientId);
+			return StudyManager.getStudySummaries();
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

@@ -26,11 +26,8 @@ public class PatientManager {
 			// Generates another patient ID
 			id = CryptographyManager.generateRandomUuid();
 		
-		// Gets the current user ID
-		String userId = UserManager.getCurrentUserId();
-		
 		// Inserts the patient into the database
-		insertPatient(birthDate, bloodType, gender, id, name, observations, userId);
+		insertPatient(birthDate, bloodType, gender, id, name, observations, UserManager.getCurrentUserId());
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -40,7 +37,7 @@ public class PatientManager {
 		return currentPatientId;
 	}
 	
-	public static Patient getPatient(byte[] id) throws SQLException {
+	public static Patient getPatient() throws SQLException {
 		Patient patient = null;
 		
 		// Gets the prepared statement
@@ -48,7 +45,7 @@ public class PatientManager {
 		
 		try {
 			// Sets the input parameters
-			preparedStatement.setBytes(1, id);
+			preparedStatement.setBytes(1, currentPatientId);
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -62,17 +59,21 @@ public class PatientManager {
 				String observations = resultSet.getString("observations");
 				
 				// Initializes the patient object
-				patient = new Patient(birthDate, bloodType, gender, id, name, observations);
+				patient = new Patient(birthDate, bloodType, gender, currentPatientId, name, observations);
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 
 		return patient;
 	}
 	
-	public static List<PatientSummary> getPatientSummaries(String userId) throws SQLException {
+	public static List<PatientSummary> getPatientSummaries() throws SQLException {
 		List<PatientSummary> patientSummaries = new LinkedList<PatientSummary>();
 		
 		// Gets the prepared statement
@@ -80,7 +81,7 @@ public class PatientManager {
 
 		try {
 			// Sets the input parameters
-			preparedStatement.setString(1, userId);
+			preparedStatement.setString(1, UserManager.getCurrentUserId());
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -95,8 +96,12 @@ public class PatientManager {
 				patientSummaries.add(new PatientSummary(gender, id, name));
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 
 		return patientSummaries;
@@ -113,8 +118,39 @@ public class PatientManager {
 		DbmsManager.commitTransaction();
 	}
 	
+	public static void removePatient(byte[] id) throws SQLException {
+		// Starts a transaction
+		DbmsManager.startTransaction();
+		
+		// Deletes the patient from the database
+		deletePatient(id);
+		
+		// Commits the transaction
+		DbmsManager.commitTransaction();
+	}
+	
 	public static void setCurrentPatientId(byte[] patientId) {
 		currentPatientId = patientId;
+	}
+	
+	private static void deletePatient(byte[] id) throws SQLException {
+		// Gets the stored procedure
+		CallableStatement storedProcedure = DbmsManager.getStoredProcedure(DbmsManager.DELETE_PATIENT);
+		
+		try {
+			// Sets the input parameters
+			storedProcedure.setBytes(1, id);
+			
+			// Executes the stored procedure
+			storedProcedure.execute();
+		} finally {
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
+		}
 	}
 
 	private static void insertPatient(Date birthDate, byte[] bloodType, byte[] gender, byte[] id, String name, String observations, String userId) throws SQLException {
@@ -134,8 +170,12 @@ public class PatientManager {
 			// Executes the stored procedure
 			storedProcedure.execute();
 		} finally {
-			// Releases the statement resources
-			storedProcedure.clearParameters();
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 	
@@ -156,8 +196,12 @@ public class PatientManager {
 			resultSet.next();
 			patientExists = resultSet.getInt("count") == 1;
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		return patientExists;
@@ -179,8 +223,12 @@ public class PatientManager {
 			// Executes the stored procedure
 			storedProcedure.execute();
 		} finally {
-			// Releases the statement resources
-			storedProcedure.clearParameters();
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 	

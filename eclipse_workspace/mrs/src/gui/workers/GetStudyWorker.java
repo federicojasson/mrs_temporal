@@ -10,11 +10,9 @@ import managers.StudyManager;
 public class GetStudyWorker extends SwingWorker<Study, Void> {
 	
 	private GetStudyCaller caller;
-	private byte[] studyId;
 	
-	public GetStudyWorker(GetStudyCaller caller, byte[] studyId) {
+	public GetStudyWorker(GetStudyCaller caller) {
 		this.caller = caller;
-		this.studyId = studyId;
 	}
 	
 	protected Study doInBackground() {
@@ -22,7 +20,7 @@ public class GetStudyWorker extends SwingWorker<Study, Void> {
 		
 		try {
 			// Gets the study
-			return StudyManager.getStudy(studyId);
+			return StudyManager.getStudy();
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

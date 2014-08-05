@@ -1,7 +1,6 @@
 package gui.frames;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -88,11 +87,11 @@ public class StudyFrame extends GuiFrame {
 						setViewMode();
 					}
 				};
-				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller, StudyManager.getCurrentStudyId());
+				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller);
 				worker.execute();
 			}
 		};
-		GetStudyWorker worker = new GetStudyWorker(caller, StudyManager.getCurrentStudyId());
+		GetStudyWorker worker = new GetStudyWorker(caller);
 		worker.execute();
 	}
 	
@@ -185,9 +184,9 @@ public class StudyFrame extends GuiFrame {
 		
 		JPanel panelAreas = new JPanel();
 		panelAreas.setLayout(new FormLayout(new ColumnSpec[] {
-			ColumnSpec.decode("fill:max(224px;default):grow"),
+			ColumnSpec.decode("fill:max(288px;default):grow"),
 			FormFactory.RELATED_GAP_COLSPEC,
-			ColumnSpec.decode("fill:max(224px;default):grow")
+			ColumnSpec.decode("fill:max(288px;default):grow")
 		}, new RowSpec[] {
 			RowSpec.decode("fill:max(128px;default):grow"),
 			FormFactory.LINE_GAP_ROWSPEC,
@@ -351,6 +350,12 @@ public class StudyFrame extends GuiFrame {
 		List<File> studyFilesToAdd = listStudyFiles.getFilesToAdd();
 		List<File> studyFilesToRemove = listStudyFiles.getFilesToRemove();
 		
+		if (! studyFilesToRemove.isEmpty())
+			// Confirms the action
+			if (! GuiManager.showConfirmationDialog(this, "¿Eliminar archivos del estudio?", "Está a punto de eliminar archivos del estudio." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
+				// The action was canceled
+				return;
+		
 		// Modifies the study
 		ModifyStudyCaller caller = new ModifyStudyCaller() {
 			public void modifyStudyCallback() {
@@ -367,7 +372,7 @@ public class StudyFrame extends GuiFrame {
 						setViewMode();
 					}
 				};
-				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller, StudyManager.getCurrentStudyId());
+				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller);
 				worker.execute();
 			}
 		};

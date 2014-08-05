@@ -13,3 +13,11 @@
 1407250917922	Rename method 'removeStudySummary'
 1407250973404	Rename method 'removeRow'
 1407259048013	Delete element
+1407265429835	Rename type 'GetPatientWorker'
+1407265443142	Rename type 'GetPatientCaller'
+1407265456017	Rename method 'getPatientCallback'
+1407265670050	Rename method 'getCurrentPatient'
+1407265688043	Rename type 'GetCurrentPatientCaller'
+1407265694639	Rename type 'GetCurrentPatientWorker'
+1407265713330	Rename method 'getCurrentPatientCallback'
+1407267483246	Delete element

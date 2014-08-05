@@ -21,12 +21,14 @@ public class DbmsManager {
 	public static final int STUDY_EXISTS = 8;
 	public static final int STUDY_FILE_EXISTS = 9;
 	
-	public static final int DELETE_STUDY_FILE = 0;
-	public static final int INSERT_PATIENT = 1;
-	public static final int INSERT_STUDY = 2;
-	public static final int INSERT_STUDY_FILE = 3;
-	public static final int UPDATE_PATIENT = 4;
-	public static final int UPDATE_STUDY = 5;
+	public static final int DELETE_PATIENT = 0;
+	public static final int DELETE_STUDY = 1;
+	public static final int DELETE_STUDY_FILE = 2;
+	public static final int INSERT_PATIENT = 3;
+	public static final int INSERT_STUDY = 4;
+	public static final int INSERT_STUDY_FILE = 5;
+	public static final int UPDATE_PATIENT = 6;
+	public static final int UPDATE_STUDY = 7;
 
 	private static final String DBMS_CHARACTER_ENCODING = "UTF-8";
 	private static final String DBMS_DATABASE_NAME = "mrs_db";
@@ -135,6 +137,8 @@ public class DbmsManager {
 		));
 		
 		// Initializes the stored procedures' call statements
+		storedProcedures.put(DELETE_PATIENT, dbmsConnection.prepareCall("{CALL delete_patient(?)}"));
+		storedProcedures.put(DELETE_STUDY, dbmsConnection.prepareCall("{CALL delete_study(?)}"));
 		storedProcedures.put(DELETE_STUDY_FILE, dbmsConnection.prepareCall("{CALL delete_study_file(?, ?)}"));
 		storedProcedures.put(INSERT_PATIENT, dbmsConnection.prepareCall("{CALL insert_patient(?, ?, ?, ?, ?, ?, ?)}"));
 		storedProcedures.put(INSERT_STUDY, dbmsConnection.prepareCall("{CALL insert_study(?, ?, ?, ?, ?, ?, ?, ?)}"));

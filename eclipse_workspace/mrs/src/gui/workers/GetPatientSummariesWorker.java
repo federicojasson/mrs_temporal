@@ -12,11 +12,9 @@ import managers.PatientManager;
 public class GetPatientSummariesWorker extends SwingWorker<List<PatientSummary>, Void> {
 	
 	private GetPatientSummariesCaller caller;
-	private String userId;
 	
-	public GetPatientSummariesWorker(GetPatientSummariesCaller caller, String userId) {
+	public GetPatientSummariesWorker(GetPatientSummariesCaller caller) {
 		this.caller = caller;
-		this.userId = userId;
 	}
 	
 	protected List<PatientSummary> doInBackground() {
@@ -24,7 +22,7 @@ public class GetPatientSummariesWorker extends SwingWorker<List<PatientSummary>,
 		
 		try {
 			// Gets the patient summaries
-			return PatientManager.getPatientSummaries(userId);
+			return PatientManager.getPatientSummaries();
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

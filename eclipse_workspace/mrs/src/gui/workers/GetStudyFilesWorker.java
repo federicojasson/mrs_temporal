@@ -12,11 +12,9 @@ import managers.StudyManager;
 public class GetStudyFilesWorker extends SwingWorker<List<File>, Void> {
 	
 	private GetStudyFilesCaller caller;
-	private byte[] studyId;
 	
-	public GetStudyFilesWorker(GetStudyFilesCaller caller, byte[] studyId) {
+	public GetStudyFilesWorker(GetStudyFilesCaller caller) {
 		this.caller = caller;
-		this.studyId = studyId;
 	}
 	
 	protected List<File> doInBackground() {
@@ -24,7 +22,7 @@ public class GetStudyFilesWorker extends SwingWorker<List<File>, Void> {
 		
 		try {
 			// Gets the study files
-			return StudyManager.getStudyFiles(studyId);
+			return StudyManager.getStudyFiles();
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

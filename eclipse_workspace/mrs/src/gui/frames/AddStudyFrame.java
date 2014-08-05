@@ -189,9 +189,9 @@ public class AddStudyFrame extends GuiFrame {
 		
 		JPanel panelAreas = new JPanel();
 		panelAreas.setLayout(new FormLayout(new ColumnSpec[] {
-			ColumnSpec.decode("fill:max(224px;default):grow"),
+			ColumnSpec.decode("fill:max(288px;default):grow"),
 			FormFactory.RELATED_GAP_COLSPEC,
-			ColumnSpec.decode("fill:max(224px;default):grow")
+			ColumnSpec.decode("fill:max(288px;default):grow")
 		}, new RowSpec[] {
 			RowSpec.decode("fill:max(128px;default):grow"),
 			FormFactory.LINE_GAP_ROWSPEC,

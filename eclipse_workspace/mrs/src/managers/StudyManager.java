@@ -31,11 +31,8 @@ public class StudyManager {
 			// Generates another study ID
 			id = CryptographyManager.generateRandomUuid();
 		
-		// Gets the current patient ID
-		byte[] patientId = PatientManager.getCurrentPatientId();
-		
 		// Inserts the study into the database
-		insertStudy(causes, date, diagnosis, id, indications, observations, patientId, studyTypeId);
+		insertStudy(causes, date, diagnosis, id, indications, observations, PatientManager.getCurrentPatientId(), studyTypeId);
 		
 		// Adds the study files
 		addStudyFiles(id, studyFilesToAdd);
@@ -48,7 +45,7 @@ public class StudyManager {
 		return currentStudyId;
 	}
 	
-	public static Study getStudy(byte[] id) throws SQLException {
+	public static Study getStudy() throws SQLException {
 		Study study = null;
 		
 		// Gets the prepared statement
@@ -56,7 +53,7 @@ public class StudyManager {
 		
 		try {
 			// Sets the input parameters
-			preparedStatement.setBytes(1, id);
+			preparedStatement.setBytes(1, currentStudyId);
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -71,17 +68,21 @@ public class StudyManager {
 				String studyTypeDescription = resultSet.getString("study_types.description");
 				
 				// Initializes the study object
-				study = new Study(causes, date, diagnosis, id, indications, observations, studyTypeDescription);
+				study = new Study(causes, date, diagnosis, currentStudyId, indications, observations, studyTypeDescription);
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 
 		return study;
 	}
 	
-	public static List<File> getStudyFiles(byte[] studyId) throws SQLException {
+	public static List<File> getStudyFiles() throws SQLException {
 		List<File> studyFiles = new LinkedList<File>();
 		
 		// Gets the prepared statement
@@ -89,7 +90,7 @@ public class StudyManager {
 		
 		try {
 			// Sets the input parameters
-			preparedStatement.setBytes(1, studyId);
+			preparedStatement.setBytes(1, currentStudyId);
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -97,20 +98,24 @@ public class StudyManager {
 			// Fetches the query results
 			while (resultSet.next()) {
 				String filename = resultSet.getString("filename");
-				File studyFile = FileManager.getStudyFile(filename, studyId);
+				File studyFile = FileManager.getStudyFile(filename, currentStudyId);
 				
 				// Adds the study file to the list
 				studyFiles.add(studyFile);
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		return studyFiles;
 	}
 
-	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
+	public static List<StudySummary> getStudySummaries() throws SQLException {
 		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
 		
 		// Gets the prepared statement
@@ -118,7 +123,7 @@ public class StudyManager {
 
 		try {
 			// Sets the input parameters
-			preparedStatement.setBytes(1, patientId);
+			preparedStatement.setBytes(1, PatientManager.getCurrentPatientId());
 			
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -133,8 +138,12 @@ public class StudyManager {
 				studySummaries.add(new StudySummary(date, id, studyTypeDescription));
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 
 		return studySummaries;
@@ -159,8 +168,12 @@ public class StudyManager {
 				studyTypes.add(new StudyType(description, id));
 			}
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		if (studyTypes.isEmpty())
@@ -182,6 +195,17 @@ public class StudyManager {
 		
 		// Updates the study in the database
 		updateStudy(causes, diagnosis, currentStudyId, indications, observations);
+		
+		// Commits the transaction
+		DbmsManager.commitTransaction();
+	}
+	
+	public static void removeStudy(byte[] id) throws SQLException {
+		// Starts a transaction
+		DbmsManager.startTransaction();
+		
+		// Deletes the study from the database
+		deleteStudy(id);
 		
 		// Commits the transaction
 		DbmsManager.commitTransaction();
@@ -217,6 +241,26 @@ public class StudyManager {
 			}
 		}
 	}
+	
+	private static void deleteStudy(byte[] id) throws SQLException {
+		// Gets the stored procedure
+		CallableStatement storedProcedure = DbmsManager.getStoredProcedure(DbmsManager.DELETE_STUDY);
+		
+		try {
+			// Sets the input parameters
+			storedProcedure.setBytes(1, id);
+			
+			// Executes the stored procedure
+			storedProcedure.execute();
+		} finally {
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
+		}
+	}
 
 	private static void deleteStudyFile(String filename, byte[] studyId) throws SQLException {
 		// Gets the stored procedure
@@ -230,8 +274,12 @@ public class StudyManager {
 			// Executes the stored procedure
 			storedProcedure.execute();
 		} finally {
-			// Releases the statement resources
-			storedProcedure.clearParameters();
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 
@@ -253,8 +301,12 @@ public class StudyManager {
 			// Executes the stored procedure
 			storedProcedure.execute();
 		} finally {
-			// Releases the statement resources
-			storedProcedure.clearParameters();
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 
@@ -271,8 +323,12 @@ public class StudyManager {
 			// Executes the stored procedure
 			storedProcedure.execute();
 		} finally {
-			// Releases the statement resources
-			storedProcedure.clearParameters();
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 	
@@ -305,8 +361,12 @@ public class StudyManager {
 			resultSet.next();
 			studyExists = resultSet.getInt("count") == 1;
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		return studyExists;
@@ -330,8 +390,12 @@ public class StudyManager {
 			resultSet.next();
 			studyFileExists = resultSet.getInt("count") == 1;
 		} finally {
-			// Releases the statement resources
-			preparedStatement.clearParameters();
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 		
 		return studyFileExists;
@@ -352,8 +416,12 @@ public class StudyManager {
 			// Executes the stored procedure
 			storedProcedure.execute();
 		} finally {
-			// Releases the statement resources
-			storedProcedure.clearParameters();
+			try {
+				// Releases the statement resources
+				storedProcedure.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 	

@@ -100,11 +100,11 @@ public class PatientFrame extends GuiFrame {
 						setViewMode();
 					}
 				};
-				GetStudySummariesWorker worker = new GetStudySummariesWorker(caller, PatientManager.getCurrentPatientId());
+				GetStudySummariesWorker worker = new GetStudySummariesWorker(caller);
 				worker.execute();
 			}
 		};
-		GetPatientWorker worker = new GetPatientWorker(caller, PatientManager.getCurrentPatientId());
+		GetPatientWorker worker = new GetPatientWorker(caller);
 		worker.execute();
 	}
 	
@@ -430,6 +430,9 @@ public class PatientFrame extends GuiFrame {
 			// No row has been selected
 			return;
 		
+		// Locks the frame
+		lock();
+		
 		// Gets the study ID
 		byte[] studyId = (byte[]) tableStudies.getValueAt(selectedRowIndex, StudyTable.ID);
 		
@@ -437,9 +440,6 @@ public class PatientFrame extends GuiFrame {
 		if (! GuiManager.showConfirmationDialog(this, "¿Eliminar estudio?", "Está a punto de eliminar un estudio." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
 			// The action was canceled
 			return;
-		
-		// Locks the frame
-		lock();
 		
 		// Removes the study
 		RemoveStudyCaller caller = new RemoveStudyCaller() {

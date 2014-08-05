@@ -1,6 +1,9 @@
 package gui.workers;
 
+import java.sql.SQLException;
 import javax.swing.SwingWorker;
+import managers.ErrorManager;
+import managers.PatientManager;
 
 public class RemovePatientWorker extends SwingWorker<Void, Void> {
 	
@@ -15,14 +18,13 @@ public class RemovePatientWorker extends SwingWorker<Void, Void> {
 	protected Void doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
 		
-		// TODO: RemovePatientWorker
-		/*try {
-			// Adds the patient
-			PatientManager.addPatient(birthDate, bloodType, gender, name, observations);
+		try {
+			// Removes the patient
+			PatientManager.removePatient(id);
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);
-		}*/
+		}
 		
 		return null;
 	}
