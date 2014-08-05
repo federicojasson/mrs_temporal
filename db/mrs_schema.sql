@@ -253,6 +253,26 @@ BEGIN
 END; !
 
 /*
+ *	Inserts a study's history.
+ */
+CREATE PROCEDURE insert_study_history (
+	IN i_datetime DATETIME,
+	IN i_modification VARCHAR(160),
+	IN i_study_id BINARY(16)
+)
+BEGIN
+	INSERT INTO studies_histories (
+		datetime,
+		modification,
+		study_id
+	) VALUES (
+		i_datetime,
+		i_modification,
+		i_study_id
+	);
+END; !
+
+/*
  *	Inserts a study type.
  */
 CREATE PROCEDURE insert_study_type (
@@ -426,19 +446,44 @@ BEGIN
 	-- Gets the current date and time
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
 	
-	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(160) DEFAULT 'Estudio modificado';
+	-- Initializes the study ID
 	DECLARE v_study_id BINARY(16) DEFAULT OLD.id;
 	
-	INSERT INTO studies_histories (
-		datetime,
-		modification,
-		study_id
-	) VALUES (
-		v_datetime,
-		v_modification,
-		v_study_id
-	);
+	-- Checks if there was a change in the causes
+	IF (OLD.causes NOT LIKE BINARY NEW.causes) THEN
+		CALL insert_study_history (
+			v_datetime,
+			'Motivos del estudio modificados',
+			v_study_id
+		);
+	END IF;
+	
+	-- Checks if there was a change in the diagnosis
+	IF (OLD.diagnosis NOT LIKE BINARY NEW.diagnosis) THEN
+		CALL insert_study_history (
+			v_datetime,
+			'Diagnóstico modificado',
+			v_study_id
+		);
+	END IF;
+	
+	-- Checks if there was a change in the indications
+	IF (OLD.indications NOT LIKE BINARY NEW.indications) THEN
+		CALL insert_study_history (
+			v_datetime,
+			'Indicaciones modificadas',
+			v_study_id
+		);
+	END IF;
+	
+	-- Checks if there was a change in the study's observations
+	IF (OLD.observations NOT LIKE BINARY NEW.observations) THEN
+		CALL insert_study_history (
+			v_datetime,
+			'Observaciones modificadas',
+			v_study_id
+		);
+	END IF;
 END; !
 
 /*

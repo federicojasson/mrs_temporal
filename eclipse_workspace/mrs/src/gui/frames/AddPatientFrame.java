@@ -129,7 +129,7 @@ public class AddPatientFrame extends GuiFrame {
 		panelObservations.setLayout(new FormLayout(new ColumnSpec[] {
 			ColumnSpec.decode("fill:max(256px;default):grow")
 		}, new RowSpec[] {
-			RowSpec.decode("fill:max(128px;default):grow")
+			RowSpec.decode("fill:max(160px;default):grow")
 		}));
 		panelObservations.add(panelObservationsContainer, "1, 1");
 		
@@ -176,7 +176,7 @@ public class AddPatientFrame extends GuiFrame {
 	}
 
 	protected String getTitle() {
-		return "MRS - Ingresar paciente";
+		return "MRS - Nuevo paciente";
 	}
 	
 	protected boolean isResizable() {

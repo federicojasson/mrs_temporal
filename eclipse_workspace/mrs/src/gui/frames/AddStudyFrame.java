@@ -58,9 +58,6 @@ public class AddStudyFrame extends GuiFrame {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Disables the remove study file button
-		onSelectStudyFiles();
-		
 		// Locks the frame
 		lock();
 		
@@ -73,6 +70,9 @@ public class AddStudyFrame extends GuiFrame {
 				
 				// Unlocks the frame
 				unlock();
+				
+				// Calls the selection callback method
+				onSelectStudyFiles();
 			}
 		};
 		GetStudyTypesWorker worker = new GetStudyTypesWorker(caller);
@@ -147,7 +147,7 @@ public class AddStudyFrame extends GuiFrame {
 		JScrollPane panelCausesContainer = new JScrollPane(fieldCauses, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		JPanel panelCauses = new JPanel();
-		panelCauses.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Motivo del estudio / Síntomas"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelCauses.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Motivos del estudio"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelCauses.setLayout(new GridLayout());
 		panelCauses.add(panelCausesContainer);
 		
@@ -270,8 +270,8 @@ public class AddStudyFrame extends GuiFrame {
 		
 		JPanel panelContent = new JPanel();
 		panelContent.setLayout(new BorderLayout(10, 0));
-		panelContent.add(panelStudy, BorderLayout.CENTER);
-		panelContent.add(panelStudyFiles, BorderLayout.EAST);
+		panelContent.add(panelStudy, BorderLayout.WEST);
+		panelContent.add(panelStudyFiles, BorderLayout.CENTER);
 		
 		JButton buttonCancel = new JButton("Cancelar");
 		buttonCancel.addActionListener(new ActionListener() {
@@ -311,7 +311,7 @@ public class AddStudyFrame extends GuiFrame {
 	}
 
 	protected String getTitle() {
-		return "MRS - Ingresar estudio";
+		return "MRS - Nuevo estudio";
 	}
 	
 	protected boolean isResizable() {

@@ -18,7 +18,9 @@ public class SearchPatientSummariesWorker extends SwingWorker<List<PatientSummar
 	protected List<PatientSummary> doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
 		
-		return new LinkedList<PatientSummary>(); // TODO
+		List<PatientSummary> list = new LinkedList<PatientSummary>(); // TODO: SearchPatientSummariesWorker
+		list.add(new PatientSummary("F".getBytes(), new byte[] { 56 }, "Prueba"));
+		return list;
 		/*try {
 			// Gets the study summaries
 			return StudyManager.getStudySummaries(patientId);

@@ -6,7 +6,7 @@ import javax.swing.JTable;
 import utilities.Utility;
 
 @SuppressWarnings("serial")
-public class DateTableCellRenderer extends MyDefaultTableCellRenderer {
+public class DateTableCellRenderer extends PaddingTableCellRenderer {
 	
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		// Formats the date

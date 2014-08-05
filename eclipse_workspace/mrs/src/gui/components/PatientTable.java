@@ -1,6 +1,7 @@
 package gui.components;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -23,7 +24,7 @@ public class PatientTable extends JTable {
 		super(new PatientTableModel());
 		
 		// Sets cell renderers
-		setDefaultRenderer(Object.class, new MyDefaultTableCellRenderer());
+		setDefaultRenderer(Object.class, new PaddingTableCellRenderer());
 		columnModel.getColumn(GENDER).setCellRenderer(new GenderTableCellRenderer());
 		columnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 		
@@ -34,13 +35,23 @@ public class PatientTable extends JTable {
 		((DefaultTableCellRenderer) tableHeader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	
+	public void removePatientSummary(int rowIndex) {
+		// Gets the table model
+		PatientTableModel tableModel = (PatientTableModel) dataModel;
+		
+		// Removes the row
+		tableModel.removeRow(rowIndex);
+		
+		// Notifies that data have changed
+		tableModel.fireTableDataChanged();
+	}
+	
 	public void setPatientSummaries(List<PatientSummary> patientSummaries) {
 		// Gets the table model
 		PatientTableModel tableModel = (PatientTableModel) dataModel;
 		
-		// Fills the array with the patient summaries
-		tableModel.patientSummaries = new PatientSummary[patientSummaries.size()];
-		patientSummaries.toArray(tableModel.patientSummaries);
+		// Replaces the model's list with a new one containing the patient summaries
+		tableModel.patientSummaries = new ArrayList<PatientSummary>(patientSummaries);
 		
 		// Notifies that data have changed
 		tableModel.fireTableDataChanged();
@@ -49,8 +60,8 @@ public class PatientTable extends JTable {
 	private static class PatientTableModel extends AbstractTableModel {
 		
 		private static String[] columnNames;
-		
-		private PatientSummary[] patientSummaries;
+
+		private List<PatientSummary> patientSummaries;
 		
 		static {
 			// Initializes the column names
@@ -61,7 +72,7 @@ public class PatientTable extends JTable {
 		}
 		
 		private PatientTableModel() {
-			patientSummaries = new PatientSummary[0];
+			patientSummaries = new ArrayList<PatientSummary>(0);
 		}
 		
 		public int getColumnCount() {
@@ -73,12 +84,12 @@ public class PatientTable extends JTable {
 		}
 
 		public int getRowCount() {
-			return patientSummaries.length;
+			return patientSummaries.size();
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			// Gets the patient summary
-			PatientSummary patientSummary = patientSummaries[rowIndex];
+			PatientSummary patientSummary = patientSummaries.get(rowIndex);
 			
 			// Returns the corresponding value
 			switch (columnIndex) {
@@ -87,6 +98,10 @@ public class PatientTable extends JTable {
 				case NAME : return patientSummary.getName();
 				default : return null;
 			}
+		}
+		
+		public void removeRow(int rowIndex) {
+			patientSummaries.remove(rowIndex);
 		}
 		
 	}

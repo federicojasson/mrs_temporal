@@ -5,7 +5,7 @@ import javax.swing.JTable;
 import entities.Gender;
 
 @SuppressWarnings("serial")
-public class GenderTableCellRenderer extends MyDefaultTableCellRenderer {
+public class GenderTableCellRenderer extends PaddingTableCellRenderer {
 	
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		// The received object is a byte array

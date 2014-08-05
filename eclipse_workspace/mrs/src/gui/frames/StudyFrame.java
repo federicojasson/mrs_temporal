@@ -1,6 +1,7 @@
 package gui.frames;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -59,9 +60,6 @@ public class StudyFrame extends GuiFrame {
 		// Initializes the GUI
 		super.initialize();
 		
-		// Sets the view mode
-		setViewMode();
-		
 		// Locks the frame
 		lock();
 		
@@ -85,6 +83,9 @@ public class StudyFrame extends GuiFrame {
 						
 						// Unlocks the frame
 						unlock();
+						
+						// Sets the view mode
+						setViewMode();
 					}
 				};
 				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller, StudyManager.getCurrentStudyId());
@@ -142,7 +143,7 @@ public class StudyFrame extends GuiFrame {
 		JScrollPane panelCausesContainer = new JScrollPane(fieldCauses, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		JPanel panelCauses = new JPanel();
-		panelCauses.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Motivo del estudio / Síntomas"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelCauses.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Motivos del estudio"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelCauses.setLayout(new GridLayout());
 		panelCauses.add(panelCausesContainer);
 		
@@ -265,8 +266,8 @@ public class StudyFrame extends GuiFrame {
 		
 		JPanel panelContent = new JPanel();
 		panelContent.setLayout(new BorderLayout(10, 0));
-		panelContent.add(panelStudy, BorderLayout.CENTER);
-		panelContent.add(panelStudyFiles, BorderLayout.EAST);
+		panelContent.add(panelStudy, BorderLayout.WEST);
+		panelContent.add(panelStudyFiles, BorderLayout.CENTER);
 		
 		JButton buttonGoBack = new JButton("Volver");
 		buttonGoBack.addActionListener(new ActionListener() {

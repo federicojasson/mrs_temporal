@@ -140,8 +140,6 @@ public class DatePicker extends JPanel {
 		draw.set(Calendar.DATE, 1);
 		draw.add(Calendar.DATE, - draw.get(Calendar.DAY_OF_WEEK) + 1);
 		int monthInt = currentCalendar.get(Calendar.MONTH);
-		//      monthInt = 0;
-		//      System.out.println("Current month: " + monthInt);
 
 		c.gridwidth = 1;
 		c.gridheight = 1;
@@ -152,7 +150,6 @@ public class DatePicker extends JPanel {
 		for (c.gridy = 2; c.gridy < 8; c.gridy++)
 			for (c.gridx = 0; c.gridx < 7; c.gridx++) {
 				JButton dayButton;
-				//              System.out.print("Draw month: " + draw.get(Calendar.MONTH));
 				if (draw.get(Calendar.MONTH) == monthInt) {
 					String dayString = dateFormatterButton.format(draw.getTime());
 					if (draw.get(Calendar.DAY_OF_MONTH) < 10)
@@ -162,13 +159,10 @@ public class DatePicker extends JPanel {
 					dayButton = new JButton();
 					dayButton.setEnabled(false);
 				}
-				//              System.out.println(", day: " + dayName.format(draw.getTime()));
 				x.add(dayButton, c);
 				Color color = dayButton.getBackground();
 				if ((draw.get(Calendar.DAY_OF_MONTH) == currentCalendar.get(Calendar.DAY_OF_MONTH)) && (draw.get(Calendar.MONTH) == monthInt))
 					dayButton.setBackground(Color.yellow);
-				//                  dayButton.setFocusPainted(true);
-				//                  dayButton.setSelected(true);
 				else
 					dayButton.setBackground(color);
 				dayButton.setFont(weekFont);

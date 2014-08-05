@@ -1,197 +1,194 @@
 USE mrs_db
 
-# Se creara el paciente 95c0dabe246c4494bc6e719e97c5cc56
-CALL insert_patient ('1931-10-17','7','F', UNHEX('95c0dabe246c4494bc6e719e97c5cc56'),'Cerioli, adelaide','doctor');
-# Se craran 5 estudios para el paciente 95c0dabe246c4494bc6e719e97c5cc56
-CALL insert_study ('2014-08-04',UNHEX('18cd76214cf941d29e75dee0f857edcd'),'Observación correspondiente al estudio 18cd76214cf941d29e75dee0f857edcd.',UNHEX('95c0dabe246c4494bc6e719e97c5cc56'),'ET');
-# Se craran 1 archivos para el estudio 18cd76214cf941d29e75dee0f857edcd
-CALL insert_study_file (UNHEX('41ccda51cf334770b87c3943444c3649'),'Archivo 0.doc',UNHEX('18cd76214cf941d29e75dee0f857edcd'));
+# Se creara el paciente f8248d5a6ef74e0f97587282ad20d997
+CALL insert_patient ('1943-03-04','4','F', UNHEX('f8248d5a6ef74e0f97587282ad20d997'),'Tabor, suellen Pamella','Fumador.','doctor');
+# Se craran 3 estudios para el paciente f8248d5a6ef74e0f97587282ad20d997
+CALL insert_study ('El paciente concurre con dolor corporal, cansancio y secreciones nasales.','2014-08-11','Diferencial: Resfrio común.',UNHEX('c4789e050d0a493d8af9d485c26b2928'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días. 
+Se recomiendan análisis generales.','Programada nueva consulta en 5 días.',UNHEX('f8248d5a6ef74e0f97587282ad20d997'),'UA');
+# Se craran 1 archivos para el estudio c4789e050d0a493d8af9d485c26b2928
+CALL insert_study_file (UNHEX('f267c69efdc7451684db47f12f206a7c'),'Archivo 0.jpg',UNHEX('c4789e050d0a493d8af9d485c26b2928'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-05',UNHEX('e8b2e82fb3f54479ba3207e02b67666c'),'Observación correspondiente al estudio e8b2e82fb3f54479ba3207e02b67666c.',UNHEX('95c0dabe246c4494bc6e719e97c5cc56'),'UA');
-# Se craran 0 archivos para el estudio e8b2e82fb3f54479ba3207e02b67666c
+CALL insert_study ('Control de rutina.','2014-08-11','',UNHEX('21a53c5d881b49088b0b1c79234692ad'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días. 
+Se recomiendan análisis generales.','Programada nueva consulta en 5 días.',UNHEX('f8248d5a6ef74e0f97587282ad20d997'),'BT');
+# Se craran 2 archivos para el estudio 21a53c5d881b49088b0b1c79234692ad
+CALL insert_study_file (UNHEX('ccaea69200654ce082e45a008f83957e'),'Archivo 0.doc',UNHEX('21a53c5d881b49088b0b1c79234692ad'));
+CALL insert_study_file (UNHEX('132b8998897c4d5289a6de2ac506b158'),'Archivo 1.txt',UNHEX('21a53c5d881b49088b0b1c79234692ad'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-04',UNHEX('b7f4aa9409534b31a1d8e68b30ddb5e8'),'Observación correspondiente al estudio b7f4aa9409534b31a1d8e68b30ddb5e8.',UNHEX('95c0dabe246c4494bc6e719e97c5cc56'),'BT');
-# Se craran 2 archivos para el estudio b7f4aa9409534b31a1d8e68b30ddb5e8
-CALL insert_study_file (UNHEX('3bbd50ea57a24866874e655479f6bd1b'),'Archivo 0.pdf',UNHEX('b7f4aa9409534b31a1d8e68b30ddb5e8'));
-CALL insert_study_file (UNHEX('b640034afa974d528dd5a6fd431d8832'),'Archivo 1.txt',UNHEX('b7f4aa9409534b31a1d8e68b30ddb5e8'));
-# Fin creacion de archivos
-CALL insert_study ('2014-08-04',UNHEX('2b817bd8946f4658b3e48f2225ce0ded'),'Observación correspondiente al estudio 2b817bd8946f4658b3e48f2225ce0ded.',UNHEX('95c0dabe246c4494bc6e719e97c5cc56'),'UA');
-# Se craran 2 archivos para el estudio 2b817bd8946f4658b3e48f2225ce0ded
-CALL insert_study_file (UNHEX('0c26ece44d244dfe96a87998d3b162ed'),'Archivo 0.txt',UNHEX('2b817bd8946f4658b3e48f2225ce0ded'));
-CALL insert_study_file (UNHEX('8673dced747e44fc96f07682dcf06213'),'Archivo 1.txt',UNHEX('2b817bd8946f4658b3e48f2225ce0ded'));
-# Fin creacion de archivos
-CALL insert_study ('2014-08-03',UNHEX('a60f1b0da3764df2bb6f0bad8fb0b486'),'Observación correspondiente al estudio a60f1b0da3764df2bb6f0bad8fb0b486.',UNHEX('95c0dabe246c4494bc6e719e97c5cc56'),'ET');
-# Se craran 2 archivos para el estudio a60f1b0da3764df2bb6f0bad8fb0b486
-CALL insert_study_file (UNHEX('7415bf456e9343be9e55ebdce761a5ed'),'Archivo 0.pdf',UNHEX('a60f1b0da3764df2bb6f0bad8fb0b486'));
-CALL insert_study_file (UNHEX('19d9708f100f4d8b8691ce431b42d65a'),'Archivo 1.doc',UNHEX('a60f1b0da3764df2bb6f0bad8fb0b486'));
+CALL insert_study ('Control de rutina.','2014-08-11','',UNHEX('d762b4acdf4e48a7b979b9f7d4fae130'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','---',UNHEX('f8248d5a6ef74e0f97587282ad20d997'),'UA');
+# Se craran 2 archivos para el estudio d762b4acdf4e48a7b979b9f7d4fae130
+CALL insert_study_file (UNHEX('cf470d6878974289b2c7283cd1bf4129'),'Archivo 0.doc',UNHEX('d762b4acdf4e48a7b979b9f7d4fae130'));
+CALL insert_study_file (UNHEX('98def7aa8fc84ced8e2e43186ebeda93'),'Archivo 1.txt',UNHEX('d762b4acdf4e48a7b979b9f7d4fae130'));
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente
 
 
 
-# Se creara el paciente 055d4f585ed44441bcb4a48cf05405dd
-CALL insert_patient ('1966-10-23','0','F', UNHEX('055d4f585ed44441bcb4a48cf05405dd'),'Pollack, desiree willy','doctor');
-# Se craran 4 estudios para el paciente 055d4f585ed44441bcb4a48cf05405dd
-CALL insert_study ('2014-08-01',UNHEX('0d959c7550a24c70a6410032819c3f6b'),'Observación correspondiente al estudio 0d959c7550a24c70a6410032819c3f6b.',UNHEX('055d4f585ed44441bcb4a48cf05405dd'),'ET');
-# Se craran 1 archivos para el estudio 0d959c7550a24c70a6410032819c3f6b
-CALL insert_study_file (UNHEX('9a266531e6824273a368a3ee9416458b'),'Archivo 0.txt',UNHEX('0d959c7550a24c70a6410032819c3f6b'));
+# Se creara el paciente 1e048160059b453da248acc5bb599e8d
+CALL insert_patient ('1961-07-06','4','M', UNHEX('1e048160059b453da248acc5bb599e8d'),'Fitch, darill ryley','Diabetes.','doctor');
+# Se craran 2 estudios para el paciente 1e048160059b453da248acc5bb599e8d
+CALL insert_study ('Control de rutina.','2014-08-09','',UNHEX('32759e5d1efa4e709b5b3c03e6d61ba9'),'Descongestionantes o antigripales en té, 1 sobre cada 8 horas.','Programada nueva consulta en 5 días.',UNHEX('1e048160059b453da248acc5bb599e8d'),'ET');
+# Se craran 2 archivos para el estudio 32759e5d1efa4e709b5b3c03e6d61ba9
+CALL insert_study_file (UNHEX('976589dcff4f497e88ebfe8658dc4b81'),'Archivo 0.pdf',UNHEX('32759e5d1efa4e709b5b3c03e6d61ba9'));
+CALL insert_study_file (UNHEX('e1cb5d68dff645b39c7d7a3fa17787fe'),'Archivo 1.doc',UNHEX('32759e5d1efa4e709b5b3c03e6d61ba9'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-02',UNHEX('7563f95c962b4a25a556ed65a3a1b2a3'),'Observación correspondiente al estudio 7563f95c962b4a25a556ed65a3a1b2a3.',UNHEX('055d4f585ed44441bcb4a48cf05405dd'),'BT');
-# Se craran 2 archivos para el estudio 7563f95c962b4a25a556ed65a3a1b2a3
-CALL insert_study_file (UNHEX('8ccd101ce9a341d0a73fcdd546ae8b88'),'Archivo 0.doc',UNHEX('7563f95c962b4a25a556ed65a3a1b2a3'));
-CALL insert_study_file (UNHEX('61bd50bdce914c63abea742a2cfcd443'),'Archivo 1.txt',UNHEX('7563f95c962b4a25a556ed65a3a1b2a3'));
-# Fin creacion de archivos
-CALL insert_study ('2014-08-05',UNHEX('a14fc85997b84b87aa71fde55ccae8c1'),'Observación correspondiente al estudio a14fc85997b84b87aa71fde55ccae8c1.',UNHEX('055d4f585ed44441bcb4a48cf05405dd'),'ET');
-# Se craran 2 archivos para el estudio a14fc85997b84b87aa71fde55ccae8c1
-CALL insert_study_file (UNHEX('4498ecac9d78434791467fd76c9ff0db'),'Archivo 0.jpg',UNHEX('a14fc85997b84b87aa71fde55ccae8c1'));
-CALL insert_study_file (UNHEX('eceea715c5ab42e6b52fcd64dd2152b5'),'Archivo 1.txt',UNHEX('a14fc85997b84b87aa71fde55ccae8c1'));
-# Fin creacion de archivos
-CALL insert_study ('2014-08-05',UNHEX('71fa97c9d5cf463b9fa70692835b729e'),'Observación correspondiente al estudio 71fa97c9d5cf463b9fa70692835b729e.',UNHEX('055d4f585ed44441bcb4a48cf05405dd'),'ET');
-# Se craran 2 archivos para el estudio 71fa97c9d5cf463b9fa70692835b729e
-CALL insert_study_file (UNHEX('e0f41b2cebd34f19bf119d9aa8f57d37'),'Archivo 0.jpg',UNHEX('71fa97c9d5cf463b9fa70692835b729e'));
-CALL insert_study_file (UNHEX('d8b77100d87642ceba042a2c7f59bb5a'),'Archivo 1.txt',UNHEX('71fa97c9d5cf463b9fa70692835b729e'));
+CALL insert_study ('El paciente concurre con dolor corporal, cansancio y secreciones nasales.','2014-08-11','Gripe estacional.',UNHEX('8f876b2a45a74dc68e2c19dae1b4ce17'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','---',UNHEX('1e048160059b453da248acc5bb599e8d'),'ET');
+# Se craran 2 archivos para el estudio 8f876b2a45a74dc68e2c19dae1b4ce17
+CALL insert_study_file (UNHEX('f111507c4f3046e2b6594c4bd0618cc8'),'Archivo 0.doc',UNHEX('8f876b2a45a74dc68e2c19dae1b4ce17'));
+CALL insert_study_file (UNHEX('655eb0fe75f6420fa758341c7ff1544b'),'Archivo 1.doc',UNHEX('8f876b2a45a74dc68e2c19dae1b4ce17'));
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente
 
 
 
-# Se creara el paciente 9e5a83b0729b4a3eacef1add52dc54ee
-CALL insert_patient ('1941-01-12','3','F', UNHEX('9e5a83b0729b4a3eacef1add52dc54ee'),'Zasadzinski, Alyson','doctor');
-# Se craran 3 estudios para el paciente 9e5a83b0729b4a3eacef1add52dc54ee
-CALL insert_study ('2014-07-31',UNHEX('2ef1603b56d7479ebc4d2a056bac73f6'),'Observación correspondiente al estudio 2ef1603b56d7479ebc4d2a056bac73f6.',UNHEX('9e5a83b0729b4a3eacef1add52dc54ee'),'BT');
-# Se craran 0 archivos para el estudio 2ef1603b56d7479ebc4d2a056bac73f6
+# Se creara el paciente ea95ef6f654b423086f4f9a38fc44556
+CALL insert_patient ('1956-01-25','1','F', UNHEX('ea95ef6f654b423086f4f9a38fc44556'),'Moorman, issy','Anemia falciforme.','doctor');
+# Se craran 4 estudios para el paciente ea95ef6f654b423086f4f9a38fc44556
+CALL insert_study ('El paciente presenta secreciones nasales, dolor de cabeza y mareos.','2014-08-10','Diferencial: Resfrio común.',UNHEX('1da4819f21864bd88e0a781b98079fd3'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días. 
+Se recomiendan análisis generales.','---',UNHEX('ea95ef6f654b423086f4f9a38fc44556'),'UA');
+# Se craran 1 archivos para el estudio 1da4819f21864bd88e0a781b98079fd3
+CALL insert_study_file (UNHEX('cde7cf099a784da29f649b05d2214ed7'),'Archivo 0.txt',UNHEX('1da4819f21864bd88e0a781b98079fd3'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-01',UNHEX('e285afe286cf4c77a6004de6e8996719'),'Observación correspondiente al estudio e285afe286cf4c77a6004de6e8996719.',UNHEX('9e5a83b0729b4a3eacef1add52dc54ee'),'BT');
-# Se craran 1 archivos para el estudio e285afe286cf4c77a6004de6e8996719
-CALL insert_study_file (UNHEX('25558b6d9d2448d093918f243e41f2ff'),'Archivo 0.jpg',UNHEX('e285afe286cf4c77a6004de6e8996719'));
+CALL insert_study ('Control de rutina.','2014-08-06','',UNHEX('2741f3951b644ff79becb4744d1b504a'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','---',UNHEX('ea95ef6f654b423086f4f9a38fc44556'),'ET');
+# Se craran 2 archivos para el estudio 2741f3951b644ff79becb4744d1b504a
+CALL insert_study_file (UNHEX('177123433a284ebdae5d48049bcbe094'),'Archivo 0.doc',UNHEX('2741f3951b644ff79becb4744d1b504a'));
+CALL insert_study_file (UNHEX('e766f6fff76c4a75a8652e88025a4077'),'Archivo 1.doc',UNHEX('2741f3951b644ff79becb4744d1b504a'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-04',UNHEX('acffb6393b954cd1884dfc894f50cc49'),'Observación correspondiente al estudio acffb6393b954cd1884dfc894f50cc49.',UNHEX('9e5a83b0729b4a3eacef1add52dc54ee'),'UA');
-# Se craran 0 archivos para el estudio acffb6393b954cd1884dfc894f50cc49
+CALL insert_study (' - Dolores corporales 
+ - Dolor de cabeza 
+ - Mareos 
+ - Cansancio 
+ - Secreciones nasales','2014-08-07','Diferencial: Resfrio común.',UNHEX('3bed4907c6d544d697286382c72e2226'),'Descongestionantes o antigripales en té, 1 sobre cada 8 horas.','Programada nueva consulta en 5 días.',UNHEX('ea95ef6f654b423086f4f9a38fc44556'),'BT');
+# Se craran 2 archivos para el estudio 3bed4907c6d544d697286382c72e2226
+CALL insert_study_file (UNHEX('31f715ee8afe4732a03a914e3e634c38'),'Archivo 0.txt',UNHEX('3bed4907c6d544d697286382c72e2226'));
+CALL insert_study_file (UNHEX('dcfd0b5e4fcf4015a747c1f75f2b0a05'),'Archivo 1.txt',UNHEX('3bed4907c6d544d697286382c72e2226'));
 # Fin creacion de archivos
-# Fin creacion de estudios
-# Fin creacon de paciente
-
-
-
-# Se creara el paciente c3f124cc1c074f73bc255d6951b56d5a
-CALL insert_patient ('1981-11-18','4','F', UNHEX('c3f124cc1c074f73bc255d6951b56d5a'),'Flack, gale  jsandye','doctor');
-# Se craran 2 estudios para el paciente c3f124cc1c074f73bc255d6951b56d5a
-CALL insert_study ('2014-08-02',UNHEX('6bbaa62129814ce7b79c0568d2106045'),'Observación correspondiente al estudio 6bbaa62129814ce7b79c0568d2106045.',UNHEX('c3f124cc1c074f73bc255d6951b56d5a'),'UA');
-# Se craran 0 archivos para el estudio 6bbaa62129814ce7b79c0568d2106045
-# Fin creacion de archivos
-CALL insert_study ('2014-08-02',UNHEX('ff81d86adfa1473e81b0846afd5a5c97'),'Observación correspondiente al estudio ff81d86adfa1473e81b0846afd5a5c97.',UNHEX('c3f124cc1c074f73bc255d6951b56d5a'),'BT');
-# Se craran 1 archivos para el estudio ff81d86adfa1473e81b0846afd5a5c97
-CALL insert_study_file (UNHEX('e1cefae2c5b34f2e9393c2e60dfe9b54'),'Archivo 0.jpg',UNHEX('ff81d86adfa1473e81b0846afd5a5c97'));
-# Fin creacion de archivos
-# Fin creacion de estudios
-# Fin creacon de paciente
-
-
-
-# Se creara el paciente a743f22cd011482790c65f27ce51de8c
-CALL insert_patient ('1942-11-17','7','M', UNHEX('a743f22cd011482790c65f27ce51de8c'),'Carlyle, yuri manny','doctor');
-# Se craran 2 estudios para el paciente a743f22cd011482790c65f27ce51de8c
-CALL insert_study ('2014-08-02',UNHEX('61cb7396f4c8493ead233a2aca591c91'),'Observación correspondiente al estudio 61cb7396f4c8493ead233a2aca591c91.',UNHEX('a743f22cd011482790c65f27ce51de8c'),'BT');
-# Se craran 0 archivos para el estudio 61cb7396f4c8493ead233a2aca591c91
-# Fin creacion de archivos
-CALL insert_study ('2014-08-03',UNHEX('52759dd5971e4119a375feeefd12cc2d'),'Observación correspondiente al estudio 52759dd5971e4119a375feeefd12cc2d.',UNHEX('a743f22cd011482790c65f27ce51de8c'),'UA');
-# Se craran 2 archivos para el estudio 52759dd5971e4119a375feeefd12cc2d
-CALL insert_study_file (UNHEX('d25a7dc676674807812e9e16d6c6f6a4'),'Archivo 0.pdf',UNHEX('52759dd5971e4119a375feeefd12cc2d'));
-CALL insert_study_file (UNHEX('a7559124571f4ce2b4f4ca6e560c3212'),'Archivo 1.txt',UNHEX('52759dd5971e4119a375feeefd12cc2d'));
+CALL insert_study ('El paciente concurre con dolor corporal, cansancio y secreciones nasales.','2014-08-06','Diferencial: Gripe H1N1',UNHEX('941c49fc56264c84bd4ef3bec02f3a63'),'Oseltamivir oral, 1 comprimido cada 6 horas 
+Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo absoluto por 8 días.
+Análisis generales: Orina completo, sangre completo y ecg.','Programada nueva consulta en 5 días.',UNHEX('ea95ef6f654b423086f4f9a38fc44556'),'ET');
+# Se craran 0 archivos para el estudio 941c49fc56264c84bd4ef3bec02f3a63
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente
 
 
 
-# Se creara el paciente 426d2c18c29548799d7801a245241c07
-CALL insert_patient ('1955-08-14','3','F', UNHEX('426d2c18c29548799d7801a245241c07'),'Barbieri, Dido georgianne','doctor');
-# Se craran 2 estudios para el paciente 426d2c18c29548799d7801a245241c07
-CALL insert_study ('2014-08-04',UNHEX('75bb6e9a014e4f96babca4df404a2691'),'Observación correspondiente al estudio 75bb6e9a014e4f96babca4df404a2691.',UNHEX('426d2c18c29548799d7801a245241c07'),'BT');
-# Se craran 1 archivos para el estudio 75bb6e9a014e4f96babca4df404a2691
-CALL insert_study_file (UNHEX('829b86fa3f2f453da4741da354f64b0c'),'Archivo 0.pdf',UNHEX('75bb6e9a014e4f96babca4df404a2691'));
+# Se creara el paciente 11369bc49ef846b8850661da26e1a9ad
+CALL insert_patient ('1965-01-18','6','F', UNHEX('11369bc49ef846b8850661da26e1a9ad'),'Dame, Gabbi','Diabetes.','doctor');
+# Se craran 3 estudios para el paciente 11369bc49ef846b8850661da26e1a9ad
+CALL insert_study ('El paciente presenta secreciones nasales, dolor de cabeza y mareos.','2014-08-06','Posibles alergias estacionales.',UNHEX('a2423cab23d449f0895d25daade6e83b'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','Programada nueva consulta en 5 días.',UNHEX('11369bc49ef846b8850661da26e1a9ad'),'BT');
+# Se craran 1 archivos para el estudio a2423cab23d449f0895d25daade6e83b
+CALL insert_study_file (UNHEX('e1751234df304204a8450f50b745dd32'),'Archivo 0.jpg',UNHEX('a2423cab23d449f0895d25daade6e83b'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-01',UNHEX('812c9005b68c402ab51a2fe2cbbfcd01'),'Observación correspondiente al estudio 812c9005b68c402ab51a2fe2cbbfcd01.',UNHEX('426d2c18c29548799d7801a245241c07'),'UA');
-# Se craran 0 archivos para el estudio 812c9005b68c402ab51a2fe2cbbfcd01
+CALL insert_study ('Control de rutina.','2014-08-05','',UNHEX('912627bd7d834cb98a99463f8ba83bc0'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','---',UNHEX('11369bc49ef846b8850661da26e1a9ad'),'UA');
+# Se craran 1 archivos para el estudio 912627bd7d834cb98a99463f8ba83bc0
+CALL insert_study_file (UNHEX('6de1214b2e7648cf822f3ed52132055e'),'Archivo 0.doc',UNHEX('912627bd7d834cb98a99463f8ba83bc0'));
 # Fin creacion de archivos
-# Fin creacion de estudios
-# Fin creacon de paciente
-
-
-
-# Se creara el paciente 7b0de9e4e44e4593a57bcc7c4bfc1401
-CALL insert_patient ('1948-01-03','3','F', UNHEX('7b0de9e4e44e4593a57bcc7c4bfc1401'),'Schachter, gussy','doctor');
-# Se craran 3 estudios para el paciente 7b0de9e4e44e4593a57bcc7c4bfc1401
-CALL insert_study ('2014-08-01',UNHEX('6142756a644a4e0ba4f2b460005bbefc'),'Observación correspondiente al estudio 6142756a644a4e0ba4f2b460005bbefc.',UNHEX('7b0de9e4e44e4593a57bcc7c4bfc1401'),'BT');
-# Se craran 0 archivos para el estudio 6142756a644a4e0ba4f2b460005bbefc
-# Fin creacion de archivos
-CALL insert_study ('2014-07-30',UNHEX('c2dda222218d4ccf8e7a342c7b68c258'),'Observación correspondiente al estudio c2dda222218d4ccf8e7a342c7b68c258.',UNHEX('7b0de9e4e44e4593a57bcc7c4bfc1401'),'UA');
-# Se craran 1 archivos para el estudio c2dda222218d4ccf8e7a342c7b68c258
-CALL insert_study_file (UNHEX('fb2b3b7512f74c58801404777260e033'),'Archivo 0.doc',UNHEX('c2dda222218d4ccf8e7a342c7b68c258'));
-# Fin creacion de archivos
-CALL insert_study ('2014-08-03',UNHEX('fe60a5a783174a36810133daf7afc346'),'Observación correspondiente al estudio fe60a5a783174a36810133daf7afc346.',UNHEX('7b0de9e4e44e4593a57bcc7c4bfc1401'),'BT');
-# Se craran 0 archivos para el estudio fe60a5a783174a36810133daf7afc346
+CALL insert_study ('El paciente concurre con dolor corporal, cansancio y secreciones nasales.','2014-08-07','Resfrio común.',UNHEX('b3ba70427f534c5d85f8ebd7e23266a9'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','Programada nueva consulta en 5 días.',UNHEX('11369bc49ef846b8850661da26e1a9ad'),'BT');
+# Se craran 2 archivos para el estudio b3ba70427f534c5d85f8ebd7e23266a9
+CALL insert_study_file (UNHEX('ad8a1cf435cf4f64bb9fd24b8c89ff30'),'Archivo 0.txt',UNHEX('b3ba70427f534c5d85f8ebd7e23266a9'));
+CALL insert_study_file (UNHEX('e1c4d6c885fa4a559be324664be1dfe0'),'Archivo 1.pdf',UNHEX('b3ba70427f534c5d85f8ebd7e23266a9'));
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente
 
 
 
-# Se creara el paciente e6bc124d44634d16bc12aa7210af9f62
-CALL insert_patient ('1952-02-27','1','M', UNHEX('e6bc124d44634d16bc12aa7210af9f62'),'Ehlers, Stephanus doug','doctor');
-# Se craran 1 estudios para el paciente e6bc124d44634d16bc12aa7210af9f62
-CALL insert_study ('2014-07-31',UNHEX('cbc329c6ffa4486da1f301425cacd862'),'Observación correspondiente al estudio cbc329c6ffa4486da1f301425cacd862.',UNHEX('e6bc124d44634d16bc12aa7210af9f62'),'ET');
-# Se craran 0 archivos para el estudio cbc329c6ffa4486da1f301425cacd862
+# Se creara el paciente 67b804c6dee5446687f39565d32c49a7
+CALL insert_patient ('1954-10-30','7','M', UNHEX('67b804c6dee5446687f39565d32c49a7'),'Tittarelli, calhoun','Fumador.','doctor');
+# Se craran 3 estudios para el paciente 67b804c6dee5446687f39565d32c49a7
+CALL insert_study ('El paciente presenta secreciones nasales, dolor de cabeza y mareos.','2014-08-07','Resfrio común.',UNHEX('c8a6f5ae493b495e8ad575f0812c17df'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días. 
+Se recomiendan análisis generales.','---',UNHEX('67b804c6dee5446687f39565d32c49a7'),'UA');
+# Se craran 2 archivos para el estudio c8a6f5ae493b495e8ad575f0812c17df
+CALL insert_study_file (UNHEX('73751d4430254dd5944810af57a51fa5'),'Archivo 0.pdf',UNHEX('c8a6f5ae493b495e8ad575f0812c17df'));
+CALL insert_study_file (UNHEX('7ce505b8ea13453fa3c609e034b9b954'),'Archivo 1.doc',UNHEX('c8a6f5ae493b495e8ad575f0812c17df'));
+# Fin creacion de archivos
+CALL insert_study ('El paciente concurre con dolor corporal, cansancio y secreciones nasales.','2014-08-10','Resfrio común.',UNHEX('c2205a72362b49b4bea8ed79bfffe558'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','---',UNHEX('67b804c6dee5446687f39565d32c49a7'),'ET');
+# Se craran 0 archivos para el estudio c2205a72362b49b4bea8ed79bfffe558
+# Fin creacion de archivos
+CALL insert_study ('El paciente presenta secreciones nasales, dolor de cabeza y mareos.','2014-08-07','Posibles alergias estacionales.',UNHEX('e0a2dcfa6928476fa4a9beff5af31a62'),'Descongestionantes o antigripales en té, 1 sobre cada 8 horas.','Programada nueva consulta en 5 días.',UNHEX('67b804c6dee5446687f39565d32c49a7'),'ET');
+# Se craran 1 archivos para el estudio e0a2dcfa6928476fa4a9beff5af31a62
+CALL insert_study_file (UNHEX('e60036efb9414d17aae7507a72f8fa07'),'Archivo 0.doc',UNHEX('e0a2dcfa6928476fa4a9beff5af31a62'));
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente
 
 
 
-# Se creara el paciente a55df5ea46894fa98019fbc06c0e42d1
-CALL insert_patient ('1966-07-01','1','M', UNHEX('a55df5ea46894fa98019fbc06c0e42d1'),'Guerrieri, owen','doctor');
-# Se craran 5 estudios para el paciente a55df5ea46894fa98019fbc06c0e42d1
-CALL insert_study ('2014-07-31',UNHEX('ff4245095b7a4d7c987f3444a1a396b1'),'Observación correspondiente al estudio ff4245095b7a4d7c987f3444a1a396b1.',UNHEX('a55df5ea46894fa98019fbc06c0e42d1'),'UA');
-# Se craran 0 archivos para el estudio ff4245095b7a4d7c987f3444a1a396b1
+# Se creara el paciente baaf151e39ba4a3f8e4f65c7e2e19d7a
+CALL insert_patient ('1935-12-04','5','M', UNHEX('baaf151e39ba4a3f8e4f65c7e2e19d7a'),'La Casce, kennan','Hemocromatosis.','doctor');
+# Se craran 3 estudios para el paciente baaf151e39ba4a3f8e4f65c7e2e19d7a
+CALL insert_study ('Control de rutina.','2014-08-10','',UNHEX('bd10d6a64b1c4264bc5a5285de88d35e'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','Programada nueva consulta en 5 días.',UNHEX('baaf151e39ba4a3f8e4f65c7e2e19d7a'),'BT');
+# Se craran 0 archivos para el estudio bd10d6a64b1c4264bc5a5285de88d35e
 # Fin creacion de archivos
-CALL insert_study ('2014-07-30',UNHEX('ceae8535b0234b5998684bee98c7d825'),'Observación correspondiente al estudio ceae8535b0234b5998684bee98c7d825.',UNHEX('a55df5ea46894fa98019fbc06c0e42d1'),'ET');
-# Se craran 2 archivos para el estudio ceae8535b0234b5998684bee98c7d825
-CALL insert_study_file (UNHEX('74c924799e0d48469c3c555d3356b11a'),'Archivo 0.pdf',UNHEX('ceae8535b0234b5998684bee98c7d825'));
-CALL insert_study_file (UNHEX('beada94a58454d409b7216eaa2635124'),'Archivo 1.jpg',UNHEX('ceae8535b0234b5998684bee98c7d825'));
+CALL insert_study ('Control de rutina.','2014-08-12','',UNHEX('6a5096f7a40c45008c1e3e8718a5f5d6'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','Tolerancia muy baja a los sintomas gripales.',UNHEX('baaf151e39ba4a3f8e4f65c7e2e19d7a'),'UA');
+# Se craran 1 archivos para el estudio 6a5096f7a40c45008c1e3e8718a5f5d6
+CALL insert_study_file (UNHEX('0261fb3d94824d5b8cfda772990a122c'),'Archivo 0.txt',UNHEX('6a5096f7a40c45008c1e3e8718a5f5d6'));
 # Fin creacion de archivos
-CALL insert_study ('2014-07-31',UNHEX('08a7e81df9b54c8780dcc42203e1fc76'),'Observación correspondiente al estudio 08a7e81df9b54c8780dcc42203e1fc76.',UNHEX('a55df5ea46894fa98019fbc06c0e42d1'),'ET');
-# Se craran 0 archivos para el estudio 08a7e81df9b54c8780dcc42203e1fc76
-# Fin creacion de archivos
-CALL insert_study ('2014-07-31',UNHEX('9d28e28248db4a5ea4796acc3356ebf7'),'Observación correspondiente al estudio 9d28e28248db4a5ea4796acc3356ebf7.',UNHEX('a55df5ea46894fa98019fbc06c0e42d1'),'UA');
-# Se craran 1 archivos para el estudio 9d28e28248db4a5ea4796acc3356ebf7
-CALL insert_study_file (UNHEX('a6d32a5aaeda4bcd9565c27fa6208a67'),'Archivo 0.jpg',UNHEX('9d28e28248db4a5ea4796acc3356ebf7'));
-# Fin creacion de archivos
-CALL insert_study ('2014-07-30',UNHEX('fce5971e6db945ccaae8bfc3a397659f'),'Observación correspondiente al estudio fce5971e6db945ccaae8bfc3a397659f.',UNHEX('a55df5ea46894fa98019fbc06c0e42d1'),'ET');
-# Se craran 0 archivos para el estudio fce5971e6db945ccaae8bfc3a397659f
+CALL insert_study ('Control de rutina.','2014-08-09','',UNHEX('6d24b71ac7bb4a01890bdba9c9b6603d'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','---',UNHEX('baaf151e39ba4a3f8e4f65c7e2e19d7a'),'BT');
+# Se craran 0 archivos para el estudio 6d24b71ac7bb4a01890bdba9c9b6603d
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente
 
 
 
-# Se creara el paciente a218f775422344f1a896a3fe2afb2161
-CALL insert_patient ('1978-07-10','6','F', UNHEX('a218f775422344f1a896a3fe2afb2161'),'Denault, Nannette','doctor');
-# Se craran 3 estudios para el paciente a218f775422344f1a896a3fe2afb2161
-CALL insert_study ('2014-08-03',UNHEX('44ccd1b704bc4eb8a05cef2985dc06c5'),'Observación correspondiente al estudio 44ccd1b704bc4eb8a05cef2985dc06c5.',UNHEX('a218f775422344f1a896a3fe2afb2161'),'BT');
-# Se craran 1 archivos para el estudio 44ccd1b704bc4eb8a05cef2985dc06c5
-CALL insert_study_file (UNHEX('6be710ee238c41ba9196edb664165595'),'Archivo 0.jpg',UNHEX('44ccd1b704bc4eb8a05cef2985dc06c5'));
+# Se creara el paciente df29f08e6dec4a63802e33500e013339
+CALL insert_patient ('1989-01-31','2','M', UNHEX('df29f08e6dec4a63802e33500e013339'),'Levitt, cordie Demetris','Anemia falciforme.','doctor');
+# Se craran 2 estudios para el paciente df29f08e6dec4a63802e33500e013339
+CALL insert_study ('Control de rutina.','2014-08-11','',UNHEX('03bd11a0666144359ad1ec4077424019'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días. 
+Se recomiendan análisis generales.','---',UNHEX('df29f08e6dec4a63802e33500e013339'),'ET');
+# Se craran 1 archivos para el estudio 03bd11a0666144359ad1ec4077424019
+CALL insert_study_file (UNHEX('16f8211d714045fcb5b88f7dc3c94469'),'Archivo 0.doc',UNHEX('03bd11a0666144359ad1ec4077424019'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-03',UNHEX('894517098f4e47cdaed4c7cf3130a3a7'),'Observación correspondiente al estudio 894517098f4e47cdaed4c7cf3130a3a7.',UNHEX('a218f775422344f1a896a3fe2afb2161'),'BT');
-# Se craran 2 archivos para el estudio 894517098f4e47cdaed4c7cf3130a3a7
-CALL insert_study_file (UNHEX('2ee002f230c745b7a8a39737317ccde9'),'Archivo 0.jpg',UNHEX('894517098f4e47cdaed4c7cf3130a3a7'));
-CALL insert_study_file (UNHEX('1a8f79ada6944474acd6b57567181364'),'Archivo 1.doc',UNHEX('894517098f4e47cdaed4c7cf3130a3a7'));
+CALL insert_study ('El paciente concurre con dolor corporal, cansancio y secreciones nasales.','2014-08-06','Resfrio común.',UNHEX('eca288bd614140888d1891b16c497f26'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','---',UNHEX('df29f08e6dec4a63802e33500e013339'),'UA');
+# Se craran 2 archivos para el estudio eca288bd614140888d1891b16c497f26
+CALL insert_study_file (UNHEX('648d66b06314497088c632d4d3af95b2'),'Archivo 0.doc',UNHEX('eca288bd614140888d1891b16c497f26'));
+CALL insert_study_file (UNHEX('4b3d5c45754446fb952e75a9c23d8131'),'Archivo 1.pdf',UNHEX('eca288bd614140888d1891b16c497f26'));
 # Fin creacion de archivos
-CALL insert_study ('2014-08-02',UNHEX('8e3410f50a8e4597896bf60e6c6717c4'),'Observación correspondiente al estudio 8e3410f50a8e4597896bf60e6c6717c4.',UNHEX('a218f775422344f1a896a3fe2afb2161'),'UA');
-# Se craran 2 archivos para el estudio 8e3410f50a8e4597896bf60e6c6717c4
-CALL insert_study_file (UNHEX('9fed811bd73841349de73fa582e23ef1'),'Archivo 0.pdf',UNHEX('8e3410f50a8e4597896bf60e6c6717c4'));
-CALL insert_study_file (UNHEX('2df9ec67bd8243df83d5ffb0640f491f'),'Archivo 1.pdf',UNHEX('8e3410f50a8e4597896bf60e6c6717c4'));
+# Fin creacion de estudios
+# Fin creacon de paciente
+
+
+
+# Se creara el paciente 8ab2c7794ea349bf917bae50bc82c683
+CALL insert_patient ('1955-10-12','5','M', UNHEX('8ab2c7794ea349bf917bae50bc82c683'),'Trejo, Izaak Hillel','','doctor');
+# Se craran 0 estudios para el paciente 8ab2c7794ea349bf917bae50bc82c683
+# Fin creacion de estudios
+# Fin creacon de paciente
+
+
+
+# Se creara el paciente 7c8180c9ea584825998f2463ebaaa5ac
+CALL insert_patient ('1952-08-28','6','M', UNHEX('7c8180c9ea584825998f2463ebaaa5ac'),'Partridge, Ike','','doctor');
+# Se craran 3 estudios para el paciente 7c8180c9ea584825998f2463ebaaa5ac
+CALL insert_study ('Control de rutina.','2014-08-06','',UNHEX('2ed3c68965384c13930bce858b6fa6b9'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días. 
+Se recomiendan análisis generales.','Programada nueva consulta en 5 días.',UNHEX('7c8180c9ea584825998f2463ebaaa5ac'),'ET');
+# Se craran 0 archivos para el estudio 2ed3c68965384c13930bce858b6fa6b9
+# Fin creacion de archivos
+CALL insert_study ('Control de rutina.','2014-08-12','',UNHEX('f981e93e895342a1b43638810b84ba2b'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','---',UNHEX('7c8180c9ea584825998f2463ebaaa5ac'),'UA');
+# Se craran 1 archivos para el estudio f981e93e895342a1b43638810b84ba2b
+CALL insert_study_file (UNHEX('79d12d05bd914fad80d1109374142344'),'Archivo 0.jpg',UNHEX('f981e93e895342a1b43638810b84ba2b'));
+# Fin creacion de archivos
+CALL insert_study ('El paciente presenta secreciones nasales, dolor de cabeza y mareos.','2014-08-09','Posibles alergias estacionales.',UNHEX('7baa5b995c8b4ae690ceeb03b6bad6ee'),'Spray nasal con xilometazolina e ibuprofeno 400, 1 comprimido cada 6 horas y reposo por 3 días.','---',UNHEX('7c8180c9ea584825998f2463ebaaa5ac'),'ET');
+# Se craran 0 archivos para el estudio 7baa5b995c8b4ae690ceeb03b6bad6ee
+# Fin creacion de archivos
+# Fin creacion de estudios
+# Fin creacon de paciente
+
+
+
+# Se creara el paciente 17a309e795d34a899875171092a8eae9
+CALL insert_patient ('1952-07-07','2','M', UNHEX('17a309e795d34a899875171092a8eae9'),'Joly, basilio hubert','Diabetes.','doctor');
+# Se craran 2 estudios para el paciente 17a309e795d34a899875171092a8eae9
+CALL insert_study ('Control de rutina.','2014-08-10','',UNHEX('6592f8645a364d5887c9736a65e8feec'),'Antigripal con pseudoefedrina e ibuprofeno, 1 comprimido cada 8 horas y reposo por 3 días.','Tolerancia muy baja a los sintomas gripales.',UNHEX('17a309e795d34a899875171092a8eae9'),'ET');
+# Se craran 2 archivos para el estudio 6592f8645a364d5887c9736a65e8feec
+CALL insert_study_file (UNHEX('0ca178944ca949aeaf30f1557669e615'),'Archivo 0.doc',UNHEX('6592f8645a364d5887c9736a65e8feec'));
+CALL insert_study_file (UNHEX('48bb5f47a02f4aa8b42b6310b26a45fc'),'Archivo 1.jpg',UNHEX('6592f8645a364d5887c9736a65e8feec'));
+# Fin creacion de archivos
+CALL insert_study ('El paciente presenta secreciones nasales, dolor de cabeza y mareos.','2014-08-10','Gripe estacional.',UNHEX('dcef5e6625eb47caa1ac187d840b487e'),'Descongestionantes o antigripales en té, 1 sobre cada 8 horas.','---',UNHEX('17a309e795d34a899875171092a8eae9'),'ET');
+# Se craran 0 archivos para el estudio dcef5e6625eb47caa1ac187d840b487e
 # Fin creacion de archivos
 # Fin creacion de estudios
 # Fin creacon de paciente

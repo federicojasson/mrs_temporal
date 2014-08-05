@@ -39,6 +39,8 @@ import gui.workers.GetStudySummariesCaller;
 import gui.workers.GetStudySummariesWorker;
 import gui.workers.ModifyPatientCaller;
 import gui.workers.ModifyPatientWorker;
+import gui.workers.RemoveStudyCaller;
+import gui.workers.RemoveStudyWorker;
 import gui.workers.SearchStudySummariesCaller;
 import gui.workers.SearchStudySummariesWorker;
 import utilities.Utility;
@@ -51,6 +53,7 @@ public class PatientFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;
 	private JButton buttonModifyPatient;
+	private JButton buttonRemoveStudy;
 	private JButton buttonSetModifyMode;
 	private JButton buttonViewStudy;
 	private JComboBox<BloodType> comboBoxBloodType;
@@ -65,12 +68,6 @@ public class PatientFrame extends GuiFrame {
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
-		
-		// Disables the view study button
-		onSelectStudy();
-		
-		// Sets the view mode
-		setViewMode();
 		
 		// Locks the frame
 		lock();
@@ -95,6 +92,12 @@ public class PatientFrame extends GuiFrame {
 						
 						// Unlocks the frame
 						unlock();
+						
+						// Calls the selection callback method
+						onSelectStudy();
+						
+						// Sets the view mode
+						setViewMode();
 					}
 				};
 				GetStudySummariesWorker worker = new GetStudySummariesWorker(caller, PatientManager.getCurrentPatientId());
@@ -205,7 +208,7 @@ public class PatientFrame extends GuiFrame {
 		panelObservations.setLayout(new FormLayout(new ColumnSpec[] {
 			ColumnSpec.decode("fill:max(256px;default):grow")
 		}, new RowSpec[] {
-			RowSpec.decode("fill:max(128px;default):grow")
+			RowSpec.decode("fill:max(160px;default):grow")
 		}));
 		panelObservations.add(panelObservationsContainer, "1, 1");
 		
@@ -301,7 +304,7 @@ public class PatientFrame extends GuiFrame {
 		});
 		registerComponent("buttonModifyPatient", buttonModifyPatient);
 		
-		JButton buttonAddStudy = new JButton("Ingresar estudio");
+		JButton buttonAddStudy = new JButton("Nuevo estudio...");
 		buttonAddStudy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onAddStudy();
@@ -309,7 +312,15 @@ public class PatientFrame extends GuiFrame {
 		});
 		registerComponent("buttonAddStudy", buttonAddStudy);
 		
-		buttonViewStudy = new JButton("Ver estudio");
+		buttonRemoveStudy = new JButton("Eliminar estudio...");
+		buttonRemoveStudy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onRemoveStudy();
+			}
+		});
+		registerComponent("buttonRemoveStudy", buttonRemoveStudy);
+		
+		buttonViewStudy = new JButton("Ver estudio...");
 		buttonViewStudy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onViewStudy();
@@ -328,6 +339,8 @@ public class PatientFrame extends GuiFrame {
 			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
+			FormFactory.BUTTON_COLSPEC,
+			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.BUTTON_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC
@@ -336,7 +349,8 @@ public class PatientFrame extends GuiFrame {
 		panelButtons.add(buttonSetModifyMode, "3, 1");
 		panelButtons.add(buttonModifyPatient, "5, 1");
 		panelButtons.add(buttonAddStudy, "7, 1");
-		panelButtons.add(buttonViewStudy, "9, 1");
+		panelButtons.add(buttonRemoveStudy, "9, 1");
+		panelButtons.add(buttonViewStudy, "11, 1");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -408,6 +422,42 @@ public class PatientFrame extends GuiFrame {
 		datePicker.hidePopup();
 	}
 	
+	private void onRemoveStudy() {
+		// Gets the selected row index (if any)
+		final int selectedRowIndex = tableStudies.getSelectedRow();
+		
+		if (selectedRowIndex < 0)
+			// No row has been selected
+			return;
+		
+		// Gets the study ID
+		byte[] studyId = (byte[]) tableStudies.getValueAt(selectedRowIndex, StudyTable.ID);
+		
+		// Confirms the action
+		if (! GuiManager.showConfirmationDialog(this, "¿Eliminar estudio?", "Está a punto de eliminar un estudio." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
+			// The action was canceled
+			return;
+		
+		// Locks the frame
+		lock();
+		
+		// Removes the study
+		RemoveStudyCaller caller = new RemoveStudyCaller() {
+			public void removeStudyCallback() {
+				// Removes the study's row
+				tableStudies.removeStudySummary(selectedRowIndex);
+				
+				// Unlocks the frame
+				unlock();
+				
+				// Calls the selection callback method
+				onSelectStudy();
+			}
+		};
+		RemoveStudyWorker worker = new RemoveStudyWorker(caller, studyId);
+		worker.execute();
+	}
+	
 	private void onSearch() {
 		// Locks the frame
 		lock();
@@ -420,6 +470,9 @@ public class PatientFrame extends GuiFrame {
 				
 				// Unlocks the frame
 				unlock();
+				
+				// Calls the selection callback method
+				onSelectStudy();
 			}
 		};
 		SearchStudySummariesWorker worker = new SearchStudySummariesWorker(caller);
@@ -430,12 +483,15 @@ public class PatientFrame extends GuiFrame {
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tableStudies.getSelectedRow();
 		
-		if (selectedRowIndex < 0)
+		if (selectedRowIndex < 0) {
 			// No row has been selected
+			buttonRemoveStudy.setEnabled(false);
 			buttonViewStudy.setEnabled(false);
-		else
+		} else {
 			// A row has been selected
+			buttonRemoveStudy.setEnabled(true);
 			buttonViewStudy.setEnabled(true);
+		}
 	}
 	
 	private void onSetModifyMode() {
@@ -446,17 +502,19 @@ public class PatientFrame extends GuiFrame {
 	private void onViewStudy() {
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tableStudies.getSelectedRow();
+
+		if (selectedRowIndex < 0)
+			// No row has been selected
+			return;
 		
-		if (selectedRowIndex >= 0) {
-			// Gets the study ID
-			byte[] studyId = (byte[]) tableStudies.getValueAt(selectedRowIndex, StudyTable.ID);
-			
-			// Sets the study ID as the current one
-			StudyManager.setCurrentStudyId(studyId);
-			
-			// Opens the study frame
-			GuiManager.openFrame(GuiManager.STUDY_FRAME);
-		}
+		// Gets the study ID
+		byte[] studyId = (byte[]) tableStudies.getValueAt(selectedRowIndex, StudyTable.ID);
+		
+		// Sets the study ID as the current one
+		StudyManager.setCurrentStudyId(studyId);
+		
+		// Opens the study frame
+		GuiManager.openFrame(GuiManager.STUDY_FRAME);
 	}
 	
 	private void setModifyMode() {

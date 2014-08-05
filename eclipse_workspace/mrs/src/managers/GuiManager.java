@@ -71,11 +71,17 @@ public class GuiManager {
 		});
 	}
 	
-	public static File[] showFileChooserDialog(GuiFrame callerFrame) {
-		// Gets the current frame
-		GuiFrame currentFrame = frames[currentFrameIndex];
+	public static boolean showConfirmationDialog(GuiFrame callerFrame, String title, String message) {
+		if (frames[currentFrameIndex] == callerFrame)
+			// The caller frame is the current one
+			// Shows the confirmation dialog
+			return JOptionPane.showConfirmDialog(callerFrame.getFrame(), message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 		
-		if (currentFrame == callerFrame)
+		return false;
+	}
+	
+	public static File[] showFileChooserDialog(GuiFrame callerFrame) {
+		if (frames[currentFrameIndex] == callerFrame)
 			// The caller frame is the current one
 			// Shows the file chooser dialog
 			if (fileChooser.showDialog(callerFrame.getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
@@ -86,10 +92,7 @@ public class GuiManager {
 	}
 	
 	public static void showWarningDialog(GuiFrame callerFrame, String title, String message) {
-		// Gets the current frame
-		GuiFrame currentFrame = frames[currentFrameIndex];
-		
-		if (currentFrame == callerFrame)
+		if (frames[currentFrameIndex] == callerFrame)
 			// The caller frame is the current one
 			// Shows the warning dialog
 			JOptionPane.showMessageDialog(callerFrame.getFrame(), message, title, JOptionPane.WARNING_MESSAGE);

@@ -26,6 +26,8 @@ import entities.PatientSummary;
 import gui.components.PatientTable;
 import gui.workers.GetPatientSummariesCaller;
 import gui.workers.GetPatientSummariesWorker;
+import gui.workers.RemovePatientCaller;
+import gui.workers.RemovePatientWorker;
 import gui.workers.SearchPatientSummariesCaller;
 import gui.workers.SearchPatientSummariesWorker;
 import managers.GuiManager;
@@ -35,15 +37,13 @@ import managers.UserManager;
 //TODO: validate input
 public class UserFrame extends GuiFrame {
 
+	private JButton buttonRemovePatient;
 	private JButton buttonViewPatient;
 	private PatientTable tablePatients;
 	
 	public void initialize() {
 		// Initializes the GUI
 		super.initialize();
-		
-		// Disables the view patient button
-		onSelectPatient();
 		
 		// Locks the frame
 		lock();
@@ -56,6 +56,9 @@ public class UserFrame extends GuiFrame {
 				
 				// Unlocks the frame
 				unlock();
+				
+				// Calls the selection callback method
+				onSelectPatient();
 			}
 		};
 		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(caller, UserManager.getCurrentUserId());
@@ -130,7 +133,7 @@ public class UserFrame extends GuiFrame {
 		});
 		registerComponent("buttonExit", buttonExit);
 		
-		JButton buttonAddPatient = new JButton("Ingresar paciente");
+		JButton buttonAddPatient = new JButton("Nuevo paciente...");
 		buttonAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onAddPatient();
@@ -138,7 +141,15 @@ public class UserFrame extends GuiFrame {
 		});
 		registerComponent("buttonAddPatient", buttonAddPatient);
 		
-		buttonViewPatient = new JButton("Ver paciente");
+		buttonRemovePatient = new JButton("Eliminar paciente...");
+		buttonRemovePatient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				onRemovePatient();
+			}
+		});
+		registerComponent("buttonRemovePatient", buttonRemovePatient);
+		
+		buttonViewPatient = new JButton("Ver paciente...");
 		buttonViewPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onViewPatient();
@@ -153,13 +164,16 @@ public class UserFrame extends GuiFrame {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
+			FormFactory.BUTTON_COLSPEC,
+			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.BUTTON_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC
 		}));
 		panelButtons.add(buttonExit, "1, 1");
 		panelButtons.add(buttonAddPatient, "3, 1");
-		panelButtons.add(buttonViewPatient, "5, 1");
+		panelButtons.add(buttonRemovePatient, "5, 1");
+		panelButtons.add(buttonViewPatient, "7, 1");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -189,6 +203,42 @@ public class UserFrame extends GuiFrame {
 		GuiManager.closeCurrentFrame();
 	}
 	
+	private void onRemovePatient() {
+		// Gets the selected row index (if any)
+		final int selectedRowIndex = tablePatients.getSelectedRow();
+		
+		if (selectedRowIndex < 0)
+			// No row has been selected
+			return;
+		
+		// Gets the patient ID
+		byte[] patientId = (byte[]) tablePatients.getValueAt(selectedRowIndex, PatientTable.ID);
+		
+		// Confirms the action
+		if (! GuiManager.showConfirmationDialog(this, "¿Eliminar paciente?", "Está a punto de eliminar un paciente y todos sus estudios asociados." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
+			// The action was canceled
+			return;
+		
+		// Locks the frame
+		lock();
+		
+		// Removes the patient
+		RemovePatientCaller caller = new RemovePatientCaller() {
+			public void removePatientCallback() {
+				// Removes the patient's row
+				tablePatients.removePatientSummary(selectedRowIndex);
+				
+				// Unlocks the frame
+				unlock();
+				
+				// Calls the selection callback method
+				onSelectPatient();
+			}
+		};
+		RemovePatientWorker worker = new RemovePatientWorker(caller, patientId);
+		worker.execute();
+	}
+	
 	private void onSearch() {
 		// Locks the frame
 		lock();
@@ -201,6 +251,9 @@ public class UserFrame extends GuiFrame {
 				
 				// Unlocks the frame
 				unlock();
+				
+				// Calls the selection callback method
+				onSelectPatient();
 			}
 		};
 		SearchPatientSummariesWorker worker = new SearchPatientSummariesWorker(caller);
@@ -211,28 +264,33 @@ public class UserFrame extends GuiFrame {
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tablePatients.getSelectedRow();
 		
-		if (selectedRowIndex < 0)
+		if (selectedRowIndex < 0) {
 			// No row has been selected
+			buttonRemovePatient.setEnabled(false);
 			buttonViewPatient.setEnabled(false);
-		else
+		} else {
 			// A row has been selected
+			buttonRemovePatient.setEnabled(true);
 			buttonViewPatient.setEnabled(true);
+		}
 	}
 	
 	private void onViewPatient() {
 		// Gets the selected row index (if any)
 		int selectedRowIndex = tablePatients.getSelectedRow();
 		
-		if (selectedRowIndex >= 0) {
-			// Gets the patient ID
-			byte[] patientId = (byte[]) tablePatients.getValueAt(selectedRowIndex, PatientTable.ID);
-			
-			// Sets the patient ID as the current one
-			PatientManager.setCurrentPatientId(patientId);
-			
-			// Opens the patient frame
-			GuiManager.openFrame(GuiManager.PATIENT_FRAME);
-		}
+		if (selectedRowIndex < 0)
+			// No row has been selected
+			return;
+		
+		// Gets the patient ID
+		byte[] patientId = (byte[]) tablePatients.getValueAt(selectedRowIndex, PatientTable.ID);
+		
+		// Sets the patient ID as the current one
+		PatientManager.setCurrentPatientId(patientId);
+		
+		// Opens the patient frame
+		GuiManager.openFrame(GuiManager.PATIENT_FRAME);
 	}
 	
 }

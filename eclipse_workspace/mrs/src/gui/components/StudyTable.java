@@ -1,6 +1,7 @@
 package gui.components;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -23,7 +24,7 @@ public class StudyTable extends JTable {
 		super(new StudyTableModel());
 		
 		// Sets cell renderers
-		setDefaultRenderer(Object.class, new MyDefaultTableCellRenderer());
+		setDefaultRenderer(Object.class, new PaddingTableCellRenderer());
 		columnModel.getColumn(DATE).setCellRenderer(new DateTableCellRenderer());
 		columnModel.getColumn(ID).setCellRenderer(new IdTableCellRenderer());
 
@@ -34,13 +35,23 @@ public class StudyTable extends JTable {
 		((DefaultTableCellRenderer) tableHeader.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 	}
 	
+	public void removeStudySummary(int rowIndex) {
+		// Gets the table model
+		StudyTableModel tableModel = (StudyTableModel) dataModel;
+		
+		// Removes the row
+		tableModel.removeRow(rowIndex);
+		
+		// Notifies that data have changed
+		tableModel.fireTableDataChanged();
+	}
+	
 	public void setStudySummaries(List<StudySummary> studySummaries) {
 		// Gets the table model
 		StudyTableModel tableModel = (StudyTableModel) dataModel;
 		
-		// Fills the array with the study summaries
-		tableModel.studySummaries = new StudySummary[studySummaries.size()];
-		studySummaries.toArray(tableModel.studySummaries);
+		// Replaces the model's list with a new one containing the study summaries
+		tableModel.studySummaries = new ArrayList<StudySummary>(studySummaries);
 		
 		// Notifies that data have changed
 		tableModel.fireTableDataChanged();
@@ -50,7 +61,7 @@ public class StudyTable extends JTable {
 		
 		private static String[] columnNames;
 		
-		private StudySummary[] studySummaries;
+		private List<StudySummary> studySummaries;
 		
 		static {
 			// Initializes the column names
@@ -61,7 +72,7 @@ public class StudyTable extends JTable {
 		}
 		
 		private StudyTableModel() {
-			studySummaries = new StudySummary[0];
+			studySummaries = new ArrayList<StudySummary>(0);
 		}
 		
 		public int getColumnCount() {
@@ -73,12 +84,12 @@ public class StudyTable extends JTable {
 		}
 
 		public int getRowCount() {
-			return studySummaries.length;
+			return studySummaries.size();
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			// Gets the study summary
-			StudySummary studySummary = studySummaries[rowIndex];
+			StudySummary studySummary = studySummaries.get(rowIndex);
 			
 			// Returns the corresponding value
 			switch (columnIndex) {
@@ -87,6 +98,10 @@ public class StudyTable extends JTable {
 				case STUDY_TYPE_DESCRIPTION : return studySummary.getStudyTypeDescription();
 				default : return null;
 			}
+		}
+		
+		public void removeRow(int rowIndex) {
+			studySummaries.remove(rowIndex);
 		}
 		
 	}

@@ -2,6 +2,8 @@
 <section name="Workbench">
 	<section name="">
 		<item value="1000" key="org.eclipse.search.resultpage.limit"/>
+		<item value="TRUE" key="org.eclipse.jdt.search.resultpage.limit_enabled"/>
+		<item value="1000" key="org.eclipse.jdt.search.resultpage.limit"/>
 	</section>
 	<section name="org.eclipse.jdt.ui.JavaSearchResultPage">
 		<item value="TRUE" key="org.eclipse.jdt.search.resultpage.limit_enabled"/>
@@ -15,8 +17,8 @@
 	<section name="DialogBounds_SearchDialog">
 		<item value="714" key="DIALOG_WIDTH"/>
 		<item value="334" key="DIALOG_Y_ORIGIN"/>
-		<item value="450" key="DIALOG_HEIGHT"/>
 		<item value="745" key="DIALOG_X_ORIGIN"/>
+		<item value="450" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="Search">
@@ -37,11 +39,11 @@
 			<item value="org.eclipse.cdt.ui.pdomSearchPage"/>
 		</list>
 	</section>
-	<section name="SearchDialog">
-		<item value="org.eclipse.search.internal.ui.text.TextSearchPage" key="PREVIOUS_PAGE"/>
-	</section>
 	<section name="org.eclipse.search.text.FileSearchResultPage">
 		<item value="1000" key="org.eclipse.search.resultpage.limit"/>
+	</section>
+	<section name="SearchDialog">
+		<item value="org.eclipse.search.internal.ui.text.TextSearchPage" key="PREVIOUS_PAGE"/>
 	</section>
 	<section name="TextSearchPage">
 		<item value="false" key="CASE_SENSITIVE"/>
@@ -51,19 +53,7 @@
 		<item value="12" key="HISTORY_SIZE"/>
 		<section name="HISTORY11">
 			<item value="false" key="isRegExSearch"/>
-			<item value="panelFields" key="textPattern"/>
-			<item value="0" key="scope"/>
-			<item value="true" key="ignoreCase"/>
-			<item value="false" key="isWholeWord"/>
-			<list key="fileNamePatterns">
-				<item value="*"/>
-			</list>
-			<list key="workingSets">
-			</list>
-		</section>
-		<section name="HISTORY2">
-			<item value="false" key="isRegExSearch"/>
-			<item value="listStudyFiles" key="textPattern"/>
+			<item value="System.out" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -76,9 +66,9 @@
 		<section name="EXTENSIONS">
 			<item value="*" key="0"/>
 		</section>
-		<section name="HISTORY3">
+		<section name="HISTORY2">
 			<item value="false" key="isRegExSearch"/>
-			<item value="list" key="textPattern"/>
+			<item value="onSelect" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -88,9 +78,9 @@
 			<list key="workingSets">
 			</list>
 		</section>
-		<section name="HISTORY10">
+		<section name="HISTORY3">
 			<item value="false" key="isRegExSearch"/>
-			<item value="titledborder" key="textPattern"/>
+			<item value="setInitialFiles" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -102,7 +92,19 @@
 		</section>
 		<section name="HISTORY0">
 			<item value="false" key="isRegExSearch"/>
-			<item value="fieldObservations" key="textPattern"/>
+			<item value="Síntomas" key="textPattern"/>
+			<item value="0" key="scope"/>
+			<item value="true" key="ignoreCase"/>
+			<item value="false" key="isWholeWord"/>
+			<list key="fileNamePatterns">
+				<item value="*"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY10">
+			<item value="false" key="isRegExSearch"/>
+			<item value="selectedRowIndex &gt;= 0" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -114,7 +116,7 @@
 		</section>
 		<section name="HISTORY1">
 			<item value="false" key="isRegExSearch"/>
-			<item value="titledBorder" key="textPattern"/>
+			<item value="sintomas" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -126,7 +128,7 @@
 		</section>
 		<section name="HISTORY9">
 			<item value="false" key="isRegExSearch"/>
-			<item value="setColumns" key="textPattern"/>
+			<item value="confirmationdialog" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -138,9 +140,9 @@
 		</section>
 		<section name="HISTORY8">
 			<item value="false" key="isRegExSearch"/>
-			<item value="studies" key="textPattern"/>
+			<item value="showFile" key="textPattern"/>
 			<item value="0" key="scope"/>
-			<item value="false" key="ignoreCase"/>
+			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -150,7 +152,7 @@
 		</section>
 		<section name="HISTORY5">
 			<item value="false" key="isRegExSearch"/>
-			<item value="Información básica" key="textPattern"/>
+			<item value="selectedRowIndex &lt; 0" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -162,7 +164,7 @@
 		</section>
 		<section name="HISTORY4">
 			<item value="false" key="isRegExSearch"/>
-			<item value="EmptyBorder" key="textPattern"/>
+			<item value="clearSelection" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -174,9 +176,9 @@
 		</section>
 		<section name="HISTORY7">
 			<item value="false" key="isRegExSearch"/>
-			<item value="INSERT_STUDY" key="textPattern"/>
+			<item value="warningdialog" key="textPattern"/>
 			<item value="0" key="scope"/>
-			<item value="false" key="ignoreCase"/>
+			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -186,7 +188,7 @@
 		</section>
 		<section name="HISTORY6">
 			<item value="false" key="isRegExSearch"/>
-			<item value="an study" key="textPattern"/>
+			<item value="confirmation" key="textPattern"/>
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -197,12 +199,12 @@
 			</list>
 		</section>
 	</section>
+	<section name="SearchDialog.ScopePart">
+		<item value="0" key="scope"/>
+	</section>
 	<section name="ReplaceDialog2">
 		<list key="replace_with">
 			<item value="new LinkedList"/>
 		</list>
-	</section>
-	<section name="SearchDialog.ScopePart">
-		<item value="0" key="scope"/>
 	</section>
 </section>

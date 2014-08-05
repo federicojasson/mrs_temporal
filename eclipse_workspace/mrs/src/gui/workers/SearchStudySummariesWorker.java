@@ -1,5 +1,6 @@
 package gui.workers;
 
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,7 +19,9 @@ public class SearchStudySummariesWorker extends SwingWorker<List<StudySummary>, 
 	protected List<StudySummary> doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
 		
-		return new LinkedList<StudySummary>(); // TODO
+		List<StudySummary> list = new LinkedList<StudySummary>(); // TODO: SearchStudySummariesWorker
+		list.add(new StudySummary(new Date(192), new byte[] { 56 }, "Prueba"));
+		return list;
 		/*try {
 			// Gets the study summaries
 			return StudyManager.getStudySummaries(patientId);

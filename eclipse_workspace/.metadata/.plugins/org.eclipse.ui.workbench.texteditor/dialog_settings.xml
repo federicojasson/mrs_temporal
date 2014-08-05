@@ -2,27 +2,27 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="349" key="DIALOG_Y_ORIGIN"/>
-		<item value="1121" key="DIALOG_X_ORIGIN"/>
+		<item value="420" key="DIALOG_Y_ORIGIN"/>
 		<item value="383" key="DIALOG_HEIGHT"/>
+		<item value="911" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="setLayout" key="selection"/>
+		<item value="Disables" key="selection"/>
 		<list key="findhistory">
+			<item value="disables"/>
+			<item value="callback"/>
+			<item value="setEnabled(true)"/>
+			<item value="Ingresar"/>
+			<item value="fieldObser"/>
 			<item value="setLayout"/>
 			<item value="WEST"/>
 			<item value="new Dimen"/>
-			<item value="agregar"/>
-			<item value="224"/>
-			<item value="new Dimension"/>
-			<item value="panelContent"/>
-			<item value="panelFields"/>
 		</list>
 		<list key="replacehistory">
 			<item value="MIN_ROWSPEC"/>
