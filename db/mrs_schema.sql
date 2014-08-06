@@ -370,21 +370,10 @@ CREATE TRIGGER after_delete_study_file
 AFTER DELETE ON studies_files
 FOR EACH ROW
 BEGIN
-	-- Gets the current date and time
-	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
-	
-	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(160) DEFAULT CONCAT('Archivo eliminado: ', OLD.filename);
-	DECLARE v_study_id BINARY(16) DEFAULT OLD.study_id;
-	
-	INSERT INTO studies_histories (
-		datetime,
-		modification,
-		study_id
-	) VALUES (
-		v_datetime,
-		v_modification,
-		v_study_id
+	CALL insert_study_history (
+		UTC_TIMESTAMP(),
+		CONCAT('Archivo eliminado: ', OLD.filename),
+		OLD.study_id
 	);
 END; !
 
@@ -395,21 +384,10 @@ CREATE TRIGGER after_insert_study
 AFTER INSERT ON studies
 FOR EACH ROW
 BEGIN
-	-- Gets the current date and time
-	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
-	
-	-- Initializes the modification statement and study ID
-	DECLARE v_modification VARCHAR(160) DEFAULT 'Estudio ingresado';
-	DECLARE v_id BINARY(16) DEFAULT NEW.id;
-	
-	INSERT INTO studies_histories (
-		datetime,
-		modification,
-		study_id
-	) VALUES (
-		v_datetime,
-		v_modification,
-		v_id
+	CALL insert_study_history (
+		UTC_TIMESTAMP(),
+		'Estudio ingresado',
+		NEW.id
 	);
 END; !
 
@@ -420,21 +398,10 @@ CREATE TRIGGER after_insert_study_file
 AFTER INSERT ON studies_files
 FOR EACH ROW
 BEGIN
-	-- Gets the current date and time
-	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
-	
-	-- Initializes the modification statement and study_id ID
-	DECLARE v_modification VARCHAR(160) DEFAULT CONCAT('Archivo ingresado: ', NEW.filename);
-	DECLARE v_study_id BINARY(16) DEFAULT NEW.study_id;
-	
-	INSERT INTO studies_histories (
-		datetime,
-		modification,
-		study_id
-	) VALUES (
-		v_datetime,
-		v_modification,
-		v_study_id
+	CALL insert_study_history (
+		UTC_TIMESTAMP(),
+		CONCAT('Archivo ingresado: ', NEW.filename),
+		NEW.study_id
 	);
 END; !
 
@@ -445,10 +412,8 @@ CREATE TRIGGER after_update_study
 AFTER UPDATE ON studies
 FOR EACH ROW
 BEGIN
-	-- Gets the current date and time
+	-- Gets the current date and time and initializes the study ID
 	DECLARE v_datetime DATETIME DEFAULT UTC_TIMESTAMP();
-	
-	-- Initializes the study ID
 	DECLARE v_study_id BINARY(16) DEFAULT OLD.id;
 	
 	-- Checks if there was a change in the causes

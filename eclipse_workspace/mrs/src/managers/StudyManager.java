@@ -8,9 +8,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import entities.Study;
+import entities.StudyHistory;
 import entities.StudySummary;
 import entities.StudyType;
 import exceptions.NoStudyTypesException;
@@ -113,6 +115,39 @@ public class StudyManager {
 		}
 		
 		return studyFiles;
+	}
+	
+	public static List<StudyHistory> getStudyHistories() throws SQLException {
+		List<StudyHistory> studyHistories = new LinkedList<StudyHistory>();
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.GET_STUDY_HISTORIES);
+
+		try {
+			// Sets the input parameters
+			preparedStatement.setBytes(1, currentStudyId);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+	
+			// Fetches the query results
+			while (resultSet.next()) {
+				Timestamp datetime = resultSet.getTimestamp("datetime");
+				String modification = resultSet.getString("modification");
+	
+				// Adds the study history to the list
+				studyHistories.add(new StudyHistory(datetime, modification));
+			}
+		} finally {
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
+		}
+		
+		return studyHistories;
 	}
 
 	public static List<StudySummary> getStudySummaries() throws SQLException {

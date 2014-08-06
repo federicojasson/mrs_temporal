@@ -21,7 +21,6 @@ import utilities.Utility;
 import managers.GuiManager;
 import managers.ImageManager;
 
-// TODO: validate input
 public class LogInFrame extends GuiFrame {
 	
 	private JTextField fieldId;
@@ -109,9 +108,21 @@ public class LogInFrame extends GuiFrame {
 	
 	private void onLogInUserDoctor() {
 		// Gets the user ID and the password
-		String id = fieldId.getText();
+		String id = fieldId.getText().trim();
 		byte[] password = Utility.charsToBytes(fieldPassword.getPassword());
 
+		// Validates the inputs
+		
+		if (id.isEmpty()) {
+			GuiManager.showWarningDialog(this, "Entrada inválida", "Ingrese un nombre de usuario.");
+			return;
+		}
+		
+		if (password.length == 0) {
+			GuiManager.showWarningDialog(this, "Entrada inválida", "Ingrese la contraseña del usuario.");
+			return;
+		}
+		
 		// Locks the frame
 		lock();
 		

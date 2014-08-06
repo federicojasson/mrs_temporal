@@ -37,7 +37,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-// TODO: validate input
 public class StudyFrame extends GuiFrame {
 	
 	private JButton buttonAddStudyFiles;
@@ -282,12 +281,22 @@ public class StudyFrame extends GuiFrame {
 			}
 		});
 		registerComponent("buttonModifyStudy", buttonModifyStudy);
-		setDefaultButton(buttonModifyStudy);
+		
+		JButton buttonViewStudyHistories = new JButton("Ver historial de modificaciones");
+		buttonViewStudyHistories.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				onViewStudyHistories();
+			}
+		});
+		registerComponent("buttonViewStudyHistories", buttonViewStudyHistories);
+		setDefaultButton(buttonViewStudyHistories);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.GROWING_BUTTON_COLSPEC,
+			FormFactory.BUTTON_COLSPEC,
+			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
 			FormFactory.BUTTON_COLSPEC
@@ -297,6 +306,7 @@ public class StudyFrame extends GuiFrame {
 		panelButtons.add(buttonGoBack, "1, 1");
 		panelButtons.add(buttonSetModifyMode, "3, 1");
 		panelButtons.add(buttonModifyStudy, "5, 1");
+		panelButtons.add(buttonViewStudyHistories, "7, 1");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -411,6 +421,11 @@ public class StudyFrame extends GuiFrame {
 			OpenFileDirectoryWorker worker = new OpenFileDirectoryWorker(caller, file);
 			worker.execute();
 		}
+	}
+	
+	private void onViewStudyHistories() {
+		// Opens the study histories frame
+		GuiManager.openFrame(GuiManager.STUDY_HISTORIES_FRAME);
 	}
 	
 	private void setModifyMode() {

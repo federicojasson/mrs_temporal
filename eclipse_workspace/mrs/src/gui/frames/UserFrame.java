@@ -36,7 +36,6 @@ import managers.PatientManager;
 import managers.TimerManager;
 import managers.UserManager;
 
-//TODO: validate input
 public class UserFrame extends GuiFrame {
 
 	private JButton buttonRemovePatient;
@@ -238,7 +237,7 @@ public class UserFrame extends GuiFrame {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				// Gets the search
-				String search = fieldSearch.getText();
+				String search = fieldSearch.getText().trim();
 				
 				// Locks the frame
 				lock();

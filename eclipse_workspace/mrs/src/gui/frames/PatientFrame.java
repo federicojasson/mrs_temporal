@@ -50,7 +50,6 @@ import managers.PatientManager;
 import managers.StudyManager;
 import managers.TimerManager;
 
-//TODO: validate input
 public class PatientFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;
@@ -386,8 +385,15 @@ public class PatientFrame extends GuiFrame {
 		Date birthDate = datePicker.getDate();
 		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
 		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
-		String name = fieldName.getText();
+		String name = fieldName.getText().trim();
 		String observations = fieldObservations.getText();
+		
+		// Validates the inputs
+		
+		if (name.isEmpty()) {
+			GuiManager.showWarningDialog(this, "Entrada inválida", "Ingrese un nombre para el paciente.");
+			return;
+		}
 		
 		// Locks the frame
 		lock();
@@ -454,7 +460,7 @@ public class PatientFrame extends GuiFrame {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				// Gets the search
-				String search = fieldSearch.getText();
+				String search = fieldSearch.getText().trim();
 				
 				// Locks the frame
 				lock();

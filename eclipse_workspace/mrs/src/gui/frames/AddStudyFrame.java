@@ -39,7 +39,6 @@ import com.jgoodies.forms.layout.RowSpec;
 import managers.GuiManager;
 import managers.ImageManager;
 
-//TODO: validate input
 public class AddStudyFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;

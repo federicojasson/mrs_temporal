@@ -23,7 +23,7 @@ public class SearchPatientSummariesWorker extends SwingWorker<List<PatientSummar
 		// This code is executed in a dedicated thread (not EDT)
 		
 		try {
-			if (search.trim().isEmpty()) // TODO: should this be done here?
+			if (search.isEmpty()) // TODO: should this be done here?
 				// Gets the patient summaries
 				return PatientManager.getPatientSummaries();
 			else

@@ -14,14 +14,15 @@ public class DbmsManager {
 	public static final int GET_PATIENT_SUMMARIES = 1;
 	public static final int GET_STUDY = 2;
 	public static final int GET_STUDY_FILES = 3;
-	public static final int GET_STUDY_SUMMARIES = 4;
-	public static final int GET_STUDY_TYPES = 5;
-	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 6;
-	public static final int PATIENT_EXISTS = 7;
-	public static final int SEARCH_PATIENT_SUMMARIES = 8;
-	public static final int SEARCH_STUDY_SUMMARIES = 9;
-	public static final int STUDY_EXISTS = 10;
-	public static final int STUDY_FILE_EXISTS = 11;
+	public static final int GET_STUDY_HISTORIES = 4;
+	public static final int GET_STUDY_SUMMARIES = 5;
+	public static final int GET_STUDY_TYPES = 6;
+	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 7;
+	public static final int PATIENT_EXISTS = 8;
+	public static final int SEARCH_PATIENT_SUMMARIES = 9;
+	public static final int SEARCH_STUDY_SUMMARIES = 10;
+	public static final int STUDY_EXISTS = 11;
+	public static final int STUDY_FILE_EXISTS = 12;
 	
 	public static final int DELETE_PATIENT = 0;
 	public static final int DELETE_STUDY = 1;
@@ -82,7 +83,7 @@ public class DbmsManager {
 			"SELECT gender, id, name " +
 			"FROM patients " +
 			"WHERE user_id LIKE BINARY ? " +
-			"ORDER BY name ASC, gender ASC"
+			"ORDER BY name ASC"
 		));
 		
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
@@ -96,6 +97,13 @@ public class DbmsManager {
 			"SELECT filename " +
 			"FROM studies_files " +
 			"WHERE study_id = ?"
+		));
+		
+		preparedStatements.put(GET_STUDY_HISTORIES, dbmsConnection.prepareStatement(
+			"SELECT datetime, modification " +
+			"FROM studies_histories " +
+			"WHERE study_id = ? " +
+			"ORDER BY datetime DESC, id DESC"
 		));
 		
 		preparedStatements.put(GET_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
@@ -131,7 +139,7 @@ public class DbmsManager {
 			"	user_id LIKE BINARY ? " +
 			" AND " +
 			"	MATCH(name, observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION) " +
-			"ORDER BY name ASC, gender ASC"
+			"ORDER BY name ASC"
 		));
 		
 		preparedStatements.put(SEARCH_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
@@ -171,13 +179,18 @@ public class DbmsManager {
 	
 	public static void disconnect() {
 		try {
+		// Clears the prepared statements
+			preparedStatements.clear();
+			
 			// Clears the stored procedures' statements
 			storedProcedures.clear();
-			
-			// Closes the DBMS connection
-			dbmsConnection.close();
-		} catch (SQLException exception) {
-			// There is nothing to be done
+		} finally {
+			try {
+				// Closes the DBMS connection
+				dbmsConnection.close();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
 		}
 	}
 	

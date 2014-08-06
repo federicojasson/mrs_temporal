@@ -7,6 +7,7 @@ import gui.frames.GuiFrame;
 import gui.frames.LogInFrame;
 import gui.frames.PatientFrame;
 import gui.frames.StudyFrame;
+import gui.frames.StudyHistoriesFrame;
 import gui.frames.UserFrame;
 import java.awt.EventQueue;
 import java.io.File;
@@ -21,9 +22,10 @@ public class GuiManager {
 	public static final int LOG_IN_FRAME = 3;
 	public static final int PATIENT_FRAME = 4;
 	public static final int STUDY_FRAME = 5;
-	public static final int USER_FRAME = 6;
+	public static final int STUDY_HISTORIES_FRAME = 6;
+	public static final int USER_FRAME = 7;
 	
-	private static final int FRAME_COUNT = 7;
+	private static final int FRAME_COUNT = 8;
 	
 	private static int currentFrameIndex; // Points to the current frame
 	private static JFileChooser fileChooser;
@@ -44,6 +46,7 @@ public class GuiManager {
 		frames[LOG_IN_FRAME] = new LogInFrame();
 		frames[PATIENT_FRAME] = new PatientFrame();
 		frames[STUDY_FRAME] = new StudyFrame();
+		frames[STUDY_HISTORIES_FRAME] = new StudyHistoriesFrame();
 		frames[USER_FRAME] = new UserFrame();
 	}
 	
@@ -155,6 +158,12 @@ public class GuiManager {
 				break;
 			}
 			
+			case STUDY_HISTORIES_FRAME : {
+				// Opens the study frame
+				openNewFrame(STUDY_FRAME);
+				break;
+			}
+			
 			case USER_FRAME : {
 				// Opens the log in frame
 				openNewFrame(LOG_IN_FRAME);
@@ -167,7 +176,7 @@ public class GuiManager {
 		// Updates the current frame's index
 		currentFrameIndex = frameId;
 		
-		// Initializes the frame GUI
+		// Initializes the frame's GUI
 		frames[frameId].initialize();
 	}
 	

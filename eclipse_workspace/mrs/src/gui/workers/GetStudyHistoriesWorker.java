@@ -5,34 +5,28 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
-import entities.StudySummary;
+import entities.StudyHistory;
 import managers.ErrorManager;
 import managers.StudyManager;
 
-public class SearchStudySummariesWorker extends SwingWorker<List<StudySummary>, Void> {
+public class GetStudyHistoriesWorker extends SwingWorker<List<StudyHistory>, Void> {
 	
-	private SearchStudySummariesCaller caller;
-	private String search;
+	private GetStudyHistoriesCaller caller;
 	
-	public SearchStudySummariesWorker(SearchStudySummariesCaller caller, String search) {
+	public GetStudyHistoriesWorker(GetStudyHistoriesCaller caller) {
 		this.caller = caller;
-		this.search = search;
 	}
 	
-	protected List<StudySummary> doInBackground() {
+	protected List<StudyHistory> doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
 		
 		try {
-			if (search.isEmpty()) // TODO: should this be done here?
-				// Gets the study summaries
-				return StudyManager.getStudySummaries();
-			else
-				// Searches the study summaries
-				return StudyManager.searchStudySummaries(search);
+			// Gets the study histories
+			return StudyManager.getStudyHistories();
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);
-			return new LinkedList<StudySummary>();
+			return new LinkedList<StudyHistory>();
 		}
 	}
 	
@@ -41,7 +35,7 @@ public class SearchStudySummariesWorker extends SwingWorker<List<StudySummary>, 
 		
 		try {
 			// Executes the caller's callback method
-			caller.searchStudySummariesCallback(get());
+			caller.getStudyHistoriesCallback(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// An error occurred
 			ErrorManager.notifyError(exception);

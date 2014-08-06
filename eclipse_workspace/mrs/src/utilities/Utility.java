@@ -1,18 +1,21 @@
 package utilities;
 
 import java.nio.charset.Charset;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 public class Utility {
 
 	private static final char[] HEXADECIMAL_VALUES = "0123456789ABCDEF".toCharArray();
 	
 	private static SimpleDateFormat dateFormatter;
+	private static SimpleDateFormat timestampFormatter;
 	
 	static {
 		dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+		timestampFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	}
 	
 	// TODO: debug (remove it before release)
@@ -58,5 +61,9 @@ public class Utility {
 	public static String formatDate(Date date) {
 		return dateFormatter.format(date);
 	}
-
+	
+	public static String formatTimestamp(Timestamp timestamp) {
+		return timestampFormatter.format(timestamp);
+	}
+	
 }

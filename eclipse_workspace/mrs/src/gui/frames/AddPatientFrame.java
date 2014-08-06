@@ -27,7 +27,6 @@ import com.jgoodies.forms.layout.RowSpec;
 import managers.GuiManager;
 import managers.ImageManager;
 
-// TODO: validate input
 public class AddPatientFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;
@@ -183,8 +182,15 @@ public class AddPatientFrame extends GuiFrame {
 		Date birthDate = datePicker.getDate();
 		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
 		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
-		String name = fieldName.getText();
+		String name = fieldName.getText().trim();
 		String observations = fieldObservations.getText();
+		
+		// Validates the inputs
+		
+		if (name.isEmpty()) {
+			GuiManager.showWarningDialog(this, "Entrada inválida", "Ingrese un nombre para el paciente.");
+			return;
+		}
 		
 		// Locks the frame
 		lock();

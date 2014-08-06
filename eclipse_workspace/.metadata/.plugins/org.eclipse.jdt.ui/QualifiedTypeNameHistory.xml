@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="gui.workers.GetPatientSummariesCaller"/>
-<fullyQualifiedTypeName name="gui.workers.ModifyPatientCaller"/>
-<fullyQualifiedTypeName name="gui.workers.ModifyStudyCaller"/>
-<fullyQualifiedTypeName name="gui.workers.OpenFileDirectoryCaller"/>
-<fullyQualifiedTypeName name="gui.workers.GetPatientCaller"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudySummariesCaller"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyCaller"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyFilesCaller"/>
 <fullyQualifiedTypeName name="managers.FileManager"/>
 <fullyQualifiedTypeName name="java.io.File"/>
-<fullyQualifiedTypeName name="utilities.Utility"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
 <fullyQualifiedTypeName name="java.text.DateFormatSymbols"/>
@@ -25,7 +19,6 @@
 <fullyQualifiedTypeName name="gui.workers.SearchPatientsWorker"/>
 <fullyQualifiedTypeName name="gui.workers.SearchStudySummariesCaller"/>
 <fullyQualifiedTypeName name="gui.workers.SearchStudySummariesWorker"/>
-<fullyQualifiedTypeName name="java.awt.Dimension"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="javax.swing.table.DefaultTableCellRenderer"/>
 <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
@@ -33,10 +26,8 @@
 <fullyQualifiedTypeName name="gui.components.HeaderTableCellRenderer"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableCellRenderer"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
-<fullyQualifiedTypeName name="java.awt.GridLayout"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-<fullyQualifiedTypeName name="managers.GuiManager"/>
 <fullyQualifiedTypeName name="gui.workers.RemovePatientCaller"/>
 <fullyQualifiedTypeName name="gui.workers.RemovePatientWorker"/>
 <fullyQualifiedTypeName name="gui.workers.RemoveStudyCaller"/>
@@ -60,4 +51,13 @@
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="managers.StudyManager"/>
 <fullyQualifiedTypeName name="managers.UserManager"/>
+<fullyQualifiedTypeName name="java.awt.Dimension"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="managers.GuiManager"/>
+<fullyQualifiedTypeName name="entities.StudyHistory"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyHistoriesCaller"/>
+<fullyQualifiedTypeName name="gui.workers.GetStudyHistoriesWorker"/>
+<fullyQualifiedTypeName name="gui.frames.StudyHistoriesFrame"/>
+<fullyQualifiedTypeName name="java.sql.Timestamp"/>
+<fullyQualifiedTypeName name="utilities.Utility"/>
 </qualifiedTypeNameHistroy>
