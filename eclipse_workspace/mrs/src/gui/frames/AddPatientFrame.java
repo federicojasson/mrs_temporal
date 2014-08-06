@@ -7,13 +7,11 @@ import gui.workers.AddPatientCaller;
 import gui.workers.AddPatientWorker;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -27,6 +25,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import managers.GuiManager;
+import managers.ImageManager;
 
 // TODO: validate input
 public class AddPatientFrame extends GuiFrame {
@@ -64,11 +63,7 @@ public class AddPatientFrame extends GuiFrame {
 		fieldBirthDate.setText(datePicker.getFormattedDate());
 		registerComponent("fieldBirthDate", fieldBirthDate);
 		
-		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonDatePicker = new ImageIcon(imageButtonDatePicker);
-		
-		buttonDatePicker = new JButton(iconButtonDatePicker);
+		buttonDatePicker = new JButton(ImageManager.getImageIcon(ImageManager.DATE_PICKER, 25, 30));
 		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
@@ -184,15 +179,15 @@ public class AddPatientFrame extends GuiFrame {
 	}
 	
 	private void onAddPatient() {
-		// Locks the frame
-		lock();
-		
 		// Gets the patient's information
 		Date birthDate = datePicker.getDate();
 		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
 		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
 		String name = fieldName.getText();
 		String observations = fieldObservations.getText();
+		
+		// Locks the frame
+		lock();
 		
 		// Adds the patient
 		AddPatientCaller caller = new AddPatientCaller() {

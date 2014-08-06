@@ -17,6 +17,7 @@ public abstract class GuiFrame {
 	private Map<String, Component> components;
 	private Map<String, Boolean> componentsState;
 	private String currentTitle;
+	private Component focusOwner;
 	private JFrame frame;
 	private boolean isLocked;
 	
@@ -69,6 +70,9 @@ public abstract class GuiFrame {
 			
 			// Saves the frame's current title
 			currentTitle = frame.getTitle();
+			
+			// Saves the frame's focus owner
+			focusOwner = frame.getMostRecentFocusOwner();
 			
 			// Saves the current state of the components
 			for (Entry<String, Component> entry : components.entrySet()) {
@@ -123,6 +127,10 @@ public abstract class GuiFrame {
 			
 			// Restores the frame's title
 			frame.setTitle(currentTitle);
+			
+			if (focusOwner != null)
+				// Restores the frame's focus owner
+				focusOwner.requestFocusInWindow();
 			
 			// Restores the state of all the components
 			for (Entry<String, Component> entry : components.entrySet()) {

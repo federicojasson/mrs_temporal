@@ -129,6 +129,41 @@ public class PatientManager {
 		DbmsManager.commitTransaction();
 	}
 	
+	public static List<PatientSummary> searchPatientSummaries(String search) throws SQLException {
+		List<PatientSummary> patientSummaries = new LinkedList<PatientSummary>();
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.SEARCH_PATIENT_SUMMARIES);
+
+		try {
+			// Sets the input parameters
+			preparedStatement.setString(1, UserManager.getCurrentUserId());
+			preparedStatement.setString(2, search);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			// Fetches the query results
+			while (resultSet.next()) {
+				byte[] gender = resultSet.getBytes("gender");
+				byte[] id = resultSet.getBytes("id");
+				String name = resultSet.getString("name");
+	
+				// Adds the patient summary to the list
+				patientSummaries.add(new PatientSummary(gender, id, name));
+			}
+		} finally {
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
+		}
+		
+		return patientSummaries;
+	}
+	
 	public static void setCurrentPatientId(byte[] patientId) {
 		currentPatientId = patientId;
 	}

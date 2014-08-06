@@ -10,7 +10,7 @@ import utilities.Utility;
 
 public class FileManager {
 
-	private static final String STUDIES_FILES_DIRECTORY = "./studies_files";
+	private static final String STUDIES_FILES_DIRECTORY = "." + File.separator + "studies_files";
 	private static final int UUID_FRAGMENT_LENGTH = 4; // UUID_LENGTH / 8
 	private static final int UUID_LENGTH = 32;
 	

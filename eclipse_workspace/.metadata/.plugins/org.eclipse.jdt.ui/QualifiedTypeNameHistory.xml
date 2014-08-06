@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.swing.border.Border"/>
-<fullyQualifiedTypeName name="java.awt.Font"/>
-<fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
-<fullyQualifiedTypeName name="gui.components.FileListCellRenderer"/>
-<fullyQualifiedTypeName name="gui.workers.AddPatientCaller"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyTypesCaller"/>
-<fullyQualifiedTypeName name="gui.workers.AddStudyCaller"/>
-<fullyQualifiedTypeName name="gui.workers.LogInUserDoctorCaller"/>
 <fullyQualifiedTypeName name="gui.workers.GetPatientSummariesCaller"/>
 <fullyQualifiedTypeName name="gui.workers.ModifyPatientCaller"/>
 <fullyQualifiedTypeName name="gui.workers.ModifyStudyCaller"/>
@@ -56,8 +48,16 @@
 <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
 <fullyQualifiedTypeName name="gui.frames.PatientFrame"/>
 <fullyQualifiedTypeName name="managers.ErrorManager"/>
-<fullyQualifiedTypeName name="managers.StudyManager"/>
-<fullyQualifiedTypeName name="managers.UserManager"/>
+<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
+<fullyQualifiedTypeName name="managers.ImageManager"/>
+<fullyQualifiedTypeName name="javax.swing.event.DocumentListener"/>
+<fullyQualifiedTypeName name="java.util.Timer"/>
+<fullyQualifiedTypeName name="managers.TimerManager"/>
+<fullyQualifiedTypeName name="java.util.TimerTask"/>
+<fullyQualifiedTypeName name="gui.workers.SearchPatientSummariesWorker"/>
+<fullyQualifiedTypeName name="gui.workers.SearchPatientSummariesCaller"/>
 <fullyQualifiedTypeName name="managers.PatientManager"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
+<fullyQualifiedTypeName name="managers.StudyManager"/>
+<fullyQualifiedTypeName name="managers.UserManager"/>
 </qualifiedTypeNameHistroy>

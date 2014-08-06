@@ -2,7 +2,6 @@ package gui.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.List;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -21,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import com.jgoodies.forms.factories.FormFactory;
@@ -45,8 +45,10 @@ import gui.workers.SearchStudySummariesCaller;
 import gui.workers.SearchStudySummariesWorker;
 import utilities.Utility;
 import managers.GuiManager;
+import managers.ImageManager;
 import managers.PatientManager;
 import managers.StudyManager;
+import managers.TimerManager;
 
 //TODO: validate input
 public class PatientFrame extends GuiFrame {
@@ -63,6 +65,7 @@ public class PatientFrame extends GuiFrame {
 	private JTextField fieldId;
 	private JTextField fieldName;
 	private JTextArea fieldObservations;
+	private JTextField fieldSearch;
 	private StudyTable tableStudies;
 	
 	public void initialize() {
@@ -139,11 +142,7 @@ public class PatientFrame extends GuiFrame {
 		fieldBirthDate.setText(datePicker.getFormattedDate());
 		registerComponent("fieldBirthDate", fieldBirthDate);
 		
-		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonDatePicker = new ImageIcon(imageButtonDatePicker);
-		
-		buttonDatePicker = new JButton(iconButtonDatePicker);
+		buttonDatePicker = new JButton(ImageManager.getImageIcon(ImageManager.DATE_PICKER, 25, 30));
 		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
@@ -217,44 +216,37 @@ public class PatientFrame extends GuiFrame {
 		panelPatient.add(panelFields, BorderLayout.WEST);
 		panelPatient.add(panelObservations, BorderLayout.CENTER);
 		
-		JTextField fieldSearch = new JTextField();
-		registerComponent("fieldSearch", fieldSearch);
-		
-		JButton buttonSearch = new JButton("Buscar");
-		buttonSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		fieldSearch = new JTextField();
+		fieldSearch.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void changedUpdate(DocumentEvent event) {
+				// Plain text components do not fire these events
+			}
+			
+			public void insertUpdate(DocumentEvent event) {
 				onSearch();
 			}
+			
+			public void removeUpdate(DocumentEvent event) {
+				onSearch();
+			}
+			
 		});
-		registerComponent("buttonSearch", buttonSearch);
+		registerComponent("fieldSearch", fieldSearch);
 		
-		JLabel labelCriterion = new JLabel("Criterio de búsqueda:");
-		
-		JComboBox<String> comboBoxCriterion = new JComboBox<String>();
-		comboBoxCriterion.setModel(new DefaultComboBoxModel<String>(new String[] {
-			"Cualquier campo",
-			"Tipo de estudio",
-			"Observaciones"
-		}));
-		registerComponent("comboBoxCriterion", comboBoxCriterion);
+		JLabel labelSearch = new JLabel("Dejar este campo vacío para mostrar todos los estudios.");
 		
 		JPanel panelSearch = new JPanel();
 		panelSearch.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Búsqueda de estudios"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelSearch.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
-			FormFactory.BUTTON_COLSPEC,
-			FormFactory.UNRELATED_GAP_COLSPEC,
-			FormFactory.MIN_COLSPEC,
-			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			FormFactory.GROWING_BUTTON_COLSPEC
+			FormFactory.MIN_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC
 		}));
 		panelSearch.add(fieldSearch, "1, 1, fill, default");
-		panelSearch.add(buttonSearch, "3, 1, fill, default");
-		panelSearch.add(labelCriterion, "5, 1, right, default");
-		panelSearch.add(comboBoxCriterion, "7, 1, fill, default");
+		panelSearch.add(labelSearch, "3, 1, right, default");
 		
 		tableStudies = new StudyTable();
 		tableStudies.addMouseListener(new MouseAdapter() {
@@ -314,7 +306,7 @@ public class PatientFrame extends GuiFrame {
 		
 		buttonRemoveStudy = new JButton("Eliminar estudio...");
 		buttonRemoveStudy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onRemoveStudy();
 			}
 		});
@@ -390,15 +382,15 @@ public class PatientFrame extends GuiFrame {
 	}
 	
 	private void onModifyPatient() {
-		// Locks the frame
-		lock();
-		
 		// Gets the patient's information
 		Date birthDate = datePicker.getDate();
 		byte[] bloodType = comboBoxBloodType.getItemAt(comboBoxBloodType.getSelectedIndex()).getValue();
 		byte[] gender = comboBoxGender.getItemAt(comboBoxGender.getSelectedIndex()).getValue();
 		String name = fieldName.getText();
 		String observations = fieldObservations.getText();
+		
+		// Locks the frame
+		lock();
 		
 		// Modifies the patient
 		ModifyPatientCaller caller = new ModifyPatientCaller() {
@@ -430,9 +422,6 @@ public class PatientFrame extends GuiFrame {
 			// No row has been selected
 			return;
 		
-		// Locks the frame
-		lock();
-		
 		// Gets the study ID
 		byte[] studyId = (byte[]) tableStudies.getValueAt(selectedRowIndex, StudyTable.ID);
 		
@@ -440,6 +429,9 @@ public class PatientFrame extends GuiFrame {
 		if (! GuiManager.showConfirmationDialog(this, "¿Eliminar estudio?", "Está a punto de eliminar un estudio." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
 			// The action was canceled
 			return;
+		
+		// Locks the frame
+		lock();
 		
 		// Removes the study
 		RemoveStudyCaller caller = new RemoveStudyCaller() {
@@ -459,24 +451,35 @@ public class PatientFrame extends GuiFrame {
 	}
 	
 	private void onSearch() {
-		// Locks the frame
-		lock();
-		
-		// Searches the study summaries
-		SearchStudySummariesCaller caller = new SearchStudySummariesCaller() {
-			public void searchStudySummariesCallback(List<StudySummary> studySummaries) {
-				// Sets the study summaries as the table data
-				tableStudies.setStudySummaries(studySummaries);
+		TimerTask task = new TimerTask() {
+			public void run() {
+				// Gets the search
+				String search = fieldSearch.getText();
 				
-				// Unlocks the frame
-				unlock();
+				// Locks the frame
+				lock();
 				
-				// Calls the selection callback method
-				onSelectStudy();
+				// Searches the study summaries
+				SearchStudySummariesCaller caller = new SearchStudySummariesCaller() {
+					public void searchStudySummariesCallback(List<StudySummary> studySummaries) {
+						// Sets the study summaries as the table data
+						tableStudies.setStudySummaries(studySummaries);
+						
+						// Unlocks the frame
+						unlock();
+						
+						// Calls the selection callback method
+						onSelectStudy();
+						
+						// Focus the search field
+						fieldSearch.requestFocus();
+					}
+				};
+				SearchStudySummariesWorker worker = new SearchStudySummariesWorker(caller, search);
+				worker.execute();
 			}
 		};
-		SearchStudySummariesWorker worker = new SearchStudySummariesWorker(caller);
-		worker.execute();
+		TimerManager.scheduleTask(task, 800);
 	}
 	
 	private void onSelectStudy() {

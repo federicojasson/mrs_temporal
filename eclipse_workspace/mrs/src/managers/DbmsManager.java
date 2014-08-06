@@ -18,8 +18,10 @@ public class DbmsManager {
 	public static final int GET_STUDY_TYPES = 5;
 	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 6;
 	public static final int PATIENT_EXISTS = 7;
-	public static final int STUDY_EXISTS = 8;
-	public static final int STUDY_FILE_EXISTS = 9;
+	public static final int SEARCH_PATIENT_SUMMARIES = 8;
+	public static final int SEARCH_STUDY_SUMMARIES = 9;
+	public static final int STUDY_EXISTS = 10;
+	public static final int STUDY_FILE_EXISTS = 11;
 	
 	public static final int DELETE_PATIENT = 0;
 	public static final int DELETE_STUDY = 1;
@@ -80,7 +82,7 @@ public class DbmsManager {
 			"SELECT gender, id, name " +
 			"FROM patients " +
 			"WHERE user_id LIKE BINARY ? " +
-			"ORDER BY name ASC"
+			"ORDER BY name ASC, gender ASC"
 		));
 		
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
@@ -100,7 +102,7 @@ public class DbmsManager {
 			"SELECT studies.date, studies.id, study_types.description " +
 			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
 			"WHERE studies.patient_id = ? " +
-			"ORDER BY studies.date DESC"
+			"ORDER BY studies.date DESC, study_types.description ASC"
 		));
 		
 		preparedStatements.put(GET_STUDY_TYPES, dbmsConnection.prepareStatement(
@@ -120,6 +122,26 @@ public class DbmsManager {
 			"FROM patients " +
 			"WHERE id = ? " +
 			"LIMIT 1"
+		));
+		
+		preparedStatements.put(SEARCH_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
+			"SELECT gender, id, name " +
+			"FROM patients " +
+			"WHERE " +
+			"	user_id LIKE BINARY ? " +
+			" AND " +
+			"	MATCH(name, observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION) " +
+			"ORDER BY name ASC, gender ASC"
+		));
+		
+		preparedStatements.put(SEARCH_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
+			"SELECT studies.date, studies.id, study_types.description " +
+			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
+			"WHERE " +
+			"	studies.patient_id = ? " +
+			"	AND " +
+			"	MATCH(studies.causes, studies.diagnosis, studies.indications, studies.observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)" +
+			"ORDER BY studies.date DESC, study_types.description ASC"
 		));
 		
 		preparedStatements.put(STUDY_EXISTS, dbmsConnection.prepareStatement(

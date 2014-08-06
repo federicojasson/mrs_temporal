@@ -2,7 +2,6 @@ package gui.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,7 +19,6 @@ import gui.workers.ModifyStudyWorker;
 import gui.workers.OpenFileDirectoryCaller;
 import gui.workers.OpenFileDirectoryWorker;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +30,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import utilities.Utility;
 import managers.GuiManager;
+import managers.ImageManager;
 import managers.StudyManager;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -41,9 +40,9 @@ import com.jgoodies.forms.layout.RowSpec;
 // TODO: validate input
 public class StudyFrame extends GuiFrame {
 	
-	private JButton buttonAddStudyFile;
+	private JButton buttonAddStudyFiles;
 	private JButton buttonModifyStudy;
-	private JButton buttonRemoveStudyFile;
+	private JButton buttonRemoveStudyFiles;
 	private JButton buttonSetModifyMode;
 	private JTextArea fieldCauses;
 	private JTextField fieldDate;
@@ -220,36 +219,28 @@ public class StudyFrame extends GuiFrame {
 		
 		JScrollPane panelStudyFilesContainer = new JScrollPane(listStudyFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		Image imageButtonAddFile = new ImageIcon(getClass().getResource("/images/file_add.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonAddFile = new ImageIcon(imageButtonAddFile);
-		
-		buttonAddStudyFile = new JButton("Agregar...");
-		buttonAddStudyFile.setIcon(iconButtonAddFile);
-		buttonAddStudyFile.addActionListener(new ActionListener() {
+		buttonAddStudyFiles = new JButton("Agregar...");
+		buttonAddStudyFiles.setIcon(ImageManager.getImageIcon(ImageManager.ADD_FILES, 25, 30));
+		buttonAddStudyFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onAddStudyFile();
 			}
 		});
-		registerComponent("buttonAddFile", buttonAddStudyFile);
+		registerComponent("buttonAddFile", buttonAddStudyFiles);
 		
-		Image imageButtonRemoveFile = new ImageIcon(getClass().getResource("/images/file_delete.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonRemoveFile = new ImageIcon(imageButtonRemoveFile);
-		
-		buttonRemoveStudyFile = new JButton("Eliminar");
-		buttonRemoveStudyFile.setIcon(iconButtonRemoveFile);
-		buttonRemoveStudyFile.addActionListener(new ActionListener() {
+		buttonRemoveStudyFiles = new JButton("Eliminar");
+		buttonRemoveStudyFiles.setIcon(ImageManager.getImageIcon(ImageManager.REMOVE_FILES, 25, 30));
+		buttonRemoveStudyFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onRemoveStudyFiles();
 			}
 		});
-		registerComponent("buttonRemoveFile", buttonRemoveStudyFile);
+		registerComponent("buttonRemoveFile", buttonRemoveStudyFiles);
 		
 		JPanel panelStudyFilesButtons = new JPanel();
 		panelStudyFilesButtons.setLayout(new GridLayout(1, 2, 3, 0));
-		panelStudyFilesButtons.add(buttonAddStudyFile);
-		panelStudyFilesButtons.add(buttonRemoveStudyFile);
+		panelStudyFilesButtons.add(buttonAddStudyFiles);
+		panelStudyFilesButtons.add(buttonRemoveStudyFiles);
 		
 		JPanel panelStudyFiles = new JPanel();
 		panelStudyFiles.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Archivos"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
@@ -339,9 +330,6 @@ public class StudyFrame extends GuiFrame {
 	}
 	
 	private void onModifyStudy() {
-		// Locks the frame
-		lock();
-		
 		// Gets the study's information
 		String causes = fieldCauses.getText();
 		String diagnosis = fieldDiagnosis.getText();
@@ -355,6 +343,9 @@ public class StudyFrame extends GuiFrame {
 			if (! GuiManager.showConfirmationDialog(this, "¿Eliminar archivos del estudio?", "Está a punto de eliminar archivos del estudio." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
 				// The action was canceled
 				return;
+		
+		// Locks the frame
+		lock();
 		
 		// Modifies the study
 		ModifyStudyCaller caller = new ModifyStudyCaller() {
@@ -391,10 +382,10 @@ public class StudyFrame extends GuiFrame {
 		
 		if (selectedItemIndex < 0)
 			// No row has been selected
-			buttonRemoveStudyFile.setEnabled(false);
+			buttonRemoveStudyFiles.setEnabled(false);
 		else
 			// At least one row has been selected
-			buttonRemoveStudyFile.setEnabled(true);
+			buttonRemoveStudyFiles.setEnabled(true);
 	}
 	
 	private void onSetModifyMode() {
@@ -429,7 +420,7 @@ public class StudyFrame extends GuiFrame {
 		listStudyFiles.clearSelection();
 		
 		// Enables components
-		buttonAddStudyFile.setEnabled(true);
+		buttonAddStudyFiles.setEnabled(true);
 		fieldCauses.setEditable(true);
 		fieldDiagnosis.setEditable(true);
 		fieldIndications.setEditable(true);
@@ -449,8 +440,8 @@ public class StudyFrame extends GuiFrame {
 		listStudyFiles.clearSelection();
 		
 		// Disables components
-		buttonAddStudyFile.setEnabled(false);
-		buttonRemoveStudyFile.setEnabled(false);
+		buttonAddStudyFiles.setEnabled(false);
+		buttonRemoveStudyFiles.setEnabled(false);
 		fieldCauses.setEditable(false);
 		fieldDiagnosis.setEditable(false);
 		fieldIndications.setEditable(false);

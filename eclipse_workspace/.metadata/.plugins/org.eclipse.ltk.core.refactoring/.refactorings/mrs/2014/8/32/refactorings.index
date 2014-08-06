@@ -21,3 +21,11 @@
 1407265694639	Rename type 'GetCurrentPatientWorker'
 1407265713330	Rename method 'getCurrentPatientCallback'
 1407267483246	Delete element
+1407270854088	Rename field 'buttonAddStudyFile'
+1407270860783	Rename field 'buttonRemoveStudyFile'
+1407271028854	Rename resource 'datepicker.gif'
+1407271034445	Rename resource 'file_add.png'
+1407271040082	Rename resource 'file_delete.png'
+1407271209965	Rename local variable 'buttonAddStudyFile'
+1407271216961	Rename field 'buttonRemoveStudyFile'
+1407338057064	Rename resource 'date picker.gif'

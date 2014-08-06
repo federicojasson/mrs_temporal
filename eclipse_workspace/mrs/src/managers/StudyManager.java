@@ -211,6 +211,41 @@ public class StudyManager {
 		DbmsManager.commitTransaction();
 	}
 	
+	public static List<StudySummary> searchStudySummaries(String search) throws SQLException {
+		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
+		
+		// Gets the prepared statement
+		PreparedStatement preparedStatement = DbmsManager.getPreparedStatement(DbmsManager.SEARCH_STUDY_SUMMARIES);
+
+		try {
+			// Sets the input parameters
+			preparedStatement.setBytes(1, PatientManager.getCurrentPatientId());
+			preparedStatement.setString(2, search);
+			
+			// Executes the prepared statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+	
+			// Fetches the query results
+			while (resultSet.next()) {
+				Date date = resultSet.getDate("studies.date");
+				byte[] id = resultSet.getBytes("studies.id");
+				String studyTypeDescription = resultSet.getString("study_types.description");
+	
+				// Adds the study summary to the list
+				studySummaries.add(new StudySummary(date, id, studyTypeDescription));
+			}
+		} finally {
+			try {
+				// Releases the statement resources
+				preparedStatement.clearParameters();
+			} catch (SQLException exception) {
+				// There is nothing to be done
+			}
+		}
+
+		return studySummaries;
+	}
+	
 	public static void setCurrentStudyId(byte[] studyId) {
 		currentStudyId = studyId;
 	}

@@ -12,7 +12,6 @@ import gui.workers.OpenFileDirectoryWorker;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +21,6 @@ import java.io.File;
 import java.sql.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -39,12 +37,13 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import managers.GuiManager;
+import managers.ImageManager;
 
 //TODO: validate input
 public class AddStudyFrame extends GuiFrame {
 
 	private JButton buttonDatePicker;
-	private JButton buttonRemoveStudyFile;
+	private JButton buttonRemoveStudyFiles;
 	private JComboBox<StudyType> comboBoxStudyType;
 	private DatePicker datePicker;
 	private JTextArea fieldCauses;
@@ -99,11 +98,7 @@ public class AddStudyFrame extends GuiFrame {
 		fieldDate.setText(datePicker.getFormattedDate());
 		registerComponent("fieldDate", fieldDate);
 		
-		Image imageButtonDatePicker = new ImageIcon(getClass().getResource("/images/datepicker.gif")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonDatePicker = new ImageIcon(imageButtonDatePicker);
-		
-		buttonDatePicker = new JButton(iconButtonDatePicker);
+		buttonDatePicker = new JButton(ImageManager.getImageIcon(ImageManager.DATE_PICKER, 25, 30));
 		buttonDatePicker.setMargin(new Insets(0, 0, 0, 0));
 		buttonDatePicker.setPreferredSize(new Dimension(30, 24));
 		buttonDatePicker.addActionListener(new ActionListener() {
@@ -225,36 +220,28 @@ public class AddStudyFrame extends GuiFrame {
 		
 		JScrollPane panelStudyFilesContainer = new JScrollPane(listStudyFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		Image imageButtonAddFile = new ImageIcon(getClass().getResource("/images/file_add.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonAddFile = new ImageIcon(imageButtonAddFile);
-		
-		JButton buttonAddStudyFile = new JButton("Agregar...");
-		buttonAddStudyFile.setIcon(iconButtonAddFile);
-		buttonAddStudyFile.addActionListener(new ActionListener() {
+		JButton buttonAddStudyFiles = new JButton("Agregar...");
+		buttonAddStudyFiles.setIcon(ImageManager.getImageIcon(ImageManager.ADD_FILES, 25, 30));
+		buttonAddStudyFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onAddStudyFile();
 			}
 		});
-		registerComponent("buttonAddFile", buttonAddStudyFile);
+		registerComponent("buttonAddFile", buttonAddStudyFiles);
 		
-		Image imageButtonRemoveFile = new ImageIcon(getClass().getResource("/images/file_delete.png")).getImage().getScaledInstance(25, 30 , Image.SCALE_SMOOTH);
-		
-		ImageIcon iconButtonRemoveFile = new ImageIcon(imageButtonRemoveFile);
-		
-		buttonRemoveStudyFile = new JButton("Eliminar");
-		buttonRemoveStudyFile.setIcon(iconButtonRemoveFile);
-		buttonRemoveStudyFile.addActionListener(new ActionListener() {
+		buttonRemoveStudyFiles = new JButton("Eliminar");
+		buttonRemoveStudyFiles.setIcon(ImageManager.getImageIcon(ImageManager.REMOVE_FILES, 25, 30));
+		buttonRemoveStudyFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				onRemoveStudyFiles();
 			}
 		});
-		registerComponent("buttonRemoveFile", buttonRemoveStudyFile);
+		registerComponent("buttonRemoveFile", buttonRemoveStudyFiles);
 		
 		JPanel panelStudyFilesButtons = new JPanel();
 		panelStudyFilesButtons.setLayout(new GridLayout(1, 2, 3, 0));
-		panelStudyFilesButtons.add(buttonAddStudyFile);
-		panelStudyFilesButtons.add(buttonRemoveStudyFile);
+		panelStudyFilesButtons.add(buttonAddStudyFiles);
+		panelStudyFilesButtons.add(buttonRemoveStudyFiles);
 		
 		JPanel panelStudyFiles = new JPanel();
 		panelStudyFiles.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Archivos"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
@@ -328,9 +315,6 @@ public class AddStudyFrame extends GuiFrame {
 	}
 	
 	private void onAddStudy() {
-		// Locks the frame
-		lock();
-		
 		// Gets the study's information
 		String causes = fieldCauses.getText();
 		Date date = datePicker.getDate();
@@ -339,6 +323,9 @@ public class AddStudyFrame extends GuiFrame {
 		String observations = fieldObservations.getText();
 		byte[] studyTypeId = comboBoxStudyType.getItemAt(comboBoxStudyType.getSelectedIndex()).getId();
 		List<File> studyFiles = listStudyFiles.getFilesToAdd();
+
+		// Locks the frame
+		lock();
 		
 		// Adds the study
 		AddStudyCaller caller = new AddStudyCaller() {
@@ -384,10 +371,10 @@ public class AddStudyFrame extends GuiFrame {
 		
 		if (selectedItemIndex < 0)
 			// No row has been selected
-			buttonRemoveStudyFile.setEnabled(false);
+			buttonRemoveStudyFiles.setEnabled(false);
 		else
 			// At least one row has been selected
-			buttonRemoveStudyFile.setEnabled(true);
+			buttonRemoveStudyFiles.setEnabled(true);
 	}
 	
 	private void onViewStudyFile() {

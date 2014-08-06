@@ -7,15 +7,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import com.jgoodies.forms.factories.FormFactory;
@@ -32,6 +33,7 @@ import gui.workers.SearchPatientSummariesCaller;
 import gui.workers.SearchPatientSummariesWorker;
 import managers.GuiManager;
 import managers.PatientManager;
+import managers.TimerManager;
 import managers.UserManager;
 
 //TODO: validate input
@@ -39,6 +41,7 @@ public class UserFrame extends GuiFrame {
 
 	private JButton buttonRemovePatient;
 	private JButton buttonViewPatient;
+	private JTextField fieldSearch;
 	private PatientTable tablePatients;
 	
 	public void initialize() {
@@ -66,45 +69,37 @@ public class UserFrame extends GuiFrame {
 	}
 	
 	protected JPanel getMainPanel() {
-		JTextField fieldSearch = new JTextField();
-		registerComponent("fieldSearch", fieldSearch);
-		
-		JButton buttonSearch = new JButton("Buscar");
-		buttonSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		fieldSearch = new JTextField();
+		fieldSearch.getDocument().addDocumentListener(new DocumentListener() {
+			
+			public void changedUpdate(DocumentEvent event) {
+				// Plain text components do not fire these events
+			}
+			
+			public void insertUpdate(DocumentEvent event) {
 				onSearch();
 			}
+			
+			public void removeUpdate(DocumentEvent event) {
+				onSearch();
+			}
+			
 		});
-		registerComponent("buttonSearch", buttonSearch);
+		registerComponent("fieldSearch", fieldSearch);
 		
-		JLabel labelCriterion = new JLabel("Criterio de búsqueda:");
-		
-		JComboBox<String> comboBoxCriterion = new JComboBox<String>();
-		comboBoxCriterion.setModel(new DefaultComboBoxModel<String>(new String[] {
-			"Nombre",
-			"Fecha de nacimiento",
-			"Sexo",
-			"Grupo sanguíneo"
-		}));
-		registerComponent("comboBoxCriterion", comboBoxCriterion);
+		JLabel labelSearch = new JLabel("Dejar este campo vacío para mostrar todos los pacientes.");
 		
 		JPanel panelSearch = new JPanel();
 		panelSearch.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Búsqueda de pacientes"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
 		panelSearch.setLayout(new FormLayout(new ColumnSpec[] {
 			FormFactory.GROWING_BUTTON_COLSPEC,
 			FormFactory.RELATED_GAP_COLSPEC,
-			FormFactory.BUTTON_COLSPEC,
-			FormFactory.UNRELATED_GAP_COLSPEC,
-			FormFactory.MIN_COLSPEC,
-			FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-			FormFactory.GROWING_BUTTON_COLSPEC
+			FormFactory.MIN_COLSPEC
 		}, new RowSpec[] {
 			FormFactory.MIN_ROWSPEC
 		}));
 		panelSearch.add(fieldSearch, "1, 1, fill, default");
-		panelSearch.add(buttonSearch, "3, 1, fill, default");
-		panelSearch.add(labelCriterion, "5, 1, right, default");
-		panelSearch.add(comboBoxCriterion, "7, 1, fill, default");
+		panelSearch.add(labelSearch, "3, 1, right, default");
 		
 		tablePatients = new PatientTable();
 		tablePatients.addMouseListener(new MouseAdapter() {
@@ -143,7 +138,7 @@ public class UserFrame extends GuiFrame {
 		
 		buttonRemovePatient = new JButton("Eliminar paciente...");
 		buttonRemovePatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onRemovePatient();
 			}
 		});
@@ -211,9 +206,6 @@ public class UserFrame extends GuiFrame {
 			// No row has been selected
 			return;
 		
-		// Locks the frame
-		lock();
-		
 		// Gets the patient ID
 		byte[] patientId = (byte[]) tablePatients.getValueAt(selectedRowIndex, PatientTable.ID);
 		
@@ -221,6 +213,9 @@ public class UserFrame extends GuiFrame {
 		if (! GuiManager.showConfirmationDialog(this, "¿Eliminar paciente?", "Está a punto de eliminar un paciente y todos sus estudios asociados." + System.lineSeparator() + "Esta acción no puede revertirse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
 			// The action was canceled
 			return;
+		
+		// Locks the frame
+		lock();
 		
 		// Removes the patient
 		RemovePatientCaller caller = new RemovePatientCaller() {
@@ -240,24 +235,35 @@ public class UserFrame extends GuiFrame {
 	}
 	
 	private void onSearch() {
-		// Locks the frame
-		lock();
-		
-		// Searches the patient summaries
-		SearchPatientSummariesCaller caller = new SearchPatientSummariesCaller() {
-			public void searchPatientSummariesCallback(List<PatientSummary> patientSummaries) {
-				// Sets the patient summaries as the table data
-				tablePatients.setPatientSummaries(patientSummaries);
+		TimerTask task = new TimerTask() {
+			public void run() {
+				// Gets the search
+				String search = fieldSearch.getText();
 				
-				// Unlocks the frame
-				unlock();
+				// Locks the frame
+				lock();
 				
-				// Calls the selection callback method
-				onSelectPatient();
+				// Searches the patient summaries
+				SearchPatientSummariesCaller caller = new SearchPatientSummariesCaller() {
+					public void searchPatientSummariesCallback(List<PatientSummary> patientSummaries) {
+						// Sets the patient summaries as the table data
+						tablePatients.setPatientSummaries(patientSummaries);
+						
+						// Unlocks the frame
+						unlock();
+						
+						// Calls the selection callback method
+						onSelectPatient();
+						
+						// Focus the search field
+						fieldSearch.requestFocus();
+					}
+				};
+				SearchPatientSummariesWorker worker = new SearchPatientSummariesWorker(caller, search);
+				worker.execute();
 			}
 		};
-		SearchPatientSummariesWorker worker = new SearchPatientSummariesWorker(caller);
-		worker.execute();
+		TimerManager.scheduleTask(task, 800);
 	}
 	
 	private void onSelectPatient() {

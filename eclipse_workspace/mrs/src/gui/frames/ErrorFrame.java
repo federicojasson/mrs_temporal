@@ -11,13 +11,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 import managers.ErrorManager;
 import managers.GuiManager;
 
 public class ErrorFrame extends GuiFrame {
 	
 	private JButton buttonToggleErrorDetails;
-	private JScrollPane panelErrorDetails;
+	private JPanel panelErrorDetails;
 	
 	public void initialize() {
 		// Initializes the GUI
@@ -66,7 +69,16 @@ public class ErrorFrame extends GuiFrame {
 		fieldErrorDetails.setEditable(false);
 		registerComponent("fieldErrorDetails", fieldErrorDetails);
 		
-		panelErrorDetails = new JScrollPane(fieldErrorDetails, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane panelErrorDetailsContainer = new JScrollPane(fieldErrorDetails, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		panelErrorDetails = new JPanel(); // TODO: fix
+		panelErrorDetails.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Detalles"), BorderFactory.createEmptyBorder(5, 10, 10, 10)));
+		panelErrorDetails.setLayout(new FormLayout(new ColumnSpec[] {
+			ColumnSpec.decode("fill:max(256px;default):grow")
+		}, new RowSpec[] {
+			RowSpec.decode("fill:max(160px;default):grow")
+		}));
+		panelErrorDetails.add(panelErrorDetailsContainer, "1, 1");
 		
 		JPanel panelMain = new JPanel();
 		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

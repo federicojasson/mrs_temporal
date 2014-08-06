@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS patients (
 	observations TEXT,
 	user_id VARCHAR(32),
 	PRIMARY KEY(id),
-	FOREIGN KEY(user_id) REFERENCES users(id)
+	FOREIGN KEY(user_id) REFERENCES users(id),
+	FULLTEXT(name, observations)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS study_types (
@@ -78,7 +79,8 @@ CREATE TABLE IF NOT EXISTS studies (
 	study_type_id BINARY(2),
 	PRIMARY KEY(id),
 	FOREIGN KEY(patient_id) REFERENCES patients(id),
-	FOREIGN KEY(study_type_id) REFERENCES study_types(id)
+	FOREIGN KEY(study_type_id) REFERENCES study_types(id),
+	FULLTEXT(causes, diagnosis, indications, observations)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS studies_files (

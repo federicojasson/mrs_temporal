@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +19,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import utilities.Utility;
 import managers.GuiManager;
+import managers.ImageManager;
 
 // TODO: validate input
 public class LogInFrame extends GuiFrame {
@@ -28,9 +28,7 @@ public class LogInFrame extends GuiFrame {
 	private JPasswordField fieldPassword;
 
 	protected JPanel getMainPanel() {
-		ImageIcon iconLabelLogo = new ImageIcon(getClass().getResource("/images/logo.png"));
-		
-		JLabel labelLogo = new JLabel(iconLabelLogo);
+		JLabel labelLogo = new JLabel(ImageManager.getImageIcon(ImageManager.LOGO));
 		labelLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel panelLogo = new JPanel();
@@ -110,12 +108,12 @@ public class LogInFrame extends GuiFrame {
 	}
 	
 	private void onLogInUserDoctor() {
-		// Locks the frame
-		lock();
-		
-		// Gets user ID and password
+		// Gets the user ID and the password
 		String id = fieldId.getText();
 		byte[] password = Utility.charsToBytes(fieldPassword.getPassword());
+
+		// Locks the frame
+		lock();
 		
 		// Attempts to log in the user
 		LogInUserDoctorCaller caller = new LogInUserDoctorCaller() {

@@ -210,7 +210,7 @@ public class DatePicker extends JPanel {
 		fieldCurrentDate.setEditable(true);
 		fieldCurrentDate.setEnabled(true);
 		fieldCurrentDate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				onEditDate();
 			}
 		});
