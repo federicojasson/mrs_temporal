@@ -29,7 +29,6 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
 // TODO: clicks afuera del popup que lo cierren
-// TODO: hacer que el diálogo se mueva
 @SuppressWarnings("serial")
 public class DatePicker extends JPanel {
 
@@ -217,6 +216,7 @@ public class DatePicker extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				onEditDate();
 			}
+
 		});
 
 		buttonNextMonth = new JButton(" > ");

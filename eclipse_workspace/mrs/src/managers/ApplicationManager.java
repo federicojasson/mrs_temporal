@@ -51,7 +51,7 @@ public class ApplicationManager {
 			DbmsManager.connect();
 
 			// Opens the log in frame
-			GuiManager.openFrame(GuiManager.LOG_IN_FRAME);
+			GuiManager.openFrame(GuiManager.FRAME_LOG_IN);
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError("Se produjo un error en la base de datos.", exception);

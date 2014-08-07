@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="420" key="DIALOG_Y_ORIGIN"/>
-		<item value="1063" key="DIALOG_X_ORIGIN"/>
+		<item value="427" key="DIALOG_Y_ORIGIN"/>
 		<item value="383" key="DIALOG_HEIGHT"/>
+		<item value="1026" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="Dialog" key="selection"/>
 		<list key="findhistory">
-			<item value="ok"/>
-			<item value="Ok"/>
-			<item value="error"/>
-			<item value="onViewStudy()"/>
-			<item value="onViewStu"/>
-			<item value="fieldSearch"/>
-			<item value="ORDER BY"/>
-			<item value="gender ASC"/>
+			<item value="dialog"/>
+			<item value="frame"/>
+			<item value="DbmsMana"/>
+			<item value="ErrorFrame"/>
+			<item value="GuiManager"/>
+			<item value="se produjo"/>
+			<item value="lock"/>
+			<item value="getMain"/>
 		</list>
 		<list key="replacehistory">
+			<item value="window"/>
+			<item value="dialog"/>
 			<item value="MIN_ROWSPEC"/>
 			<item value="10, 10, 10, 10"/>
 			<item value="onButtonDatePickerAction"/>
 			<item value="fieldCurrentDate"/>
 			<item value="currentCalendar"/>
 			<item value=""/>
-			<item value="path"/>
-			<item value="event)"/>
 		</list>
 	</section>
 </section>

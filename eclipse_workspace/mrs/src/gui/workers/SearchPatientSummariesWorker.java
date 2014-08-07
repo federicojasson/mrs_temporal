@@ -23,12 +23,8 @@ public class SearchPatientSummariesWorker extends SwingWorker<List<PatientSummar
 		// This code is executed in a dedicated thread (not EDT)
 
 		try {
-			if (search.isEmpty()) // TODO: should this be done here?
-				// Gets the patient summaries
-				return PatientManager.getPatientSummaries();
-			else
-				// Searches the patient summaries
-				return PatientManager.searchPatientSummaries(search);
+			// Searches the patient summaries
+			return PatientManager.searchPatientSummaries(search);
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError("Se produjo un error en la base de datos.", exception);

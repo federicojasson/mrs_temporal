@@ -23,12 +23,8 @@ public class SearchStudySummariesWorker extends SwingWorker<List<StudySummary>, 
 		// This code is executed in a dedicated thread (not EDT)
 
 		try {
-			if (search.isEmpty()) // TODO: should this be done here?
-				// Gets the study summaries
-				return StudyManager.getStudySummaries();
-			else
-				// Searches the study summaries
-				return StudyManager.searchStudySummaries(search);
+			// Searches the study summaries
+			return StudyManager.searchStudySummaries(search);
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError("Se produjo un error en la base de datos.", exception);

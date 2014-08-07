@@ -1,53 +1,76 @@
 package managers;
 
-import gui.frames.AddPatientFrame;
-import gui.frames.AddStudyFrame;
-import gui.frames.ErrorFrame;
-import gui.frames.GuiFrame;
-import gui.frames.LogInFrame;
-import gui.frames.PatientFrame;
-import gui.frames.StudyFrame;
-import gui.frames.StudyHistoriesFrame;
-import gui.frames.UserFrame;
+import gui.windows.GuiDialog;
+import gui.windows.GuiDialogStudyHistories;
+import gui.windows.GuiFrame;
+import gui.windows.GuiFrameAddPatient;
+import gui.windows.GuiFrameAddStudy;
+import gui.windows.GuiFrameError;
+import gui.windows.GuiFrameLogIn;
+import gui.windows.GuiFramePatient;
+import gui.windows.GuiFrameStudy;
+import gui.windows.GuiFrameUser;
+import gui.windows.GuiWindow;
 import java.awt.EventQueue;
 import java.io.File;
+import java.util.Stack;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class GuiManager {
 
-	public static final int ADD_PATIENT_FRAME = 0;
-	public static final int ADD_STUDY_FRAME = 1;
-	public static final int ERROR_FRAME = 2;
-	public static final int LOG_IN_FRAME = 3;
-	public static final int PATIENT_FRAME = 4;
-	public static final int STUDY_FRAME = 5;
-	public static final int STUDY_HISTORIES_FRAME = 6;
-	public static final int USER_FRAME = 7;
+	public static final int DIALOG_STUDY_HISTORIES = 0;
 
-	private static final int FRAME_COUNT = 8;
+	public static final int FRAME_ADD_PATIENT = 0;
+	public static final int FRAME_ADD_STUDY = 1;
+	public static final int FRAME_ERROR = 2;
+	public static final int FRAME_LOG_IN = 3;
+	public static final int FRAME_PATIENT = 4;
+	public static final int FRAME_STUDY = 5;
+	public static final int FRAME_USER = 6;
 
-	private static int currentFrameIndex; // Points to the current frame
+	private static final int DIALOG_COUNT = 1;
+	private static final int FRAME_COUNT = 7;
+
+	private static GuiDialog[] dialogModels;
+	private static Stack<GuiDialog> dialogs;
 	private static JFileChooser fileChooser;
-	private static GuiFrame[] frames;
+	private static GuiFrame[] frameModels;
+	private static Stack<GuiFrame> frames;
 
 	static {
-		currentFrameIndex = - 1;
+		dialogModels = new GuiDialog[DIALOG_COUNT];
+		dialogs = new Stack<GuiDialog>();
 		fileChooser = new JFileChooser();
-		frames = new GuiFrame[FRAME_COUNT];
+		frameModels = new GuiFrame[FRAME_COUNT];
+		frames = new Stack<GuiFrame>();
 
 		// Configures the file chooser
 		fileChooser.setMultiSelectionEnabled(true);
 
+		// Initializes the dialogs
+		dialogModels[DIALOG_STUDY_HISTORIES] = new GuiDialogStudyHistories();
+
 		// Initializes the frames
-		frames[ADD_PATIENT_FRAME] = new AddPatientFrame();
-		frames[ADD_STUDY_FRAME] = new AddStudyFrame();
-		frames[ERROR_FRAME] = new ErrorFrame();
-		frames[LOG_IN_FRAME] = new LogInFrame();
-		frames[PATIENT_FRAME] = new PatientFrame();
-		frames[STUDY_FRAME] = new StudyFrame();
-		frames[STUDY_HISTORIES_FRAME] = new StudyHistoriesFrame();
-		frames[USER_FRAME] = new UserFrame();
+		frameModels[FRAME_ADD_PATIENT] = new GuiFrameAddPatient();
+		frameModels[FRAME_ADD_STUDY] = new GuiFrameAddStudy();
+		frameModels[FRAME_ERROR] = new GuiFrameError();
+		frameModels[FRAME_LOG_IN] = new GuiFrameLogIn();
+		frameModels[FRAME_PATIENT] = new GuiFramePatient();
+		frameModels[FRAME_STUDY] = new GuiFrameStudy();
+		frameModels[FRAME_USER] = new GuiFrameUser();
+	}
+
+	public static void closeCurrentDialog() {
+		// Executes this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+
+			public void run() {
+				// Disposes the current dialog
+				dialogs.pop().dispose();
+			}
+
+		});
 	}
 
 	public static void closeCurrentFrame() {
@@ -57,7 +80,35 @@ public class GuiManager {
 			public void run() {
 				// Closes the current frame
 				closeCurrentFrame(true);
+
+				if (frames.isEmpty())
+					// The closed frame was the last one in the stack
+					// Exits the application normally
+					ApplicationManager.exitNormally();
+				else
+					// There is at least one more frame in the stack
+					// Recovers the previous frame
+					frames.peek().recover();
 			}
+
+		});
+	}
+
+	public static void openDialog(final int dialogId) {
+		// Executes this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					// Opens a new dialog
+					GuiDialog dialog = dialogModels[dialogId].getClass().newInstance();
+					dialog.initialize(getCurrentWindow());
+					dialogs.push(dialog);
+				} catch (InstantiationException | IllegalAccessException exception) {
+					// There is nothing to be done
+				}
+			}
+
 		});
 	}
 
@@ -66,119 +117,77 @@ public class GuiManager {
 		EventQueue.invokeLater(new Runnable() {
 
 			public void run() {
-				// Closes the current frame (if any is opened)
-				if (currentFrameIndex >= 0)
+				try {
+					// Closes the current frame
 					closeCurrentFrame(false);
 
-				// Opens the new frame
-				openNewFrame(frameId);
+					// Opens a new frame
+					GuiFrame frame = frameModels[frameId].getClass().newInstance();
+					frame.initialize(getCurrentWindow());
+					frames.push(frame);
+				} catch (InstantiationException | IllegalAccessException exception) {
+					// There is nothing to be done
+				}
 			}
+
 		});
 	}
 
-	public static boolean showConfirmationDialog(GuiFrame callerFrame, String title, String message) {
-		if (frames[currentFrameIndex] == callerFrame)
-			// The caller frame is the current one
+	public static boolean showConfirmationDialog(GuiWindow callerWindow, String title, String message) {
+		if (callerWindow == getCurrentWindow())
+			// The caller window is the current one
 			// Shows the confirmation dialog
-			return JOptionPane.showConfirmDialog(callerFrame.getFrame(), message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+			return JOptionPane.showConfirmDialog(callerWindow.getWindow(), message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
 		return false;
 	}
 
-	public static File[] showFileChooserDialog(GuiFrame callerFrame) {
-		if (frames[currentFrameIndex] == callerFrame)
-			// The caller frame is the current one
+	public static File[] showFileChooserDialog(GuiWindow callerWindow) {
+		if (callerWindow == getCurrentWindow())
+			// The caller window is the current one
 			// Shows the file chooser dialog
-			if (fileChooser.showDialog(callerFrame.getFrame(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
+			if (fileChooser.showDialog(callerWindow.getWindow(), "Seleccionar") == JFileChooser.APPROVE_OPTION)
 				// Action confirmed
 				return fileChooser.getSelectedFiles();
 
 		return new File[0];
 	}
 
-	public static void showWarningDialog(GuiFrame callerFrame, String title, String message) {
-		if (frames[currentFrameIndex] == callerFrame)
-			// The caller frame is the current one
+	public static void showWarningDialog(GuiWindow callerWindow, String title, String message) {
+		if (callerWindow == getCurrentWindow())
+			// The caller window is the current one
 			// Shows the warning dialog
-			JOptionPane.showMessageDialog(callerFrame.getFrame(), message, title, JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(callerWindow.getWindow(), message, title, JOptionPane.WARNING_MESSAGE);
 	}
 
 	private static void closeCurrentFrame(boolean wasClosedByUser) {
-		try {
-			// Gets the current frame
-			GuiFrame currentFrame = frames[currentFrameIndex];
-
-			// Constructs a new object of the same class as the current frame
-			frames[currentFrameIndex] = currentFrame.getClass().newInstance();
-
-			// Disposes the current frame
-			currentFrame.dispose();
+		if (! frames.isEmpty()) {
+			// There is at least one more frame in the stack
+			GuiFrame frame;
 
 			if (wasClosedByUser)
-				onCurrentFrameClosedByUser();
-		} catch (InstantiationException | IllegalAccessException exception) {
-			// There is nothing to be done
+				// The frame was closed by the user
+				frame = frames.pop();
+			else
+				// The frame was closed to open a new one
+				frame = frames.peek();
+
+			// Disposes the current frame
+			frame.dispose();
 		}
 	}
 
-	private static void onCurrentFrameClosedByUser() {
-		switch (currentFrameIndex) {
-			case ADD_PATIENT_FRAME : {
-				// Opens the user frame
-				openNewFrame(USER_FRAME);
-				break;
-			}
-
-			case ADD_STUDY_FRAME : {
-				// Opens the patient frame
-				openNewFrame(PATIENT_FRAME);
-				break;
-			}
-
-			case ERROR_FRAME : {
-				// Exits the application abnormally
-				ApplicationManager.exitAbnormally();
-				break;
-			}
-
-			case LOG_IN_FRAME : {
-				// Exits the application normally
-				ApplicationManager.exitNormally();
-				break;
-			}
-
-			case PATIENT_FRAME : {
-				// Opens the user frame
-				openNewFrame(USER_FRAME);
-				break;
-			}
-
-			case STUDY_FRAME : {
-				// Opens the patient frame
-				openNewFrame(PATIENT_FRAME);
-				break;
-			}
-
-			case STUDY_HISTORIES_FRAME : {
-				// Opens the study frame
-				openNewFrame(STUDY_FRAME);
-				break;
-			}
-
-			case USER_FRAME : {
-				// Opens the log in frame
-				openNewFrame(LOG_IN_FRAME);
-				break;
-			}
-		}
-	}
-
-	private static void openNewFrame(int frameId) {
-		// Updates the current frame's index
-		currentFrameIndex = frameId;
-
-		// Initializes the frame's GUI
-		frames[frameId].initialize();
+	private static GuiWindow getCurrentWindow() {
+		if (! dialogs.isEmpty())
+			// There is an opened dialog
+			return dialogs.peek();
+		else
+			if (! frames.isEmpty())
+				// There is an opened frame
+				return frames.peek();
+			else
+				// There is no opened window
+				return null;
 	}
 
 }

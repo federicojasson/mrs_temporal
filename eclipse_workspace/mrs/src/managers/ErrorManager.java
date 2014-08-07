@@ -27,7 +27,7 @@ public class ErrorManager {
 		printError();
 
 		// Opens an error frame
-		GuiManager.openFrame(GuiManager.ERROR_FRAME);
+		GuiManager.openFrame(GuiManager.FRAME_ERROR);
 	}
 
 	private static String computeErrorDetails(Exception exception) {

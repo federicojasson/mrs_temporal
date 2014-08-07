@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="gui.workers.GetStudySummariesCaller"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyCaller"/>
-<fullyQualifiedTypeName name="gui.workers.GetStudyFilesCaller"/>
-<fullyQualifiedTypeName name="managers.FileManager"/>
-<fullyQualifiedTypeName name="java.io.File"/>
-<fullyQualifiedTypeName name="java.awt.Component"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
-<fullyQualifiedTypeName name="java.text.DateFormatSymbols"/>
-<fullyQualifiedTypeName name="java.util.Locale"/>
-<fullyQualifiedTypeName name="javax.swing.border.CompoundBorder"/>
 <fullyQualifiedTypeName name="gui.components.GenderTableCellRenderer"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
@@ -60,4 +50,14 @@
 <fullyQualifiedTypeName name="utilities.Utility"/>
 <fullyQualifiedTypeName name="managers.ImageManager"/>
 <fullyQualifiedTypeName name="managers.ErrorManager"/>
+<fullyQualifiedTypeName name="javax.swing.JDialog"/>
+<fullyQualifiedTypeName name="java.awt.Window"/>
+<fullyQualifiedTypeName name="gui.windows.GuiWindow"/>
+<fullyQualifiedTypeName name="java.util.Stack"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="gui.windows.GuiDialog"/>
+<fullyQualifiedTypeName name="gui.windows.StudyHistoriesFrame"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="managers.ApplicationManager"/>
+<fullyQualifiedTypeName name="gui.windows.GuiFrame"/>
 </qualifiedTypeNameHistroy>
