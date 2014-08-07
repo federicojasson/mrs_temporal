@@ -11,7 +11,6 @@ import gui.windows.GuiFramePatient;
 import gui.windows.GuiFrameStudy;
 import gui.windows.GuiFrameUser;
 import gui.windows.GuiWindow;
-import java.awt.EventQueue;
 import java.io.File;
 import java.util.Stack;
 import javax.swing.JFileChooser;
@@ -62,75 +61,47 @@ public class GuiManager {
 	}
 
 	public static void closeCurrentDialog() {
-		// Executes this code in the event dispatch thread (EDT)
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-				// Disposes the current dialog
-				dialogs.pop().dispose();
-			}
-
-		});
+		// Disposes the current dialog
+		dialogs.pop().dispose();
 	}
 
 	public static void closeCurrentFrame() {
-		// Executes this code in the event dispatch thread (EDT)
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-				// Closes the current frame
-				closeCurrentFrame(true);
-
-				if (frames.isEmpty())
-					// The closed frame was the last one in the stack
-					// Exits the application normally
-					ApplicationManager.exitNormally();
-				else
-					// There is at least one more frame in the stack
-					// Recovers the previous frame
-					frames.peek().recover();
-			}
-
-		});
+		// Closes the current frame
+		closeCurrentFrame(true);
+	
+		if (frames.isEmpty())
+			// The closed frame was the last one in the stack
+			// Exits the application normally
+			ApplicationManager.exitNormally();
+		else
+			// There is at least one more frame in the stack
+			// Recovers the previous frame
+			frames.peek().recover();
 	}
 
 	public static void openDialog(final int dialogId) {
-		// Executes this code in the event dispatch thread (EDT)
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-				try {
-					// Opens a new dialog
-					GuiDialog dialog = dialogModels[dialogId].getClass().newInstance();
-					dialog.initialize(getCurrentWindow());
-					dialogs.push(dialog);
-				} catch (InstantiationException | IllegalAccessException exception) {
-					// There is nothing to be done
-				}
-			}
-
-		});
+		try {
+			// Opens a new dialog
+			GuiDialog dialog = dialogModels[dialogId].getClass().newInstance();
+			dialogs.push(dialog);
+			dialog.initialize(getCurrentWindow());
+		} catch (InstantiationException | IllegalAccessException exception) {
+			// There is nothing to be done
+		}
 	}
 
 	public static void openFrame(final int frameId) {
-		// Executes this code in the event dispatch thread (EDT)
-		EventQueue.invokeLater(new Runnable() {
-
-			public void run() {
-				try {
-					// Closes the current frame
-					closeCurrentFrame(false);
-
-					// Opens a new frame
-					GuiFrame frame = frameModels[frameId].getClass().newInstance();
-					frame.initialize(getCurrentWindow());
-					frames.push(frame);
-				} catch (InstantiationException | IllegalAccessException exception) {
-					// There is nothing to be done
-				}
-			}
-
-		});
+		try {
+			// Closes the current frame
+			closeCurrentFrame(false);
+	
+			// Opens a new frame
+			GuiFrame frame = frameModels[frameId].getClass().newInstance();
+			frames.push(frame);
+			frame.initialize(getCurrentWindow());
+		} catch (InstantiationException | IllegalAccessException exception) {
+			// There is nothing to be done
+		}
 	}
 
 	public static boolean showConfirmationDialog(GuiWindow callerWindow, String title, String message) {

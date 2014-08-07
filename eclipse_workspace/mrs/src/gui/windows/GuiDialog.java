@@ -1,5 +1,6 @@
 package gui.windows;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
@@ -13,9 +14,9 @@ public abstract class GuiDialog extends GuiWindow {
 
 	private JDialog window;
 
-	public void initialize(GuiWindow callerWindow) {
+	public final void initialize(GuiWindow callerWindow) {
 		window = new JDialog();
-
+		setWindow(window);
 		window.addWindowListener(new WindowAdapter() {
 
 			public void windowClosing(WindowEvent event) {
@@ -23,19 +24,16 @@ public abstract class GuiDialog extends GuiWindow {
 			}
 
 		});
-
-		window.setContentPane(getMainPanel());
 		window.setTitle(getTitle());
 		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		window.setIconImage(ImageManager.getImage(ImageManager.WINDOW_ICON));
+		window.setModalityType(ModalityType.APPLICATION_MODAL);
+		window.setContentPane(getMainPanel());
 		window.pack();
 		window.setMinimumSize(window.getSize());
+		window.setResizable(isResizable());
 		window.setLocationRelativeTo(callerWindow.getWindow());
 		window.setVisible(true);
-		window.setModal(true);
-		window.setResizable(isResizable());
-
-		setWindow(window);
 	}
 
 	protected abstract JPanel getMainPanel();

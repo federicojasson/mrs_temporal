@@ -54,50 +54,6 @@ public class GuiFrameStudy extends GuiFrame {
 	private FileList listStudyFiles;
 	private ListSelectionListener selectionListenerListStudyFilesModifyMode;
 
-	public void initialize(GuiWindow callerWindow) {
-		// Initializes the GUI
-		super.initialize(callerWindow);
-
-		// Locks the window
-		lock();
-
-		// Gets the study
-		GetStudyCaller caller = new GetStudyCaller() {
-
-			public void getStudyCallback(Study study) {
-				// Sets the study's information
-				fieldCauses.setText(study.getCauses());
-				fieldDate.setText(Utility.formatDate(study.getDate()));
-				fieldDiagnosis.setText(study.getDiagnosis());
-				fieldId.setText(Utility.bytesToHexadecimal(study.getId()));
-				fieldIndications.setText(study.getIndications());
-				fieldObservations.setText(study.getObservations());
-				fieldStudyTypeDescription.setText(study.getStudyTypeDescription());
-
-				// Gets the study files
-				GetStudyFilesCaller caller = new GetStudyFilesCaller() {
-
-					public void getStudyFilesCallback(List<File> studyFiles) {
-						// Sets the study files as the list's initial data
-						listStudyFiles.setInitialFiles(studyFiles);
-
-						// Unlocks the window
-						unlock();
-
-						// Sets the view mode
-						setViewMode();
-					}
-
-				};
-				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller);
-				worker.execute();
-			}
-
-		};
-		GetStudyWorker worker = new GetStudyWorker(caller);
-		worker.execute();
-	}
-
 	protected JPanel getMainPanel() {
 		JLabel labelId = new JLabel("ID de estudio:");
 
@@ -334,6 +290,8 @@ public class GuiFrameStudy extends GuiFrame {
 		panelMain.setLayout(new BorderLayout(0, 10));
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
+		
+		onInitialize();
 
 		return panelMain;
 	}
@@ -358,6 +316,47 @@ public class GuiFrameStudy extends GuiFrame {
 	private void onGoBack() {
 		// Closes the current frame
 		GuiManager.closeCurrentFrame();
+	}
+
+	private void onInitialize() {
+		// Locks the window
+		lock();
+
+		// Gets the study
+		GetStudyCaller caller = new GetStudyCaller() {
+
+			public void getStudyCallback(Study study) {
+				// Sets the study's information
+				fieldCauses.setText(study.getCauses());
+				fieldDate.setText(Utility.formatDate(study.getDate()));
+				fieldDiagnosis.setText(study.getDiagnosis());
+				fieldId.setText(Utility.bytesToHexadecimal(study.getId()));
+				fieldIndications.setText(study.getIndications());
+				fieldObservations.setText(study.getObservations());
+				fieldStudyTypeDescription.setText(study.getStudyTypeDescription());
+
+				// Gets the study files
+				GetStudyFilesCaller caller = new GetStudyFilesCaller() {
+
+					public void getStudyFilesCallback(List<File> studyFiles) {
+						// Sets the study files as the list's initial data
+						listStudyFiles.setInitialFiles(studyFiles);
+
+						// Unlocks the window
+						unlock();
+
+						// Sets the view mode
+						setViewMode();
+					}
+
+				};
+				GetStudyFilesWorker worker = new GetStudyFilesWorker(caller);
+				worker.execute();
+			}
+
+		};
+		GetStudyWorker worker = new GetStudyWorker(caller);
+		worker.execute();
 	}
 
 	private void onModifyStudy() {

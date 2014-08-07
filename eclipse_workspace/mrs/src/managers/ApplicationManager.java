@@ -1,5 +1,6 @@
 package managers;
 
+import java.awt.EventQueue;
 import java.sql.SQLException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -20,17 +21,6 @@ public class ApplicationManager {
 	}
 
 	public static void main(String[] args) {
-		// TODO: debug (to get hash out of password and salt)
-		/*
-		 * byte[] password = Utility.charsToBytes(new String("password").toCharArray()); byte[]
-		 * salt = Utility.hexStringToByteArray(
-		 * "1F49AC8FC75B199918AB740DCD829606512E443609A6EF34DA6205E7C2B06BF21D069520C5ED7832487075C57B091288A50D0581161014009F8B00558F039269"
-		 * ); //System.out.println(Utility.bytesToHexadecimal(salt)); byte[] passwordHash = null;
-		 * try { passwordHash = CryptographyManager.computePasswordHash(password, salt); } catch
-		 * (NoSuchAlgorithmException exception) { e.printStackTrace(); }
-		 * System.out.println(Utility.bytesToHexadecimal(passwordHash));
-		 */
-
 		try {
 			// Registers a shutdown hook
 			Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -50,8 +40,15 @@ public class ApplicationManager {
 			// Connects with the DBMS
 			DbmsManager.connect();
 
-			// Opens the log in frame
-			GuiManager.openFrame(GuiManager.FRAME_LOG_IN);
+			// Executes this code in the event dispatch thread (EDT)
+			EventQueue.invokeLater(new Runnable() {
+			
+				public void run() {
+					// Opens the log in frame
+					GuiManager.openFrame(GuiManager.FRAME_LOG_IN);
+				}
+
+			});
 		} catch (SQLException exception) {
 			// An error occurred
 			ErrorManager.notifyError("Se produjo un error en la base de datos.", exception);

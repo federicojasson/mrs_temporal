@@ -128,7 +128,7 @@ public class GuiFrameAddPatient extends GuiFrame {
 		panelObservations.setLayout(new FormLayout(new ColumnSpec[] {
 			ColumnSpec.decode("fill:max(256px;default):grow")
 		}, new RowSpec[] {
-			RowSpec.decode("fill:max(160px;default):grow")
+			RowSpec.decode("fill:max(216px;default):grow")
 		}));
 		panelObservations.add(scrollPanelObservations, "1, 1");
 
@@ -218,7 +218,7 @@ public class GuiFrameAddPatient extends GuiFrame {
 	}
 
 	private void onButtonDatePickerAction() {
-		if (datePicker.isShowing())
+		if (datePicker.popupIsShowing())
 			// Hides the date picker popup
 			datePicker.hidePopup();
 		else

@@ -1,5 +1,6 @@
 package managers;
 
+import java.awt.EventQueue;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -26,8 +27,15 @@ public class ErrorManager {
 		// Prints the error
 		printError();
 
-		// Opens an error frame
-		GuiManager.openFrame(GuiManager.FRAME_ERROR);
+		// Executes this code in the event dispatch thread (EDT)
+		EventQueue.invokeLater(new Runnable() {
+		
+			public void run() {
+				// Opens an error frame
+				GuiManager.openFrame(GuiManager.FRAME_ERROR);
+			}
+
+		});
 	}
 
 	private static String computeErrorDetails(Exception exception) {

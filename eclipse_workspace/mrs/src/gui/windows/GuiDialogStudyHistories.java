@@ -23,35 +23,6 @@ public class GuiDialogStudyHistories extends GuiDialog {
 
 	private JTextArea fieldStudyHistories;
 
-	public void initialize(GuiWindow callerWindow) {
-		// Initializes the GUI
-		super.initialize(callerWindow);
-
-		// Locks the window
-		lock();
-
-		// Gets the study histories
-		GetStudyHistoriesCaller caller = new GetStudyHistoriesCaller() {
-
-			public void getStudyHistoriesCallback(List<StudyHistory> studyHistories) {
-				for (StudyHistory studyHistory : studyHistories) {
-					String studyHistoryLine = new String();
-					studyHistoryLine += Utility.formatTimestamp(studyHistory.getDatetime());
-					studyHistoryLine += " - ";
-					studyHistoryLine += studyHistory.getModification();
-					studyHistoryLine += System.lineSeparator();
-					fieldStudyHistories.append(studyHistoryLine);
-
-					// Unlocks the window
-					unlock();
-				}
-			}
-
-		};
-		GetStudyHistoriesWorker worker = new GetStudyHistoriesWorker(caller);
-		worker.execute();
-	}
-
 	protected JPanel getMainPanel() {
 		fieldStudyHistories = new JTextArea();
 		fieldStudyHistories.setEditable(false);
@@ -87,6 +58,8 @@ public class GuiDialogStudyHistories extends GuiDialog {
 		panelMain.add(panelStudyHistories, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
+		onInitialize();
+		
 		return panelMain;
 	}
 
@@ -101,6 +74,32 @@ public class GuiDialogStudyHistories extends GuiDialog {
 	private void onGoBack() {
 		// Closes the current dialog
 		GuiManager.closeCurrentDialog();
+	}
+
+	private void onInitialize() {
+		// Locks the window
+		lock();
+
+		// Gets the study histories
+		GetStudyHistoriesCaller caller = new GetStudyHistoriesCaller() {
+
+			public void getStudyHistoriesCallback(List<StudyHistory> studyHistories) {
+				for (StudyHistory studyHistory : studyHistories) {
+					String studyHistoryLine = new String();
+					studyHistoryLine += Utility.formatTimestamp(studyHistory.getDatetime());
+					studyHistoryLine += " - ";
+					studyHistoryLine += studyHistory.getModification();
+					studyHistoryLine += System.lineSeparator();
+					fieldStudyHistories.append(studyHistoryLine);
+
+					// Unlocks the window
+					unlock();
+				}
+			}
+
+		};
+		GetStudyHistoriesWorker worker = new GetStudyHistoriesWorker(caller);
+		worker.execute();
 	}
 
 }

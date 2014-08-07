@@ -19,7 +19,7 @@ public class GetStudyHistoriesWorker extends SwingWorker<List<StudyHistory>, Voi
 
 	protected List<StudyHistory> doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
-
+		
 		try {
 			// Gets the study histories
 			return StudyManager.getStudyHistories();

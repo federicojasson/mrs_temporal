@@ -13,9 +13,9 @@ public abstract class GuiFrame extends GuiWindow {
 
 	private JFrame window;
 
-	public void initialize(GuiWindow callerWindow) {
+	public final void initialize(GuiWindow callerWindow) {
 		window = new JFrame();
-
+		setWindow(window);
 		window.addWindowListener(new WindowAdapter() {
 
 			public void windowClosing(WindowEvent event) {
@@ -23,23 +23,15 @@ public abstract class GuiFrame extends GuiWindow {
 			}
 
 		});
-
-		window.setContentPane(getMainPanel());
 		window.setTitle(getTitle());
 		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		window.setIconImage(ImageManager.getImage(ImageManager.WINDOW_ICON));
+		window.setContentPane(getMainPanel());
 		window.pack();
 		window.setMinimumSize(window.getSize());
-
-		if (callerWindow == null)
-			window.setLocationRelativeTo(null);
-		else
-			window.setLocationRelativeTo(callerWindow.getWindow());
-
-		window.setVisible(true);
 		window.setResizable(isResizable());
-
-		setWindow(window);
+		window.setLocationRelativeTo(callerWindow == null ? null : callerWindow.getWindow());
+		window.setVisible(true);
 	}
 
 	protected abstract JPanel getMainPanel();

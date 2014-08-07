@@ -82,3 +82,9 @@
 1407427281516	Rename type 'StudyFrame'
 1407427285422	Rename type 'PatientFrame'
 1407427292950	Rename type 'StudyHistoriesDialog'
+1407436023954	Move method
+1407436164392	Rename field 'currentCalendar'
+1407437991683	Rename local variable 'c'
+1407438259121	Rename local variable 'x'
+1407438269342	Rename local variable 'c'
+1407439021913	Move method

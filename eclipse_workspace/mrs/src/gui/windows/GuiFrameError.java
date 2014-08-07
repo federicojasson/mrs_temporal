@@ -21,14 +21,6 @@ public class GuiFrameError extends GuiFrame {
 	private JButton buttonToggleErrorDetails;
 	private JPanel panelErrorDetails;
 
-	public void initialize(GuiWindow callerWindow) {
-		// Initializes the GUI
-		super.initialize(callerWindow);
-
-		// Hides the error details
-		onToggleErrorDetails();
-	}
-
 	protected JPanel getMainPanel() {
 		ImageIcon iconLabelIcon = new ImageIcon(getClass().getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif"));
 
@@ -93,6 +85,8 @@ public class GuiFrameError extends GuiFrame {
 		panelMain.add(panelErrorDetails, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
+		onInitialize();
+		
 		return panelMain;
 	}
 
@@ -112,6 +106,11 @@ public class GuiFrameError extends GuiFrame {
 	private void onExit() {
 		// Disposes the window
 		dispose();
+	}
+
+	private void onInitialize() {
+		// Hides the error details
+		onToggleErrorDetails();
 	}
 
 	private void onToggleErrorDetails() {

@@ -68,53 +68,6 @@ public class GuiFramePatient extends GuiFrame {
 	private JTextField fieldSearch;
 	private StudyTable tableStudies;
 
-	public void initialize(GuiWindow callerWindow) {
-		// Initializes the GUI
-		super.initialize(callerWindow);
-
-		// Locks the window
-		lock();
-
-		// Gets the patient
-		GetPatientCaller caller = new GetPatientCaller() {
-
-			public void getPatientCallback(Patient patient) {
-				// Sets the patient's information
-				comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
-				comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
-				datePicker.setDate(patient.getBirthDate());
-				fieldBirthDate.setText(Utility.formatDate(patient.getBirthDate()));
-				fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
-				fieldName.setText(patient.getName());
-				fieldObservations.setText(patient.getObservations());
-
-				// Gets the study summaries
-				GetStudySummariesCaller caller = new GetStudySummariesCaller() {
-
-					public void getStudySummariesCallback(List<StudySummary> studySummaries) {
-						// Sets the study summaries as the table's data
-						tableStudies.setStudySummaries(studySummaries);
-
-						// Unlocks the window
-						unlock();
-
-						// Calls the selection callback method
-						onSelectStudy();
-
-						// Sets the view mode
-						setViewMode();
-					}
-
-				};
-				GetStudySummariesWorker worker = new GetStudySummariesWorker(caller);
-				worker.execute();
-			}
-
-		};
-		GetPatientWorker worker = new GetPatientWorker(caller);
-		worker.execute();
-	}
-
 	protected JPanel getMainPanel() {
 		JLabel labelId = new JLabel("ID de paciente:");
 
@@ -375,6 +328,8 @@ public class GuiFramePatient extends GuiFrame {
 		panelMain.add(panelSearchStudies, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
+		onInitialize();
+		
 		return panelMain;
 	}
 
@@ -392,7 +347,7 @@ public class GuiFramePatient extends GuiFrame {
 	}
 
 	private void onButtonDatePickerAction() {
-		if (datePicker.isShowing())
+		if (datePicker.popupIsShowing())
 			// Hides the date picker popup
 			datePicker.hidePopup();
 		else
@@ -403,6 +358,50 @@ public class GuiFramePatient extends GuiFrame {
 	private void onGoBack() {
 		// Closes the current frame
 		GuiManager.closeCurrentFrame();
+	}
+
+	private void onInitialize() {
+		// Locks the window
+		lock();
+
+		// Gets the patient
+		GetPatientCaller caller = new GetPatientCaller() {
+
+			public void getPatientCallback(Patient patient) {
+				// Sets the patient's information
+				comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
+				comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
+				datePicker.setDate(patient.getBirthDate());
+				fieldBirthDate.setText(Utility.formatDate(patient.getBirthDate()));
+				fieldId.setText(Utility.bytesToHexadecimal(patient.getId()));
+				fieldName.setText(patient.getName());
+				fieldObservations.setText(patient.getObservations());
+
+				// Gets the study summaries
+				GetStudySummariesCaller caller = new GetStudySummariesCaller() {
+
+					public void getStudySummariesCallback(List<StudySummary> studySummaries) {
+						// Sets the study summaries as the table's data
+						tableStudies.setStudySummaries(studySummaries);
+
+						// Unlocks the window
+						unlock();
+
+						// Calls the selection callback method
+						onSelectStudy();
+
+						// Sets the view mode
+						setViewMode();
+					}
+
+				};
+				GetStudySummariesWorker worker = new GetStudySummariesWorker(caller);
+				worker.execute();
+			}
+
+		};
+		GetPatientWorker worker = new GetPatientWorker(caller);
+		worker.execute();
 	}
 
 	private void onModifyPatient() {
@@ -601,6 +600,7 @@ public class GuiFramePatient extends GuiFrame {
 		buttonDatePicker.setEnabled(false);
 		comboBoxBloodType.setEnabled(false);
 		comboBoxGender.setEnabled(false);
+		datePicker.hidePopup();
 		fieldName.setEditable(false);
 		fieldObservations.setEditable(false);
 

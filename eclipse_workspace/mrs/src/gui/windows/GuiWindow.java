@@ -56,7 +56,7 @@ public abstract class GuiWindow {
 			title = getTitle();
 
 			// Saves the window's focus owner
-			focusOwner = window.getMostRecentFocusOwner();
+			focusOwner = window.getFocusOwner();
 
 			// Saves the current state of the components
 			for (Entry<String, Component> entry : components.entrySet()) {

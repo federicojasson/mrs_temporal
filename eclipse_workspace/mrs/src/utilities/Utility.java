@@ -18,14 +18,6 @@ public class Utility {
 		timestampFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	}
 
-	// TODO: debug (remove it before release)
-	/*
-	 * public static byte[] hexStringToByteArray(String s) { int len = s.length(); byte[] data =
-	 * new byte[len / 2]; for (int i = 0; i < len; i += 2) { data[i / 2] = (byte)
-	 * ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16)); } return
-	 * data; }
-	 */
-
 	public static boolean areEqual(byte[] b1, byte[] b2) {
 		return Arrays.equals(b1, b2);
 	}

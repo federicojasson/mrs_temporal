@@ -53,33 +53,6 @@ public class GuiFrameAddStudy extends GuiFrame {
 	private JTextArea fieldObservations;
 	private FileList listStudyFiles;
 
-	public void initialize(GuiWindow callerWindow) {
-		// Initializes the GUI
-		super.initialize(callerWindow);
-
-		// Locks the window
-		lock();
-
-		// Gets the study types
-		GetStudyTypesCaller caller = new GetStudyTypesCaller() {
-
-			public void getStudyTypesCallback(List<StudyType> studyTypes) {
-				// Adds the study types to the combo box
-				for (StudyType studyType : studyTypes)
-					comboBoxStudyType.addItem(studyType);
-
-				// Unlocks the window
-				unlock();
-
-				// Calls the selection callback method
-				onSelectStudyFiles();
-			}
-
-		};
-		GetStudyTypesWorker worker = new GetStudyTypesWorker(caller);
-		worker.execute();
-	}
-
 	protected JPanel getMainPanel() {
 		JLabel labelStudyType = new JLabel("Tipo de estudio:");
 
@@ -312,6 +285,8 @@ public class GuiFrameAddStudy extends GuiFrame {
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
+		onInitialize();
+
 		return panelMain;
 	}
 
@@ -359,7 +334,7 @@ public class GuiFrameAddStudy extends GuiFrame {
 	}
 
 	private void onButtonDatePickerAction() {
-		if (datePicker.isShowing())
+		if (datePicker.popupIsShowing())
 			// Hides the date picker popup
 			datePicker.hidePopup();
 		else
@@ -370,6 +345,30 @@ public class GuiFrameAddStudy extends GuiFrame {
 	private void onCancel() {
 		// Closes the current frame
 		GuiManager.closeCurrentFrame();
+	}
+	
+	private void onInitialize() {
+		// Locks the window
+		lock();
+
+		// Gets the study types
+		GetStudyTypesCaller caller = new GetStudyTypesCaller() {
+
+			public void getStudyTypesCallback(List<StudyType> studyTypes) {
+				// Adds the study types to the combo box
+				for (StudyType studyType : studyTypes)
+					comboBoxStudyType.addItem(studyType);
+
+				// Unlocks the window
+				unlock();
+
+				// Calls the selection callback method
+				onSelectStudyFiles();
+			}
+
+		};
+		GetStudyTypesWorker worker = new GetStudyTypesWorker(caller);
+		worker.execute();
 	}
 
 	private void onPickDate() {

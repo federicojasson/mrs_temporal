@@ -44,32 +44,6 @@ public class GuiFrameUser extends GuiFrame {
 	private JTextField fieldSearch;
 	private PatientTable tablePatients;
 
-	public void initialize(GuiWindow callerWindow) {
-		// Initializes the GUI
-		super.initialize(callerWindow);
-
-		// Locks the window
-		lock();
-
-		// Gets the patient summaries
-		GetPatientSummariesCaller caller = new GetPatientSummariesCaller() {
-
-			public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
-				// Sets the patient summaries as the table data
-				tablePatients.setPatientSummaries(patientSummaries);
-
-				// Unlocks the window
-				unlock();
-
-				// Calls the selection callback method
-				onSelectPatient();
-			}
-
-		};
-		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(caller);
-		worker.execute();
-	}
-
 	protected JPanel getMainPanel() {
 		fieldSearch = new JTextField();
 		fieldSearch.getDocument().addDocumentListener(new DocumentListener() {
@@ -190,7 +164,9 @@ public class GuiFrameUser extends GuiFrame {
 		panelMain.add(panelSearch, BorderLayout.NORTH);
 		panelMain.add(scrollPanelPatients, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
-
+		
+		onInitialize();
+		
 		return panelMain;
 	}
 
@@ -210,6 +186,29 @@ public class GuiFrameUser extends GuiFrame {
 	private void onExit() {
 		// Closes the current frame
 		GuiManager.closeCurrentFrame();
+	}
+	
+	private void onInitialize() {
+		// Locks the window
+		lock();
+
+		// Gets the patient summaries
+		GetPatientSummariesCaller caller = new GetPatientSummariesCaller() {
+
+			public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
+				// Sets the patient summaries as the table data
+				tablePatients.setPatientSummaries(patientSummaries);
+
+				// Unlocks the window
+				unlock();
+
+				// Calls the selection callback method
+				onSelectPatient();
+			}
+
+		};
+		GetPatientSummariesWorker worker = new GetPatientSummariesWorker(caller);
+		worker.execute();
 	}
 
 	private void onRemovePatient() {

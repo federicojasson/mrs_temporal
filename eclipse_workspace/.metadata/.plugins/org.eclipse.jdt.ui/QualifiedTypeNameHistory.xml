@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="gui.components.GenderTableCellRenderer"/>
-<fullyQualifiedTypeName name="java.awt.Color"/>
-<fullyQualifiedTypeName name="javax.swing.SwingConstants"/>
-<fullyQualifiedTypeName name="javax.swing.table.JTableHeader"/>
 <fullyQualifiedTypeName name="entities.Patient"/>
 <fullyQualifiedTypeName name="gui.workers.SearchPatientsCaller"/>
 <fullyQualifiedTypeName name="gui.workers.SearchPatientsWorker"/>
 <fullyQualifiedTypeName name="gui.workers.SearchStudySummariesCaller"/>
 <fullyQualifiedTypeName name="gui.workers.SearchStudySummariesWorker"/>
-<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="javax.swing.table.DefaultTableCellRenderer"/>
-<fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
 <fullyQualifiedTypeName name="gui.components.MyDefaultTableCellRenderer"/>
 <fullyQualifiedTypeName name="gui.components.HeaderTableCellRenderer"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableCellRenderer"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="gui.workers.RemovePatientCaller"/>
 <fullyQualifiedTypeName name="gui.workers.RemovePatientWorker"/>
@@ -26,10 +19,8 @@
 <fullyQualifiedTypeName name="entities.PatientSummary"/>
 <fullyQualifiedTypeName name="entities.StudySummary"/>
 <fullyQualifiedTypeName name="java.sql.Date"/>
-<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
 <fullyQualifiedTypeName name="gui.frames.PatientFrame"/>
 <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
-<fullyQualifiedTypeName name="javax.swing.event.DocumentListener"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="managers.TimerManager"/>
 <fullyQualifiedTypeName name="java.util.TimerTask"/>
@@ -40,7 +31,6 @@
 <fullyQualifiedTypeName name="managers.StudyManager"/>
 <fullyQualifiedTypeName name="managers.UserManager"/>
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
-<fullyQualifiedTypeName name="java.awt.GridLayout"/>
 <fullyQualifiedTypeName name="managers.GuiManager"/>
 <fullyQualifiedTypeName name="entities.StudyHistory"/>
 <fullyQualifiedTypeName name="gui.workers.GetStudyHistoriesCaller"/>
@@ -60,4 +50,14 @@
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="managers.ApplicationManager"/>
 <fullyQualifiedTypeName name="gui.windows.GuiFrame"/>
+<fullyQualifiedTypeName name="java.awt.EventQueue"/>
+<fullyQualifiedTypeName name="javax.swing.SwingUtilities"/>
+<fullyQualifiedTypeName name="java.awt.Dialog.ModalityType"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="java.awt.FlowLayout"/>
+<fullyQualifiedTypeName name="javax.swing.event.DocumentListener"/>
+<fullyQualifiedTypeName name="java.awt.GridLayout"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
 </qualifiedTypeNameHistroy>

@@ -1,5 +1,6 @@
 package gui.components;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -20,7 +21,6 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,7 +28,6 @@ import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
-// TODO: clicks afuera del popup que lo cierren
 @SuppressWarnings("serial")
 public class DatePicker extends JPanel {
 
@@ -42,6 +41,7 @@ public class DatePicker extends JPanel {
 	private SimpleDateFormat dateFormatterField;
 	private SimpleDateFormat dateFormatterLabel;
 	private JTextField fieldCurrentDate;
+	private Calendar newCalendar;
 	private boolean popupIsShowing;
 	private List<ActionListener> popupListeners;
 	private String[] weekdays;
@@ -51,11 +51,10 @@ public class DatePicker extends JPanel {
 		dateFormatterButton = new SimpleDateFormat("d");
 		dateFormatterField = new SimpleDateFormat("dd/MM/yyyy");
 		dateFormatterLabel = new SimpleDateFormat("MMMM 'de' yyyy");
+		newCalendar = Calendar.getInstance();
 		popupIsShowing = false;
 		popupListeners = new LinkedList<ActionListener>();
 		weekdays = new DateFormatSymbols().getShortWeekdays();
-
-		refreshPanel();
 	}
 
 	public void addPopupListener(ActionListener listener) {
@@ -82,164 +81,110 @@ public class DatePicker extends JPanel {
 		return popupIsShowing;
 	}
 
-	public void removePopupListener(ActionListener listener) {
-		popupListeners.remove(listener);
-	}
-
-	public void removePopupListeners() {
-		popupListeners.clear();
-	}
-
 	public void setDate(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		currentCalendar = calendar;
+		currentCalendar.setTime(date);
 
-		refreshPanel();
+		if (popupIsShowing)
+			refreshPanel();
 	}
 
 	public void showPopup(Container owner) {
 		if (! popupIsShowing) {
+			newCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
+			refreshPanel();
 			currentPopup = createPopup(owner);
 			currentPopup.show();
 			popupIsShowing = true;
 		}
 	}
 
+	private JPanel createBottomControls() {
+		JButton closeButton = new JButton("Cancelar");
+		closeButton.setMargin(new Insets(2, 8, 2, 8));
+		closeButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				hidePopup();
+			}
+			
+		});
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.add(closeButton);
+		
+		return panel;
+	}
+
 	private JPanel createCalendar() {
-		JPanel x = new JPanel();
+		JPanel panel = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-
-		x.setFocusable(true);
-		x.setLayout(gridbag);
-
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 7;
-		c.gridheight = 1;
-		JLabel title = new JLabel(dateFormatterLabel.format(currentCalendar.getTime()));
-		x.add(title, c);
+		GridBagConstraints constraints = new GridBagConstraints();
+		
+		panel.setLayout(gridbag);
+	
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 7;
+		constraints.gridheight = 1;
+		JLabel title = new JLabel(dateFormatterLabel.format(newCalendar.getTime()));
+		panel.add(title, constraints);
 		Font font = title.getFont();
-		//        Font titleFont = new Font(font.getName(), font.getStyle(),
-		//              font.getSize() + 2);
 		Font weekFont = new Font(font.getName(), font.getStyle(), font.getSize() - 2);
 		title.setFont(font);
-
-		c.gridy = 1;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		for (c.gridx = 0; c.gridx < 7; c.gridx++) {
-			JLabel label = new JLabel(weekdays[c.gridx + 1]); // Weekdays are indexed from 1 to 7
-			x.add(label, c);
+	
+		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
+		for (constraints.gridx = 0; constraints.gridx < 7; constraints.gridx++) {
+			JLabel label = new JLabel(weekdays[constraints.gridx + 1]); // Weekdays are indexed from 1 to 7
+			panel.add(label, constraints);
 			label.setFont(weekFont);
 		}
-
-		Calendar draw = (Calendar) currentCalendar.clone();
+	
+		Calendar draw = (Calendar) newCalendar.clone();
 		draw.set(Calendar.DATE, 1);
 		draw.add(Calendar.DATE, - draw.get(Calendar.DAY_OF_WEEK) + 1);
-		int monthInt = currentCalendar.get(Calendar.MONTH);
-
-		c.gridwidth = 1;
-		c.gridheight = 1;
+		int monthInt = newCalendar.get(Calendar.MONTH);
+	
+		constraints.gridwidth = 1;
+		constraints.gridheight = 1;
 		int width = getFontMetrics(weekFont).stringWidth(" Wed ");
 		int width1 = getFontMetrics(weekFont).stringWidth("Wed");
 		int height = getFontMetrics(weekFont).getHeight() + width - width1;
-
-		for (c.gridy = 2; c.gridy < 8; c.gridy++)
-			for (c.gridx = 0; c.gridx < 7; c.gridx++) {
-				JButton dayButton;
+	
+		for (constraints.gridy = 2; constraints.gridy < 8; constraints.gridy++)
+			for (constraints.gridx = 0; constraints.gridx < 7; constraints.gridx++) {
+				JButton dayButton = new JButton();
+				
 				if (draw.get(Calendar.MONTH) == monthInt) {
 					String dayString = dateFormatterButton.format(draw.getTime());
 					if (draw.get(Calendar.DAY_OF_MONTH) < 10)
 						dayString = " " + dayString;
-					dayButton = new JButton(dayString);
+					dayButton.setText(dayString);
 				} else {
-					dayButton = new JButton();
 					dayButton.setEnabled(false);
 				}
-				x.add(dayButton, c);
-				Color color = dayButton.getBackground();
-				if (draw.get(Calendar.DAY_OF_MONTH) == currentCalendar.get(Calendar.DAY_OF_MONTH) && draw.get(Calendar.MONTH) == monthInt)
+				
+				if (draw.get(Calendar.DAY_OF_MONTH) == newCalendar.get(Calendar.DAY_OF_MONTH) && draw.get(Calendar.MONTH) == monthInt)
 					dayButton.setBackground(Color.yellow);
-				else
-					dayButton.setBackground(color);
+				
 				dayButton.setFont(weekFont);
-				dayButton.setFocusable(true);
 				dayButton.setPreferredSize(new Dimension(width, height));
 				dayButton.setMargin(new Insets(0, 0, 0, 0));
 				dayButton.addActionListener(new ActionListener() {
-
+	
 					public void actionPerformed(ActionEvent event) {
 						onPickDay(event.getActionCommand());
 					}
-
+	
 				});
+				panel.add(dayButton, constraints);
+				
 				draw.add(Calendar.DATE, + 1);
 			}
-
-		return x;
-	}
-
-	private JPanel createControls() {
-		JPanel c = new JPanel();
-		c.setBorder(BorderFactory.createRaisedBevelBorder());
-		c.setFocusable(true);
-		c.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-		buttonPreviousYear = new JButton(" << ");
-		c.add(buttonPreviousYear);
-		buttonPreviousYear.setMargin(new Insets(0, 0, 0, 0));
-		buttonPreviousYear.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				onButtonPreviousYearAction();
-			}
-		});
-
-		buttonPreviousMonth = new JButton(" < ");
-		c.add(buttonPreviousMonth);
-		buttonPreviousMonth.setMargin(new Insets(0, 0, 0, 0));
-		buttonPreviousMonth.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				onButtonPreviousMonthAction();
-			}
-		});
-
-		fieldCurrentDate = new JTextField(getFormattedDate(), 10);
-		c.add(fieldCurrentDate);
-		fieldCurrentDate.setEditable(true);
-		fieldCurrentDate.setEnabled(true);
-		fieldCurrentDate.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent event) {
-				onEditDate();
-			}
-
-		});
-
-		buttonNextMonth = new JButton(" > ");
-		c.add(buttonNextMonth);
-		buttonNextMonth.setMargin(new Insets(0, 0, 0, 0));
-		buttonNextMonth.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				onButtonNextMonthAction();
-			}
-		});
-
-		buttonNextYear = new JButton(" >> ");
-		c.add(buttonNextYear);
-		buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
-		buttonNextYear.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				onButtonNextYearAction();
-			}
-		});
-
-		return c;
+	
+		return panel;
 	}
 
 	private Popup createPopup(Component owner) {
@@ -248,42 +193,101 @@ public class DatePicker extends JPanel {
 		return popupFactory.getPopup(owner, this, locationOnScreen.x, locationOnScreen.y);
 	}
 
+	private JPanel createTopControls() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+	
+		buttonPreviousYear = new JButton(" << ");
+		panel.add(buttonPreviousYear);
+		buttonPreviousYear.setMargin(new Insets(0, 0, 0, 0));
+		buttonPreviousYear.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent arg0) {
+				onButtonPreviousYearAction();
+			}
+			
+		});
+	
+		buttonPreviousMonth = new JButton(" < ");
+		panel.add(buttonPreviousMonth);
+		buttonPreviousMonth.setMargin(new Insets(0, 0, 0, 0));
+		buttonPreviousMonth.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent arg0) {
+				onButtonPreviousMonthAction();
+			}
+			
+		});
+	
+		fieldCurrentDate = new JTextField(dateFormatterField.format(newCalendar.getTime()), 10);
+		fieldCurrentDate.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				onEditDate();
+			}
+			
+		});
+		panel.add(fieldCurrentDate);
+	
+		buttonNextMonth = new JButton(" > ");
+		panel.add(buttonNextMonth);
+		buttonNextMonth.setMargin(new Insets(0, 0, 0, 0));
+		buttonNextMonth.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent arg0) {
+				onButtonNextMonthAction();
+			}
+			
+		});
+	
+		buttonNextYear = new JButton(" >> ");
+		panel.add(buttonNextYear);
+		buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
+		buttonNextYear.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent arg0) {
+				onButtonNextYearAction();
+			}
+			
+		});
+	
+		return panel;
+	}
+
 	private void onButtonNextMonthAction() {
-		currentCalendar.add(Calendar.MONTH, 1);
+		newCalendar.add(Calendar.MONTH, 1);
 		refreshPanel();
 	}
 
 	private void onButtonNextYearAction() {
-		currentCalendar.add(Calendar.YEAR, 1);
+		newCalendar.add(Calendar.YEAR, 1);
 		refreshPanel();
 	}
 
 	private void onButtonPreviousMonthAction() {
-		currentCalendar.add(Calendar.MONTH, - 1);
+		newCalendar.add(Calendar.MONTH, - 1);
 		refreshPanel();
 	}
 
 	private void onButtonPreviousYearAction() {
-		currentCalendar.add(Calendar.YEAR, - 1);
+		newCalendar.add(Calendar.YEAR, - 1);
 		refreshPanel();
 	}
 
 	private void onEditDate() {
 		try {
 			String dateString = fieldCurrentDate.getText();
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(dateFormatterField.parse(dateString));
-			currentCalendar = calendar;
+			newCalendar.setTime(dateFormatterField.parse(dateString));
 		} catch (ParseException exception) {
-			// Invalid date: sets the current one
-			currentCalendar = Calendar.getInstance();
+			// Invalid date
 		}
 
 		refreshPanel();
 	}
 
 	private void onPickDay(String day) {
-		currentCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day.trim()));
+		newCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day.trim()));
+		currentCalendar.setTimeInMillis(newCalendar.getTimeInMillis());
 
 		ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, day);
 		for (ActionListener popupListener : popupListeners)
@@ -292,18 +296,17 @@ public class DatePicker extends JPanel {
 
 	private void refreshPanel() {
 		removeAll();
-
+		
 		setBorder(BorderFactory.createCompoundBorder(
-			BorderFactory.createLineBorder(Color.BLACK, 1),
-			BorderFactory.createEmptyBorder(0, 0, 8, 0)
-			));
+			BorderFactory.createLineBorder(Color.GRAY, 1),
+			BorderFactory.createEmptyBorder(4, 4, 4, 4)
+		));
 
-		setFocusable(true);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(createControls());
-		add(createCalendar());
-
-		validate();
-		repaint();
+		setLayout(new BorderLayout(0, 4));
+		add(createTopControls(), BorderLayout.NORTH);
+		add(createCalendar(), BorderLayout.CENTER);
+		add(createBottomControls(), BorderLayout.SOUTH);
+		
+		revalidate();
 	}
 }
