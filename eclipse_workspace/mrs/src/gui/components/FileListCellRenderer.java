@@ -27,14 +27,14 @@ public class FileListCellRenderer implements ListCellRenderer<File> {
 	private Color colorFilenameForegroundSelected;
 	private Font fontCanonicalPath;
 	private Font fontFilename;
-	
+
 	public FileListCellRenderer() {
 		// Gets the defaults GUI configurations
 		UIDefaults defaultsGuiConfigurations = UIManager.getDefaults();
-		
+
 		// Gets the list's default font
 		Font listFont = defaultsGuiConfigurations.getFont("List.font");
-		
+
 		// Initializes the configurations
 		borderCell = BorderFactory.createEmptyBorder(5, 10, 5, 10);
 		borderCellFocused = BorderFactory.createCompoundBorder(defaultsGuiConfigurations.getBorder("List.focusCellHighlightBorder"), BorderFactory.createEmptyBorder(4, 9, 4, 9));
@@ -47,20 +47,20 @@ public class FileListCellRenderer implements ListCellRenderer<File> {
 		fontCanonicalPath = new Font(listFont.getFontName(), Font.ITALIC, listFont.getSize());
 		fontFilename = new Font(listFont.getFontName(), Font.BOLD, listFont.getSize());
 	}
-	
+
 	public Component getListCellRendererComponent(JList<? extends File> list, File value, int index, boolean isSelected, boolean cellHasFocus) {
 		String filename = value.getName();
-		
+
 		String canonicalPath;
 		try {
 			canonicalPath = value.getCanonicalPath();
 		} catch (IOException exception) {
 			canonicalPath = "Archivo no localizado";
 		}
-		
+
 		JLabel labelFilename = new JLabel(filename);
 		labelFilename.setFont(fontFilename);
-		
+
 		JLabel labelCanonicalPath = new JLabel(canonicalPath);
 		labelCanonicalPath.setFont(fontCanonicalPath);
 
@@ -68,7 +68,7 @@ public class FileListCellRenderer implements ListCellRenderer<File> {
 		panel.setLayout(new GridLayout(2, 1, 0, 5));
 		panel.add(labelFilename);
 		panel.add(labelCanonicalPath);
-		
+
 		if (isSelected) {
 			// Cell is selected
 			labelCanonicalPath.setForeground(colorCanonicalPathForegroundSelected);
@@ -80,15 +80,15 @@ public class FileListCellRenderer implements ListCellRenderer<File> {
 			labelFilename.setForeground(colorFilenameForeground);
 			panel.setBackground(colorCellBackground);
 		}
-		
+
 		if (cellHasFocus)
 			// Cell has the focus
 			panel.setBorder(borderCellFocused);
 		else
 			// Cell has not the focus
 			panel.setBorder(borderCell);
-		
+
 		return panel;
 	}
-	
+
 }

@@ -38,9 +38,7 @@
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
 <fullyQualifiedTypeName name="gui.frames.PatientFrame"/>
-<fullyQualifiedTypeName name="managers.ErrorManager"/>
 <fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
-<fullyQualifiedTypeName name="managers.ImageManager"/>
 <fullyQualifiedTypeName name="javax.swing.event.DocumentListener"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="managers.TimerManager"/>
@@ -60,4 +58,6 @@
 <fullyQualifiedTypeName name="gui.frames.StudyHistoriesFrame"/>
 <fullyQualifiedTypeName name="java.sql.Timestamp"/>
 <fullyQualifiedTypeName name="utilities.Utility"/>
+<fullyQualifiedTypeName name="managers.ImageManager"/>
+<fullyQualifiedTypeName name="managers.ErrorManager"/>
 </qualifiedTypeNameHistroy>

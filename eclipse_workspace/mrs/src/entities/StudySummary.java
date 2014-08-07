@@ -13,15 +13,15 @@ public class StudySummary {
 		this.id = id;
 		this.studyTypeDescription = studyTypeDescription;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public byte[] getId() {
 		return id;
 	}
-	
+
 	public String getStudyTypeDescription() {
 		return studyTypeDescription;
 	}

@@ -34,3 +34,11 @@
 1407360829921	Copy compilation unit
 1407363211003	Rename local variable 'history'
 1407363482624	Rename local variable 'studyHistoryString'
+1407366320177	Delete element
+1407368749803	Rename resource 'window_icon.ico'
+1407368763578	Rename resource 'window_icon.gif'
+1407368769836	Rename resource 'window_icon.png'
+1407368900718	Delete element
+1407378159313	Rename local variable 'buttonOk'
+1407378173396	Rename method 'onOk'
+1407385155129	Delete elements

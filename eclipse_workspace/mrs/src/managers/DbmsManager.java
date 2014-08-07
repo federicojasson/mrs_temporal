@@ -9,7 +9,7 @@ import java.util.Map;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class DbmsManager {
-	
+
 	public static final int GET_PATIENT = 0;
 	public static final int GET_PATIENT_SUMMARIES = 1;
 	public static final int GET_STUDY = 2;
@@ -23,7 +23,7 @@ public class DbmsManager {
 	public static final int SEARCH_STUDY_SUMMARIES = 10;
 	public static final int STUDY_EXISTS = 11;
 	public static final int STUDY_FILE_EXISTS = 12;
-	
+
 	public static final int DELETE_PATIENT = 0;
 	public static final int DELETE_STUDY = 1;
 	public static final int DELETE_STUDY_FILE = 2;
@@ -45,7 +45,7 @@ public class DbmsManager {
 	private static Connection dbmsConnection;
 	private static Map<Integer, PreparedStatement> preparedStatements;
 	private static Map<Integer, CallableStatement> storedProcedures;
-	
+
 	static {
 		preparedStatements = new HashMap<Integer, PreparedStatement>();
 		storedProcedures = new HashMap<Integer, CallableStatement>();
@@ -70,102 +70,102 @@ public class DbmsManager {
 
 		// Connects to the DBMS
 		dbmsConnection = dataSource.getConnection();
-		
+
 		// Initializes the prepared statements
 		preparedStatements.put(GET_PATIENT, dbmsConnection.prepareStatement(
 			"SELECT birth_date, blood_type, gender, name, observations " +
-			"FROM patients " +
-			"WHERE id = ? " +
-			"LIMIT 1"
-		));
-		
+				"FROM patients " +
+				"WHERE id = ? " +
+				"LIMIT 1"
+			));
+
 		preparedStatements.put(GET_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT gender, id, name " +
-			"FROM patients " +
-			"WHERE user_id LIKE BINARY ? " +
-			"ORDER BY name ASC"
-		));
-		
+				"FROM patients " +
+				"WHERE user_id LIKE BINARY ? " +
+				"ORDER BY name ASC"
+			));
+
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
 			"SELECT studies.causes, studies.date, studies.diagnosis, studies.indications, studies.observations, study_types.description " +
-			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
-			"WHERE studies.id = ? " +
-			"LIMIT 1"
-		));
-		
+				"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
+				"WHERE studies.id = ? " +
+				"LIMIT 1"
+			));
+
 		preparedStatements.put(GET_STUDY_FILES, dbmsConnection.prepareStatement(
 			"SELECT filename " +
-			"FROM studies_files " +
-			"WHERE study_id = ?"
-		));
-		
+				"FROM studies_files " +
+				"WHERE study_id = ?"
+			));
+
 		preparedStatements.put(GET_STUDY_HISTORIES, dbmsConnection.prepareStatement(
 			"SELECT datetime, modification " +
-			"FROM studies_histories " +
-			"WHERE study_id = ? " +
-			"ORDER BY datetime DESC, id DESC"
-		));
-		
+				"FROM studies_histories " +
+				"WHERE study_id = ? " +
+				"ORDER BY datetime DESC, id DESC"
+			));
+
 		preparedStatements.put(GET_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT studies.date, studies.id, study_types.description " +
-			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
-			"WHERE studies.patient_id = ? " +
-			"ORDER BY studies.date DESC, study_types.description ASC"
-		));
-		
+				"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
+				"WHERE studies.patient_id = ? " +
+				"ORDER BY studies.date DESC, study_types.description ASC"
+			));
+
 		preparedStatements.put(GET_STUDY_TYPES, dbmsConnection.prepareStatement(
 			"SELECT description, id " +
-			"FROM study_types"
-		));
-		
+				"FROM study_types"
+			));
+
 		preparedStatements.put(GET_USER_DOCTOR_AUTHENTICATION_DATA, dbmsConnection.prepareStatement(
 			"SELECT password_hash, salt " +
-			"FROM users_doctors_authentication_data " +
-			"WHERE id LIKE BINARY ? " +
-			"LIMIT 1"
-		));
-		
+				"FROM users_doctors_authentication_data " +
+				"WHERE id LIKE BINARY ? " +
+				"LIMIT 1"
+			));
+
 		preparedStatements.put(PATIENT_EXISTS, dbmsConnection.prepareStatement(
 			"SELECT COUNT(*) AS count " +
-			"FROM patients " +
-			"WHERE id = ? " +
-			"LIMIT 1"
-		));
-		
+				"FROM patients " +
+				"WHERE id = ? " +
+				"LIMIT 1"
+			));
+
 		preparedStatements.put(SEARCH_PATIENT_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT gender, id, name " +
-			"FROM patients " +
-			"WHERE " +
-			"	user_id LIKE BINARY ? " +
-			" AND " +
-			"	MATCH(name, observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION) " +
-			"ORDER BY name ASC"
-		));
-		
+				"FROM patients " +
+				"WHERE " +
+				"	user_id LIKE BINARY ? " +
+				" AND " +
+				"	MATCH(name, observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION) " +
+				"ORDER BY name ASC"
+			));
+
 		preparedStatements.put(SEARCH_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
 			"SELECT studies.date, studies.id, study_types.description " +
-			"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
-			"WHERE " +
-			"	studies.patient_id = ? " +
-			"	AND " +
-			"	MATCH(studies.causes, studies.diagnosis, studies.indications, studies.observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)" +
-			"ORDER BY studies.date DESC, study_types.description ASC"
-		));
-		
+				"FROM studies INNER JOIN study_types ON (studies.study_type_id = study_types.id) " +
+				"WHERE " +
+				"	studies.patient_id = ? " +
+				"	AND " +
+				"	MATCH(studies.causes, studies.diagnosis, studies.indications, studies.observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)" +
+				"ORDER BY studies.date DESC, study_types.description ASC"
+			));
+
 		preparedStatements.put(STUDY_EXISTS, dbmsConnection.prepareStatement(
 			"SELECT COUNT(*) AS count " +
-			"FROM studies " +
-			"WHERE id = ? " +
-			"LIMIT 1"
-		));
-		
+				"FROM studies " +
+				"WHERE id = ? " +
+				"LIMIT 1"
+			));
+
 		preparedStatements.put(STUDY_FILE_EXISTS, dbmsConnection.prepareStatement(
 			"SELECT COUNT(*) AS count " +
-			"FROM studies_files " +
-			"WHERE filename LIKE BINARY ? AND study_id = ? " +
-			"LIMIT 1"
-		));
-		
+				"FROM studies_files " +
+				"WHERE filename LIKE BINARY ? AND study_id = ? " +
+				"LIMIT 1"
+			));
+
 		// Initializes the stored procedures' call statements
 		storedProcedures.put(DELETE_PATIENT, dbmsConnection.prepareCall("{CALL delete_patient(?)}"));
 		storedProcedures.put(DELETE_STUDY, dbmsConnection.prepareCall("{CALL delete_study(?)}"));
@@ -176,12 +176,12 @@ public class DbmsManager {
 		storedProcedures.put(UPDATE_PATIENT, dbmsConnection.prepareCall("{CALL update_patient(?, ?, ?, ?, ?, ?)}"));
 		storedProcedures.put(UPDATE_STUDY, dbmsConnection.prepareCall("{CALL update_study(?, ?, ?, ?, ?)}"));
 	}
-	
+
 	public static void disconnect() {
 		try {
-		// Clears the prepared statements
+			// Clears the prepared statements
 			preparedStatements.clear();
-			
+
 			// Clears the stored procedures' statements
 			storedProcedures.clear();
 		} finally {
@@ -193,11 +193,11 @@ public class DbmsManager {
 			}
 		}
 	}
-	
+
 	public static PreparedStatement getPreparedStatement(int preparedStatementId) {
 		return preparedStatements.get(preparedStatementId);
 	}
-	
+
 	public static CallableStatement getStoredProcedure(int storedProcedureId) {
 		return storedProcedures.get(storedProcedureId);
 	}

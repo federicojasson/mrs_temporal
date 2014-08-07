@@ -10,7 +10,7 @@ import managers.ErrorManager;
 import managers.StudyManager;
 
 public class AddStudyWorker extends SwingWorker<Void, Void> {
-	
+
 	private AddStudyCaller caller;
 	private String causes;
 	private Date date;
@@ -18,8 +18,8 @@ public class AddStudyWorker extends SwingWorker<Void, Void> {
 	private String indications;
 	private String observations;
 	private List<File> studyFiles;
-	private byte[] studyTypeId; 
-	
+	private byte[] studyTypeId;
+
 	public AddStudyWorker(AddStudyCaller caller, String causes, Date date, String diagnosis, String indications, String observations, byte[] studyTypeId, List<File> studyFiles) {
 		this.caller = caller;
 		this.causes = causes;
@@ -30,26 +30,29 @@ public class AddStudyWorker extends SwingWorker<Void, Void> {
 		this.studyFiles = studyFiles;
 		this.studyTypeId = studyTypeId;
 	}
-	
+
 	protected Void doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
-		
+
 		try {
 			// Adds the study
 			StudyManager.addStudy(causes, date, diagnosis, indications, observations, studyTypeId, studyFiles);
-		} catch (NoSuchAlgorithmException | SQLException exception) {
+		} catch (NoSuchAlgorithmException exception) {
 			// An error occurred
-			ErrorManager.notifyError(exception);
+			ErrorManager.notifyError("El sistema no implementa un algoritmo necesario para la ejecución.", exception);
+		} catch (SQLException exception) {
+			// An error occurred
+			ErrorManager.notifyError("Se produjo un error en la base de datos.", exception);
 		}
-		
+
 		return null;
 	}
-	
+
 	protected void done() {
 		// This code is executed in the event dispatch thread (EDT)
-		
+
 		// Executes the caller's callback method
 		caller.addStudyCallback();
 	}
-	
+
 }

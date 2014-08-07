@@ -12,11 +12,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -55,8 +55,8 @@ public class DatePicker extends JPanel {
 		popupIsShowing = false;
 		popupListeners = new LinkedList<ActionListener>();
 		weekdays = new DateFormatSymbols().getShortWeekdays();
-		
-	  refreshPanel();
+
+		refreshPanel();
 	}
 
 	public void addPopupListener(ActionListener listener) {
@@ -82,21 +82,21 @@ public class DatePicker extends JPanel {
 	public boolean popupIsShowing() {
 		return popupIsShowing;
 	}
-	
+
 	public void removePopupListener(ActionListener listener) {
 		popupListeners.remove(listener);
 	}
-	
+
 	public void removePopupListeners() {
 		popupListeners.clear();
 	}
 
 	public void setDate(Date date) {
-	  Calendar calendar = Calendar.getInstance();
-	  calendar.setTime(date);
-	  currentCalendar = calendar;
-		
-	  refreshPanel();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		currentCalendar = calendar;
+
+		refreshPanel();
 	}
 
 	public void showPopup(Container owner) {
@@ -145,7 +145,7 @@ public class DatePicker extends JPanel {
 		c.gridheight = 1;
 		int width = getFontMetrics(weekFont).stringWidth(" Wed ");
 		int width1 = getFontMetrics(weekFont).stringWidth("Wed");
-		int height = getFontMetrics(weekFont).getHeight() + (width - width1);
+		int height = getFontMetrics(weekFont).getHeight() + width - width1;
 
 		for (c.gridy = 2; c.gridy < 8; c.gridy++)
 			for (c.gridx = 0; c.gridx < 7; c.gridx++) {
@@ -161,7 +161,7 @@ public class DatePicker extends JPanel {
 				}
 				x.add(dayButton, c);
 				Color color = dayButton.getBackground();
-				if ((draw.get(Calendar.DAY_OF_MONTH) == currentCalendar.get(Calendar.DAY_OF_MONTH)) && (draw.get(Calendar.MONTH) == monthInt))
+				if (draw.get(Calendar.DAY_OF_MONTH) == currentCalendar.get(Calendar.DAY_OF_MONTH) && draw.get(Calendar.MONTH) == monthInt)
 					dayButton.setBackground(Color.yellow);
 				else
 					dayButton.setBackground(color);
@@ -170,6 +170,7 @@ public class DatePicker extends JPanel {
 				dayButton.setPreferredSize(new Dimension(width, height));
 				dayButton.setMargin(new Insets(0, 0, 0, 0));
 				dayButton.addActionListener(new ActionListener() {
+
 					public void actionPerformed(ActionEvent event) {
 						onPickDay(event.getActionCommand());
 					}
@@ -177,7 +178,7 @@ public class DatePicker extends JPanel {
 				});
 				draw.add(Calendar.DATE, + 1);
 			}
-		
+
 		return x;
 	}
 
@@ -191,6 +192,7 @@ public class DatePicker extends JPanel {
 		c.add(buttonPreviousYear);
 		buttonPreviousYear.setMargin(new Insets(0, 0, 0, 0));
 		buttonPreviousYear.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonPreviousYearAction();
 			}
@@ -200,6 +202,7 @@ public class DatePicker extends JPanel {
 		c.add(buttonPreviousMonth);
 		buttonPreviousMonth.setMargin(new Insets(0, 0, 0, 0));
 		buttonPreviousMonth.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonPreviousMonthAction();
 			}
@@ -210,6 +213,7 @@ public class DatePicker extends JPanel {
 		fieldCurrentDate.setEditable(true);
 		fieldCurrentDate.setEnabled(true);
 		fieldCurrentDate.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent event) {
 				onEditDate();
 			}
@@ -219,6 +223,7 @@ public class DatePicker extends JPanel {
 		c.add(buttonNextMonth);
 		buttonNextMonth.setMargin(new Insets(0, 0, 0, 0));
 		buttonNextMonth.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonNextMonthAction();
 			}
@@ -228,6 +233,7 @@ public class DatePicker extends JPanel {
 		c.add(buttonNextYear);
 		buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
 		buttonNextYear.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonNextYearAction();
 			}
@@ -241,44 +247,44 @@ public class DatePicker extends JPanel {
 		PopupFactory popupFactory = PopupFactory.getSharedInstance();
 		return popupFactory.getPopup(owner, this, locationOnScreen.x, locationOnScreen.y);
 	}
-	
+
 	private void onButtonNextMonthAction() {
 		currentCalendar.add(Calendar.MONTH, 1);
 		refreshPanel();
 	}
-	
+
 	private void onButtonNextYearAction() {
 		currentCalendar.add(Calendar.YEAR, 1);
 		refreshPanel();
 	}
-	
+
 	private void onButtonPreviousMonthAction() {
-		currentCalendar.add(Calendar.MONTH, -1);
+		currentCalendar.add(Calendar.MONTH, - 1);
 		refreshPanel();
 	}
-	
+
 	private void onButtonPreviousYearAction() {
-		currentCalendar.add(Calendar.YEAR, -1);
+		currentCalendar.add(Calendar.YEAR, - 1);
 		refreshPanel();
 	}
-	
+
 	private void onEditDate() {
-	  try {
-	  	String dateString = fieldCurrentDate.getText();
-		  Calendar calendar = Calendar.getInstance();
+		try {
+			String dateString = fieldCurrentDate.getText();
+			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(dateFormatterField.parse(dateString));
-		  currentCalendar = calendar;
+			currentCalendar = calendar;
 		} catch (ParseException exception) {
 			// Invalid date: sets the current one
 			currentCalendar = Calendar.getInstance();
 		}
-	  
+
 		refreshPanel();
 	}
-	
+
 	private void onPickDay(String day) {
 		currentCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day.trim()));
-		
+
 		ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, day);
 		for (ActionListener popupListener : popupListeners)
 			popupListener.actionPerformed(event);
@@ -286,17 +292,17 @@ public class DatePicker extends JPanel {
 
 	private void refreshPanel() {
 		removeAll();
-		
+
 		setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createLineBorder(Color.BLACK, 1),
 			BorderFactory.createEmptyBorder(0, 0, 8, 0)
-		));
-		
+			));
+
 		setFocusable(true);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(createControls());
 		add(createCalendar());
-		
+
 		validate();
 		repaint();
 	}

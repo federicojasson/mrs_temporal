@@ -9,7 +9,7 @@ public class StudyType {
 		this.description = description;
 		this.id = id;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
