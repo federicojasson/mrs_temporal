@@ -17,7 +17,7 @@ public class DbmsManager {
 	public static final int GET_STUDY_HISTORIES = 4;
 	public static final int GET_STUDY_SUMMARIES = 5;
 	public static final int GET_STUDY_TYPES = 6;
-	public static final int GET_USER_DOCTOR_AUTHENTICATION_DATA = 7;
+	public static final int GET_USER_AUTHENTICATION_DATA_DOCTOR = 7;
 	public static final int PATIENT_EXISTS = 8;
 	public static final int SEARCH_PATIENT_SUMMARIES = 9;
 	public static final int SEARCH_STUDY_SUMMARIES = 10;
@@ -83,7 +83,7 @@ public class DbmsManager {
 			"SELECT gender, id, name " +
 				"FROM patients " +
 				"WHERE user_id LIKE BINARY ? " +
-				"ORDER BY name ASC"
+				"ORDER BY name ASC, id ASC"
 			));
 
 		preparedStatements.put(GET_STUDY, dbmsConnection.prepareStatement(
@@ -96,7 +96,8 @@ public class DbmsManager {
 		preparedStatements.put(GET_STUDY_FILES, dbmsConnection.prepareStatement(
 			"SELECT filename " +
 				"FROM studies_files " +
-				"WHERE study_id = ?"
+				"WHERE study_id = ? " +
+				"ORDER BY filename ASC"
 			));
 
 		preparedStatements.put(GET_STUDY_HISTORIES, dbmsConnection.prepareStatement(
@@ -115,12 +116,13 @@ public class DbmsManager {
 
 		preparedStatements.put(GET_STUDY_TYPES, dbmsConnection.prepareStatement(
 			"SELECT description, id " +
-				"FROM study_types"
+				"FROM study_types " +
+				"ORDER BY description ASC, id ASC"
 			));
 
-		preparedStatements.put(GET_USER_DOCTOR_AUTHENTICATION_DATA, dbmsConnection.prepareStatement(
+		preparedStatements.put(GET_USER_AUTHENTICATION_DATA_DOCTOR, dbmsConnection.prepareStatement(
 			"SELECT password_hash, salt " +
-				"FROM users_doctors_authentication_data " +
+				"FROM users_authentication_data_doctors " +
 				"WHERE id LIKE BINARY ? " +
 				"LIMIT 1"
 			));
@@ -139,7 +141,7 @@ public class DbmsManager {
 				"	user_id LIKE BINARY ? " +
 				" AND " +
 				"	MATCH(name, observations) AGAINST(? IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION) " +
-				"ORDER BY name ASC"
+				"ORDER BY name ASC, id ASC"
 			));
 
 		preparedStatements.put(SEARCH_STUDY_SUMMARIES, dbmsConnection.prepareStatement(
@@ -186,8 +188,9 @@ public class DbmsManager {
 			storedProcedures.clear();
 		} finally {
 			try {
-				// Closes the DBMS connection
-				dbmsConnection.close();
+				if (dbmsConnection != null)
+					// Closes the DBMS connection
+					dbmsConnection.close();
 			} catch (SQLException exception) {
 				// There is nothing to be done
 			}

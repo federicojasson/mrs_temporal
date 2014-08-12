@@ -2,7 +2,7 @@
 USE mrs_db
 
 SELECT id, HEX(password_hash) AS password_hash, HEX(salt) AS salt
-FROM users_doctors_authentication_data;
+FROM users_authentication_data_doctors;
 
 CALL insert_patient (
 	'1991-06-25',

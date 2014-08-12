@@ -329,12 +329,12 @@ public class GuiFramePatient extends GuiFrame {
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
 		onInitialize();
-		
+
 		return panelMain;
 	}
 
 	protected String getTitle() {
-		return "MRS - Paciente (" + Utility.bytesToHexadecimal(PatientManager.getCurrentPatientId()) + ")";
+		return "Paciente (" + Utility.bytesToHexadecimal(PatientManager.getCurrentPatientId()) + ") - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -356,8 +356,8 @@ public class GuiFramePatient extends GuiFrame {
 	}
 
 	private void onGoBack() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
+		// Closes the current window
+		GuiManager.closeCurrentWindow();
 	}
 
 	private void onInitialize() {
@@ -367,7 +367,15 @@ public class GuiFramePatient extends GuiFrame {
 		// Gets the patient
 		GetPatientCaller caller = new GetPatientCaller() {
 
-			public void getPatientCallback(Patient patient) {
+			public void onGetPatientFailure() {
+				// Shows a dialog to inform that the patient doesn't exist
+				GuiManager.showErrorDialog(GuiFramePatient.this, "Paciente no encontrado", "El paciente solicitado no ha sido encontrado.");
+
+				// Closes the current window
+				GuiManager.closeCurrentWindow();
+			}
+
+			public void onGetPatientSuccess(Patient patient) {
 				// Sets the patient's information
 				comboBoxBloodType.setSelectedIndex(BloodType.getConstant(patient.getBloodType()).ordinal());
 				comboBoxGender.setSelectedIndex(Gender.getConstant(patient.getGender()).ordinal());
@@ -380,7 +388,7 @@ public class GuiFramePatient extends GuiFrame {
 				// Gets the study summaries
 				GetStudySummariesCaller caller = new GetStudySummariesCaller() {
 
-					public void getStudySummariesCallback(List<StudySummary> studySummaries) {
+					public void onGetStudySummariesSuccess(List<StudySummary> studySummaries) {
 						// Sets the study summaries as the table's data
 						tableStudies.setStudySummaries(studySummaries);
 
@@ -425,7 +433,7 @@ public class GuiFramePatient extends GuiFrame {
 		// Modifies the patient
 		ModifyPatientCaller caller = new ModifyPatientCaller() {
 
-			public void modifyPatientCallback() {
+			public void onModifyPatientSuccess() {
 				// Unlocks the window
 				unlock();
 
@@ -468,7 +476,7 @@ public class GuiFramePatient extends GuiFrame {
 		// Removes the study
 		RemoveStudyCaller caller = new RemoveStudyCaller() {
 
-			public void removeStudyCallback() {
+			public void onRemoveStudySuccess() {
 				// Removes the study's row
 				tableStudies.removeStudySummary(selectedRowIndex);
 
@@ -498,7 +506,7 @@ public class GuiFramePatient extends GuiFrame {
 					// Gets the study summaries
 					GetStudySummariesCaller caller = new GetStudySummariesCaller() {
 
-						public void getStudySummariesCallback(List<StudySummary> studySummaries) {
+						public void onGetStudySummariesSuccess(List<StudySummary> studySummaries) {
 							// Sets the study summaries as the table's data
 							tableStudies.setStudySummaries(studySummaries);
 
@@ -509,7 +517,7 @@ public class GuiFramePatient extends GuiFrame {
 							onSelectStudy();
 
 							// Focus the search field
-							fieldSearch.requestFocus();
+							fieldSearch.requestFocusInWindow();
 						}
 
 					};
@@ -519,7 +527,7 @@ public class GuiFramePatient extends GuiFrame {
 					// Searches the study summaries
 					SearchStudySummariesCaller caller = new SearchStudySummariesCaller() {
 
-						public void searchStudySummariesCallback(List<StudySummary> studySummaries) {
+						public void onSearchStudySummariesSuccess(List<StudySummary> studySummaries) {
 							// Sets the study summaries as the table data
 							tableStudies.setStudySummaries(studySummaries);
 
@@ -530,7 +538,7 @@ public class GuiFramePatient extends GuiFrame {
 							onSelectStudy();
 
 							// Focus the search field
-							fieldSearch.requestFocus();
+							fieldSearch.requestFocusInWindow();
 						}
 
 					};

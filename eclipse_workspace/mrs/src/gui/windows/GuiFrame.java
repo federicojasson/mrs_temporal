@@ -13,6 +13,10 @@ public abstract class GuiFrame extends GuiWindow {
 
 	private JFrame window;
 
+	public final void initialize() {
+		initialize(null);
+	}
+
 	public final void initialize(GuiWindow callerWindow) {
 		window = new JFrame();
 		setWindow(window);
@@ -41,8 +45,8 @@ public abstract class GuiFrame extends GuiWindow {
 	protected void onClose() {
 		if (! isLocked())
 			// The window is not locked
-			// Closes the current frame
-			GuiManager.closeCurrentFrame();
+			// Closes the current window
+			GuiManager.closeCurrentWindow();
 	}
 
 	protected void setDefaultButton(JButton button) {

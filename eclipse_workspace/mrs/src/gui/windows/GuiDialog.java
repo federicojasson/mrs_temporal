@@ -43,8 +43,8 @@ public abstract class GuiDialog extends GuiWindow {
 	protected void onClose() {
 		if (! isLocked())
 			// The window is not locked
-			// Closes the current dialog
-			GuiManager.closeCurrentDialog();
+			// Closes the current window
+			GuiManager.closeCurrentWindow();
 	}
 
 	protected void setDefaultButton(JButton button) {

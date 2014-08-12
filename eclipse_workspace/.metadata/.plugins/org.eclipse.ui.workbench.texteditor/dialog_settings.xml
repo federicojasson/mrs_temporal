@@ -15,14 +15,14 @@
 		<item value="false" key="wholeword"/>
 		<item value="" key="selection"/>
 		<list key="findhistory">
-			<item value="focus"/>
-			<item value="TODO"/>
-			<item value="owner"/>
-			<item value="mainPanel,"/>
-			<item value="requestfocus"/>
-			<item value="fieldCurr"/>
-			<item value="field"/>
-			<item value="focusable"/>
+			<item value="lock"/>
+			<item value="current frame"/>
+			<item value="frame"/>
+			<item value="window"/>
+			<item value="Closes the current window"/>
+			<item value="isEmpty"/>
+			<item value="disposes the"/>
+			<item value=".initialize("/>
 		</list>
 		<list key="replacehistory">
 			<item value="window"/>

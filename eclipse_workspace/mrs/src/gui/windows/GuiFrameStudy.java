@@ -290,14 +290,14 @@ public class GuiFrameStudy extends GuiFrame {
 		panelMain.setLayout(new BorderLayout(0, 10));
 		panelMain.add(panelContent, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
-		
+
 		onInitialize();
 
 		return panelMain;
 	}
 
 	protected String getTitle() {
-		return "MRS - Estudio (" + Utility.bytesToHexadecimal(StudyManager.getCurrentStudyId()) + ")";
+		return "Estudio (" + Utility.bytesToHexadecimal(StudyManager.getCurrentStudyId()) + ") - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -314,8 +314,8 @@ public class GuiFrameStudy extends GuiFrame {
 	}
 
 	private void onGoBack() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
+		// Closes the current window
+		GuiManager.closeCurrentWindow();
 	}
 
 	private void onInitialize() {
@@ -325,7 +325,15 @@ public class GuiFrameStudy extends GuiFrame {
 		// Gets the study
 		GetStudyCaller caller = new GetStudyCaller() {
 
-			public void getStudyCallback(Study study) {
+			public void onGetStudyFailure() {
+				// Shows a dialog to inform that the study doesn't exist
+				GuiManager.showErrorDialog(GuiFrameStudy.this, "Estudio no encontrado", "El estudio solicitado no ha sido encontrado.");
+
+				// Closes the current window
+				GuiManager.closeCurrentWindow();
+			}
+
+			public void onGetStudySuccess(Study study) {
 				// Sets the study's information
 				fieldCauses.setText(study.getCauses());
 				fieldDate.setText(Utility.formatDate(study.getDate()));
@@ -338,7 +346,7 @@ public class GuiFrameStudy extends GuiFrame {
 				// Gets the study files
 				GetStudyFilesCaller caller = new GetStudyFilesCaller() {
 
-					public void getStudyFilesCallback(List<File> studyFiles) {
+					public void onGetStudyFilesSuccess(List<File> studyFiles) {
 						// Sets the study files as the list's initial data
 						listStudyFiles.setInitialFiles(studyFiles);
 
@@ -380,11 +388,11 @@ public class GuiFrameStudy extends GuiFrame {
 		// Modifies the study
 		ModifyStudyCaller caller = new ModifyStudyCaller() {
 
-			public void modifyStudyCallback() {
+			public void onModifyStudySuccess() {
 				// Gets the study files again
 				GetStudyFilesCaller caller = new GetStudyFilesCaller() {
 
-					public void getStudyFilesCallback(List<File> studyFiles) {
+					public void onGetStudyFilesSuccess(List<File> studyFiles) {
 						// Sets the study files as the list's initial data
 						listStudyFiles.setInitialFiles(studyFiles);
 
@@ -438,7 +446,7 @@ public class GuiFrameStudy extends GuiFrame {
 			// Opens the file's directory
 			OpenFileDirectoryCaller caller = new OpenFileDirectoryCaller() {
 
-				public void openFileDirectoryCallback() {
+				public void onOpenFileDirectorySuccess() {
 					// Unlocks the window
 					unlock();
 				}

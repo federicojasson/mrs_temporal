@@ -60,31 +60,24 @@ public class GuiManager {
 		frameModels[FRAME_USER] = new GuiFrameUser();
 	}
 
-	public static void closeCurrentDialog() {
-		// Disposes the current dialog
-		dialogs.pop().dispose();
-	}
-
-	public static void closeCurrentFrame() {
-		// Closes the current frame
-		closeCurrentFrame(true);
-	
-		if (frames.isEmpty())
-			// The closed frame was the last one in the stack
-			// Exits the application normally
-			ApplicationManager.exitNormally();
+	public static void closeCurrentWindow() {
+		if (! dialogs.isEmpty())
+			// There is an opened dialog
+			closeCurrentDialog();
 		else
-			// There is at least one more frame in the stack
-			// Recovers the previous frame
-			frames.peek().recover();
+			// There are no opened dialogs
+			closeCurrentFrame();
 	}
 
 	public static void openDialog(final int dialogId) {
 		try {
+			// Gets the current window
+			GuiWindow currentWindow = getCurrentWindow();
+
 			// Opens a new dialog
 			GuiDialog dialog = dialogModels[dialogId].getClass().newInstance();
 			dialogs.push(dialog);
-			dialog.initialize(getCurrentWindow());
+			dialog.initialize(currentWindow);
 		} catch (InstantiationException | IllegalAccessException exception) {
 			// There is nothing to be done
 		}
@@ -92,13 +85,31 @@ public class GuiManager {
 
 	public static void openFrame(final int frameId) {
 		try {
-			// Closes the current frame
-			closeCurrentFrame(false);
-	
-			// Opens a new frame
-			GuiFrame frame = frameModels[frameId].getClass().newInstance();
-			frames.push(frame);
-			frame.initialize(getCurrentWindow());
+			// Closes the opened dialogs
+			while (! dialogs.isEmpty())
+				closeCurrentDialog();
+
+			if (frames.isEmpty()) {
+				// There are no frames in the stack
+
+				// Opens a new frame
+				GuiFrame frame = frameModels[frameId].getClass().newInstance();
+				frames.push(frame);
+				frame.initialize();
+			} else {
+				// There is at least one more frame in the stack
+
+				// Gets the current frame
+				GuiFrame currentFrame = frames.peek();
+
+				// Opens a new frame
+				GuiFrame frame = frameModels[frameId].getClass().newInstance();
+				frames.push(frame);
+				frame.initialize(currentFrame);
+
+				// Disposes the current frame
+				currentFrame.dispose();
+			}
 		} catch (InstantiationException | IllegalAccessException exception) {
 			// There is nothing to be done
 		}
@@ -111,6 +122,13 @@ public class GuiManager {
 			return JOptionPane.showConfirmDialog(callerWindow.getWindow(), message, title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
 
 		return false;
+	}
+
+	public static void showErrorDialog(GuiWindow callerWindow, String title, String message) {
+		if (callerWindow == getCurrentWindow())
+			// The caller window is the current one
+			// Shows the error dialog
+			JOptionPane.showMessageDialog(callerWindow.getWindow(), message, title, JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static File[] showFileChooserDialog(GuiWindow callerWindow) {
@@ -131,20 +149,27 @@ public class GuiManager {
 			JOptionPane.showMessageDialog(callerWindow.getWindow(), message, title, JOptionPane.WARNING_MESSAGE);
 	}
 
-	private static void closeCurrentFrame(boolean wasClosedByUser) {
-		if (! frames.isEmpty()) {
-			// There is at least one more frame in the stack
-			GuiFrame frame;
+	private static void closeCurrentDialog() {
+		// Disposes the current dialog
+		dialogs.pop().dispose();
+	}
 
-			if (wasClosedByUser)
-				// The frame was closed by the user
-				frame = frames.pop();
-			else
-				// The frame was closed to open a new one
-				frame = frames.peek();
+	private static void closeCurrentFrame() {
+		// Gets the current frame
+		GuiFrame currentFrame = frames.pop();
+
+		if (frames.isEmpty())
+			// The frame is the last one in the stack
+			// Exits the application normally
+			ApplicationManager.exitNormally();
+		else {
+			// There is at least one more frame in the stack
+
+			// Recovers the previous frame
+			frames.peek().recover(currentFrame);
 
 			// Disposes the current frame
-			frame.dispose();
+			currentFrame.dispose();
 		}
 	}
 

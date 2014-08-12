@@ -10,7 +10,7 @@
 	<item value="248" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_x"/>
 	<item value="77" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_y"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.white_space_tab_page.node"/>
-	<item value="D:\Git\mrs_temporal\Libs" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\lib" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="36" key="org.eclipse.jdt.uiformatter_page.white_space.java_view.option"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_page.modify_dialog_tab_page.last_focus_index"/>
 	<item value="887" key="org.eclipse.jdt.uicleanup_pagemodify_dialog.preferred_width"/>
@@ -22,6 +22,7 @@
 	<item value="1600" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_width"/>
 	<item value="0" key="org.eclipse.jdt.uiformatter_pagemodify_dialog.preferred_y"/>
 	<section name="OptionalMessageDialog.hide.">
+		<item value="false" key="RunnableJar.export.ipwarning"/>
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
 	</section>
 	<section name="BuildPathsPropertyPage">
@@ -248,6 +249,21 @@
 	</section>
 	<section name="GenerateConstructorUsingFieldsSelectionDialog">
 		<item value="false" key="OmitCallToSuper"/>
+	</section>
+	<section name="FatJarPackageWizard">
+		<item value="C:\Users\Fede\Desktop\ejecutable\mrs.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="ApplicationManager - mrs" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="2" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\Fede\Desktop\ejecutable\mrs.jar"/>
+			<item value="C:\Users\Fede\Desktop\ejecutable\MRS.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace.xml"/>
+			<item value=".xml"/>
+		</list>
 	</section>
 	<section name="RefactoringWizard.preview">
 		<item value="400" key="height"/>

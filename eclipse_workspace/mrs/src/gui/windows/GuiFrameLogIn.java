@@ -88,7 +88,7 @@ public class GuiFrameLogIn extends GuiFrame {
 		panelButtons.add(buttonLogInUserDoctor);
 
 		JPanel panelMain = new JPanel();
-		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 80, 10, 80));
+		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panelMain.setLayout(new BorderLayout(0, 10));
 		panelMain.add(panelLogo, BorderLayout.NORTH);
 		panelMain.add(panelFields, BorderLayout.CENTER);
@@ -98,7 +98,7 @@ public class GuiFrameLogIn extends GuiFrame {
 	}
 
 	protected String getTitle() {
-		return "MRS - Ingresar";
+		return "Ingresar - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -106,8 +106,8 @@ public class GuiFrameLogIn extends GuiFrame {
 	}
 
 	private void onExit() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
+		// Closes the current window
+		GuiManager.closeCurrentWindow();
 	}
 
 	private void onLogInUserDoctor() {
@@ -133,12 +133,15 @@ public class GuiFrameLogIn extends GuiFrame {
 		// Attempts to log in the user
 		LogInUserDoctorCaller caller = new LogInUserDoctorCaller() {
 
-			public void logInUserDoctorCallback(Boolean userDoctorLoggedIn) {
-				if (userDoctorLoggedIn)
+			public void onLogInUserDoctorSuccess(Boolean userDoctorLoggedIn) {
+				if (userDoctorLoggedIn) {
+					// Clears the password field
+					fieldPassword.setText("");
+
 					// Opens the user frame
 					GuiManager.openFrame(GuiManager.FRAME_USER);
-				else {
-					// Shows a dialog to inform the user that the user was not logged in
+				} else {
+					// Shows a dialog to inform that the user was not logged in
 					GuiManager.showWarningDialog(GuiFrameLogIn.this, "Acceso denegado", "Los datos ingresados (nombre de usuario y contraseña) son incorrectos." + System.lineSeparator() + "Por favor, inténtelo nuevamente.");
 
 					// Unlocks the window

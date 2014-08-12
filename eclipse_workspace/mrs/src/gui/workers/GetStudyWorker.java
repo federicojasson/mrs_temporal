@@ -6,6 +6,7 @@ import javax.swing.SwingWorker;
 import managers.ErrorManager;
 import managers.StudyManager;
 import entities.Study;
+import exceptions.NoStudyException;
 
 public class GetStudyWorker extends SwingWorker<Study, Void> {
 
@@ -15,7 +16,7 @@ public class GetStudyWorker extends SwingWorker<Study, Void> {
 		this.caller = caller;
 	}
 
-	protected Study doInBackground() {
+	protected Study doInBackground() throws NoStudyException {
 		// This code is executed in a dedicated thread (not EDT)
 
 		try {
@@ -33,8 +34,12 @@ public class GetStudyWorker extends SwingWorker<Study, Void> {
 
 		try {
 			// Executes the caller's callback method
-			caller.getStudyCallback(get());
-		} catch (ExecutionException | InterruptedException exception) {
+			caller.onGetStudySuccess(get());
+		} catch (ExecutionException exception) {
+			if (exception.getCause() instanceof NoStudyException)
+				// Study not found
+				caller.onGetStudyFailure();
+		} catch (InterruptedException exception) {
 			// There is nothing to be done
 		}
 	}

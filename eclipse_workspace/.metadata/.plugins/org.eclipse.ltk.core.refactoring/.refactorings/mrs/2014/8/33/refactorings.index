@@ -1,0 +1,34 @@
+1407786490002	Delete element
+1407787115277	Delete element
+1407787308751	Delete element
+1407788016550	Delete element
+1407788020812	Delete element
+1407788060335	Delete element
+1407788114356	Move files
+1407789594262	Rename method 'getUserDoctorAuthenticationData'
+1407789614897	Rename field 'GET_USER_DOCTOR_AUTHENTICATION_DATA'
+1407789655741	Copy compilation unit
+1407790223198	Copy compilation unit
+1407790323244	Copy compilation unit
+1407791604159	Rename method 'addPatientCallback'
+1407791633122	Rename method 'addStudyCallback'
+1407791645583	Rename method 'getPatientCallback'
+1407791696348	Rename method 'searchStudySummariesCallback'
+1407791706253	Rename method 'searchPatientSummariesCallback'
+1407791714643	Rename method 'removeStudyCallback'
+1407791722366	Rename method 'removePatientCallback'
+1407791733430	Rename method 'openFileDirectoryCallback'
+1407791741314	Rename method 'modifyStudyCallback'
+1407791749353	Rename method 'modifyPatientCallback'
+1407791756898	Rename method 'logInUserDoctorCallback'
+1407791764255	Rename method 'getStudyTypesCallback'
+1407791770825	Rename method 'getStudySummariesCallback'
+1407791777438	Rename method 'getStudyHistoriesCallback'
+1407791784142	Rename method 'getStudyFilesCallback'
+1407791790752	Rename method 'getStudyCallback'
+1407791797589	Rename method 'getPatientSummariesCallback'
+1407796851004	Move method
+1407796855894	Move method
+1407801882302	Rename package 'images'
+1407802076637	Rename package 'resources.images'
+1407802759134	Rename package 'images'

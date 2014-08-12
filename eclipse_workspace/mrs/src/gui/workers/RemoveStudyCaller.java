@@ -2,6 +2,6 @@ package gui.workers;
 
 public interface RemoveStudyCaller {
 
-	public void removeStudyCallback();
+	public void onRemoveStudySuccess();
 
 }

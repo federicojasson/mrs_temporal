@@ -5,6 +5,6 @@ import entities.StudySummary;
 
 public interface GetStudySummariesCaller {
 
-	public void getStudySummariesCallback(List<StudySummary> studySummaries);
+	public void onGetStudySummariesSuccess(List<StudySummary> studySummaries);
 
 }

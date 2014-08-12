@@ -5,6 +5,6 @@ import entities.PatientSummary;
 
 public interface GetPatientSummariesCaller {
 
-	public void getPatientSummariesCallback(List<PatientSummary> patientSummaries);
+	public void onGetPatientSummariesSuccess(List<PatientSummary> patientSummaries);
 
 }

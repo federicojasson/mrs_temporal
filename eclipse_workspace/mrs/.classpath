@@ -2,8 +2,7 @@
 <classpath>
 	<classpathentry excluding="entitiesManagers/PatientManager.java|entitiesManagers/StudyManager.java|entitiesManagers/UsersManager.java|database/DatabaseConnector.java|exceptions/ConnectionException.java|exceptions/NoConnectedException.java|exceptions/UserPasswordException.java|gui/AddRecord.java|gui/Login.java|gui/MedicalRecords.java|gui/PatientSearch.java|entities/Patient_old.java|entities/Study_old.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
-	<classpathentry kind="lib" path="SHEF.jar"/>
-	<classpathentry kind="lib" path="mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Documents/Desarrollo/En desarrollo/GitHub/mrs_temporal/eclipse_workspace/mrs/lib/forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
+	<classpathentry kind="lib" path="D:/Documents/Desarrollo/En desarrollo/GitHub/mrs_temporal/eclipse_workspace/mrs/lib/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

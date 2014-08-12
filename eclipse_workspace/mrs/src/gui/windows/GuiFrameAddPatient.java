@@ -179,7 +179,7 @@ public class GuiFrameAddPatient extends GuiFrame {
 	}
 
 	protected String getTitle() {
-		return "MRS - Nuevo paciente";
+		return "Nuevo paciente - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -207,9 +207,9 @@ public class GuiFrameAddPatient extends GuiFrame {
 		// Adds the patient
 		AddPatientCaller caller = new AddPatientCaller() {
 
-			public void addPatientCallback() {
-				// Closes the current frame
-				GuiManager.closeCurrentFrame();
+			public void onAddPatientSuccess() {
+				// Closes the current window
+				GuiManager.closeCurrentWindow();
 			}
 
 		};
@@ -227,8 +227,8 @@ public class GuiFrameAddPatient extends GuiFrame {
 	}
 
 	private void onCancel() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
+		// Closes the current window
+		GuiManager.closeCurrentWindow();
 	}
 
 	private void onPickDate() {

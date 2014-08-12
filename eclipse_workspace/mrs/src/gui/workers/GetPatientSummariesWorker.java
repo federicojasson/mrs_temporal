@@ -35,7 +35,7 @@ public class GetPatientSummariesWorker extends SwingWorker<List<PatientSummary>,
 
 		try {
 			// Executes the caller's callback method
-			caller.getPatientSummariesCallback(get());
+			caller.onGetPatientSummariesSuccess(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// There is nothing to be done
 		}

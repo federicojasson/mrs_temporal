@@ -35,7 +35,7 @@ public class GetStudyFilesWorker extends SwingWorker<List<File>, Void> {
 
 		try {
 			// Executes the caller's callback method
-			caller.getStudyFilesCallback(get());
+			caller.onGetStudyFilesSuccess(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// There is nothing to be done
 		}

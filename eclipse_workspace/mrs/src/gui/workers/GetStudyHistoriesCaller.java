@@ -5,6 +5,6 @@ import entities.StudyHistory;
 
 public interface GetStudyHistoriesCaller {
 
-	public void getStudyHistoriesCallback(List<StudyHistory> studyHistories);
+	public void onGetStudyHistoriesSuccess(List<StudyHistory> studyHistories);
 
 }

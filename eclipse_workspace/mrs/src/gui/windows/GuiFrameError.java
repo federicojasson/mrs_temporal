@@ -86,12 +86,12 @@ public class GuiFrameError extends GuiFrame {
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
 		onInitialize();
-		
+
 		return panelMain;
 	}
 
 	protected String getTitle() {
-		return "MRS - Error";
+		return "Error - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -104,8 +104,7 @@ public class GuiFrameError extends GuiFrame {
 	}
 
 	private void onExit() {
-		// Disposes the window
-		dispose();
+		onClose();
 	}
 
 	private void onInitialize() {

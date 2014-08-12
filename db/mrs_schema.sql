@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS patients (
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS study_types (
-	description VARCHAR(32),
+	description VARCHAR(64),
 	id BINARY(2),
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB;
@@ -103,17 +103,17 @@ CREATE TABLE IF NOT EXISTS studies_histories (
 
 -- VIEWS -------------------------------------------------------------------------------------
 
-CREATE VIEW users_admins_authentication_data AS
+CREATE VIEW users_authentication_data_admins AS
 SELECT id, password_hash, salt
 FROM users
 WHERE role = 'A';
 
-CREATE VIEW users_doctors_authentication_data AS
+CREATE VIEW users_authentication_data_doctors AS
 SELECT id, password_hash, salt
 FROM users
 WHERE role = 'D';
 
-CREATE VIEW users_researchers_authentication_data AS
+CREATE VIEW users_authentication_data_researchers AS
 SELECT id, password_hash, salt
 FROM users
 WHERE role = 'R';
@@ -278,7 +278,7 @@ END; !
  *	Inserts a study type.
  */
 CREATE PROCEDURE insert_study_type (
-	IN i_description VARCHAR(32),
+	IN i_description VARCHAR(64),
 	IN i_id BINARY(2)
 )
 BEGIN
@@ -515,7 +515,7 @@ ON PROCEDURE mrs_db.insert_user
 TO 'mrs_admin'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.users_admins_authentication_data
+ON TABLE mrs_db.users_authentication_data_admins
 TO 'mrs_admin'@'localhost';
 
 /*
@@ -580,7 +580,7 @@ ON TABLE mrs_db.study_types
 TO 'mrs_doctor'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.users_doctors_authentication_data
+ON TABLE mrs_db.users_authentication_data_doctors
 TO 'mrs_doctor'@'localhost';
 
 /*
@@ -593,5 +593,5 @@ REVOKE ALL PRIVILEGES, GRANT OPTION
 FROM 'mrs_researcher'@'localhost';
 
 GRANT SELECT
-ON TABLE mrs_db.users_researchers_authentication_data
+ON TABLE mrs_db.users_authentication_data_researchers
 TO 'mrs_researcher'@'localhost';

@@ -1,7 +1,6 @@
 package managers;
 
 import java.awt.Image;
-import java.io.File;
 import javax.swing.ImageIcon;
 
 public class ImageManager {
@@ -12,7 +11,7 @@ public class ImageManager {
 	public static final int REMOVE_FILES = 3;
 	public static final int WINDOW_ICON = 4;
 
-	private static final String IMAGES_DIRECTORY = File.separator + "images";
+	private static final String IMAGES_DIRECTORY = "/resources/images";
 
 	public static Image getImage(int imageId) {
 		ImageIcon imageIcon = getImageIcon(imageId);
@@ -21,7 +20,7 @@ public class ImageManager {
 
 	public static ImageIcon getImageIcon(int imageId) {
 		String path = getPath(imageId);
-		return new ImageIcon(ImageManager.class.getClassLoader().getResource(path));
+		return new ImageIcon(ImageManager.class.getResource(path));
 	}
 
 	public static ImageIcon getImageIcon(int imageId, int width, int height) {
@@ -30,7 +29,7 @@ public class ImageManager {
 	}
 
 	private static String getPath(int imageId) {
-		String path = IMAGES_DIRECTORY + File.separator;
+		String path = IMAGES_DIRECTORY + "/";
 
 		switch (imageId) {
 			case ADD_FILES : {

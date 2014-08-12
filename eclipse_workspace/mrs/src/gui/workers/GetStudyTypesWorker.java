@@ -40,7 +40,7 @@ public class GetStudyTypesWorker extends SwingWorker<List<StudyType>, Void> {
 
 		try {
 			// Executes the caller's callback method
-			caller.getStudyTypesCallback(get());
+			caller.onGetStudyTypesSuccess(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// There is nothing to be done
 		}

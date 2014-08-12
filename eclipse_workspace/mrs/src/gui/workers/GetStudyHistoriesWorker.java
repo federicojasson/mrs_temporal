@@ -19,7 +19,7 @@ public class GetStudyHistoriesWorker extends SwingWorker<List<StudyHistory>, Voi
 
 	protected List<StudyHistory> doInBackground() {
 		// This code is executed in a dedicated thread (not EDT)
-		
+
 		try {
 			// Gets the study histories
 			return StudyManager.getStudyHistories();
@@ -35,7 +35,7 @@ public class GetStudyHistoriesWorker extends SwingWorker<List<StudyHistory>, Voi
 
 		try {
 			// Executes the caller's callback method
-			caller.getStudyHistoriesCallback(get());
+			caller.onGetStudyHistoriesSuccess(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// There is nothing to be done
 		}

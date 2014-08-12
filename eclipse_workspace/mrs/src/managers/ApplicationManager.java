@@ -42,7 +42,7 @@ public class ApplicationManager {
 
 			// Executes this code in the event dispatch thread (EDT)
 			EventQueue.invokeLater(new Runnable() {
-			
+
 				public void run() {
 					// Opens the log in frame
 					GuiManager.openFrame(GuiManager.FRAME_LOG_IN);

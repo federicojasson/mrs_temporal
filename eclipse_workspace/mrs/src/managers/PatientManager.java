@@ -1,14 +1,20 @@
 package managers;
 
+import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import entities.Patient;
 import entities.PatientSummary;
+import entities.StudySummary;
+import exceptions.NoPatientException;
 
 public class PatientManager {
 
@@ -37,7 +43,7 @@ public class PatientManager {
 		return currentPatientId;
 	}
 
-	public static Patient getPatient() throws SQLException {
+	public static Patient getPatient() throws NoPatientException, SQLException {
 		Patient patient = null;
 
 		// Gets the prepared statement
@@ -51,16 +57,19 @@ public class PatientManager {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			// Fetches the query results
-			if (resultSet.next()) {
-				Date birthDate = resultSet.getDate("birth_date");
-				byte[] bloodType = resultSet.getBytes("blood_type");
-				byte[] gender = resultSet.getBytes("gender");
-				String name = resultSet.getString("name");
-				String observations = resultSet.getString("observations");
 
-				// Initializes the patient object
-				patient = new Patient(birthDate, bloodType, gender, currentPatientId, name, observations);
-			}
+			if (! resultSet.next())
+				// Patient not found
+				throw new NoPatientException();
+
+			Date birthDate = resultSet.getDate("birth_date");
+			byte[] bloodType = resultSet.getBytes("blood_type");
+			byte[] gender = resultSet.getBytes("gender");
+			String name = resultSet.getString("name");
+			String observations = resultSet.getString("observations");
+
+			// Initializes the patient object
+			patient = new Patient(birthDate, bloodType, gender, currentPatientId, name, observations);
 		} finally {
 			try {
 				// Releases the statement resources
@@ -122,8 +131,36 @@ public class PatientManager {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 
+		// Gets the study summaries
+		List<StudySummary> studySummaries = StudyManager.getStudySummaries(id);
+
+		// Gets the patient study files
+		Map<byte[], List<File>> patientStudyFiles = new HashMap<byte[], List<File>>();
+		for (StudySummary studySummary : studySummaries) {
+			byte[] studyId = studySummary.getId();
+
+			// Gets the study files
+			List<File> studyFiles = StudyManager.getStudyFiles(studyId);
+
+			// Adds the study files to the map
+			patientStudyFiles.put(studyId, studyFiles);
+		}
+
 		// Deletes the patient from the database
 		deletePatient(id);
+
+		// Removes the patient study files from the application directory tree
+		for (Entry<byte[], List<File>> entry : patientStudyFiles.entrySet()) {
+			byte[] studyId = entry.getKey();
+			List<File> studyFiles = entry.getValue();
+
+			for (File studyFile : studyFiles) {
+				String filename = studyFile.getName();
+
+				// Removes the patient study file from the application directory tree
+				FileManager.removeStudyFile(filename, studyId);
+			}
+		}
 
 		// Commits the transaction
 		DbmsManager.commitTransaction();

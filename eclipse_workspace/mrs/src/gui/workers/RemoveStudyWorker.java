@@ -33,7 +33,7 @@ public class RemoveStudyWorker extends SwingWorker<Void, Void> {
 		// This code is executed in the event dispatch thread (EDT)
 
 		// Executes the caller's callback method
-		caller.removeStudyCallback();
+		caller.onRemoveStudySuccess();
 	}
 
 }

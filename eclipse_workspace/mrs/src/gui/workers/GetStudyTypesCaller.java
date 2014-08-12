@@ -5,6 +5,6 @@ import entities.StudyType;
 
 public interface GetStudyTypesCaller {
 
-	public void getStudyTypesCallback(List<StudyType> studyTypes);
+	public void onGetStudyTypesSuccess(List<StudyType> studyTypes);
 
 }

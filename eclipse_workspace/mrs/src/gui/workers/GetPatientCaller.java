@@ -4,6 +4,8 @@ import entities.Patient;
 
 public interface GetPatientCaller {
 
-	public void getPatientCallback(Patient patient);
+	public void onGetPatientFailure();
+
+	public void onGetPatientSuccess(Patient patient);
 
 }

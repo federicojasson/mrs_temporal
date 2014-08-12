@@ -34,7 +34,10 @@ public abstract class GuiWindow {
 		return window;
 	}
 
-	public void recover() {
+	public void recover(GuiWindow callerWindow) {
+		// Moves the window to the caller's location
+		window.setLocationRelativeTo(callerWindow.getWindow());
+
 		// Shows the window
 		window.setVisible(true);
 

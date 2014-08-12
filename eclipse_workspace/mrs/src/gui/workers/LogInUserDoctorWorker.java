@@ -41,7 +41,7 @@ public class LogInUserDoctorWorker extends SwingWorker<Boolean, Void> {
 
 		try {
 			// Executes the caller's callback method
-			caller.logInUserDoctorCallback(get());
+			caller.onLogInUserDoctorSuccess(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// There is nothing to be done
 		}

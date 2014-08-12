@@ -37,7 +37,7 @@ public class SearchStudySummariesWorker extends SwingWorker<List<StudySummary>, 
 
 		try {
 			// Executes the caller's callback method
-			caller.searchStudySummariesCallback(get());
+			caller.onSearchStudySummariesSuccess(get());
 		} catch (ExecutionException | InterruptedException exception) {
 			// There is nothing to be done
 		}

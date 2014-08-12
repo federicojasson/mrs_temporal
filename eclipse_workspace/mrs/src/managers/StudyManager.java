@@ -15,6 +15,7 @@ import entities.Study;
 import entities.StudyHistory;
 import entities.StudySummary;
 import entities.StudyType;
+import exceptions.NoStudyException;
 import exceptions.NoStudyTypesException;
 
 public class StudyManager {
@@ -47,7 +48,7 @@ public class StudyManager {
 		return currentStudyId;
 	}
 
-	public static Study getStudy() throws SQLException {
+	public static Study getStudy() throws NoStudyException, SQLException {
 		Study study = null;
 
 		// Gets the prepared statement
@@ -61,17 +62,20 @@ public class StudyManager {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			// Fetches the query results
-			if (resultSet.next()) {
-				String causes = resultSet.getString("studies.causes");
-				Date date = resultSet.getDate("studies.date");
-				String diagnosis = resultSet.getString("studies.diagnosis");
-				String indications = resultSet.getString("studies.indications");
-				String observations = resultSet.getString("studies.observations");
-				String studyTypeDescription = resultSet.getString("study_types.description");
 
-				// Initializes the study object
-				study = new Study(causes, date, diagnosis, currentStudyId, indications, observations, studyTypeDescription);
-			}
+			if (! resultSet.next())
+				// Study not found
+				throw new NoStudyException();
+
+			String causes = resultSet.getString("studies.causes");
+			Date date = resultSet.getDate("studies.date");
+			String diagnosis = resultSet.getString("studies.diagnosis");
+			String indications = resultSet.getString("studies.indications");
+			String observations = resultSet.getString("studies.observations");
+			String studyTypeDescription = resultSet.getString("study_types.description");
+
+			// Initializes the study object
+			study = new Study(causes, date, diagnosis, currentStudyId, indications, observations, studyTypeDescription);
 		} finally {
 			try {
 				// Releases the statement resources
@@ -85,6 +89,10 @@ public class StudyManager {
 	}
 
 	public static List<File> getStudyFiles() throws SQLException {
+		return getStudyFiles(currentStudyId);
+	}
+
+	public static List<File> getStudyFiles(byte[] id) throws SQLException {
 		List<File> studyFiles = new LinkedList<File>();
 
 		// Gets the prepared statement
@@ -92,7 +100,7 @@ public class StudyManager {
 
 		try {
 			// Sets the input parameters
-			preparedStatement.setBytes(1, currentStudyId);
+			preparedStatement.setBytes(1, id);
 
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -100,7 +108,7 @@ public class StudyManager {
 			// Fetches the query results
 			while (resultSet.next()) {
 				String filename = resultSet.getString("filename");
-				File studyFile = FileManager.getStudyFile(filename, currentStudyId);
+				File studyFile = FileManager.getStudyFile(filename, id);
 
 				// Adds the study file to the list
 				studyFiles.add(studyFile);
@@ -151,6 +159,10 @@ public class StudyManager {
 	}
 
 	public static List<StudySummary> getStudySummaries() throws SQLException {
+		return getStudySummaries(PatientManager.getCurrentPatientId());
+	}
+
+	public static List<StudySummary> getStudySummaries(byte[] patientId) throws SQLException {
 		List<StudySummary> studySummaries = new LinkedList<StudySummary>();
 
 		// Gets the prepared statement
@@ -158,7 +170,7 @@ public class StudyManager {
 
 		try {
 			// Sets the input parameters
-			preparedStatement.setBytes(1, PatientManager.getCurrentPatientId());
+			preparedStatement.setBytes(1, patientId);
 
 			// Executes the prepared statement
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -195,13 +207,18 @@ public class StudyManager {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			// Fetches the query results
-			while (resultSet.next()) {
+
+			if (! resultSet.next())
+				// There are no study types
+				throw new NoStudyTypesException();
+
+			do {
 				String description = resultSet.getString("description");
 				byte[] id = resultSet.getBytes("id");
 
 				// Adds the study type to the list
 				studyTypes.add(new StudyType(description, id));
-			}
+			} while (resultSet.next());
 		} finally {
 			try {
 				// Releases the statement resources
@@ -210,10 +227,6 @@ public class StudyManager {
 				// There is nothing to be done
 			}
 		}
-
-		if (studyTypes.isEmpty())
-			// There are no study types
-			throw new NoStudyTypesException();
 
 		return studyTypes;
 	}
@@ -239,8 +252,19 @@ public class StudyManager {
 		// Starts a transaction
 		DbmsManager.startTransaction();
 
+		// Gets the study files
+		List<File> studyFiles = getStudyFiles(id);
+
 		// Deletes the study from the database
 		deleteStudy(id);
+
+		// Removes the study files from the application directory tree
+		for (File studyFile : studyFiles) {
+			String filename = studyFile.getName();
+
+			// Removes the study file from the application directory tree
+			FileManager.removeStudyFile(filename, id);
+		}
 
 		// Commits the transaction
 		DbmsManager.commitTransaction();

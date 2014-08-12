@@ -6,6 +6,7 @@ import javax.swing.SwingWorker;
 import managers.ErrorManager;
 import managers.PatientManager;
 import entities.Patient;
+import exceptions.NoPatientException;
 
 public class GetPatientWorker extends SwingWorker<Patient, Void> {
 
@@ -15,7 +16,7 @@ public class GetPatientWorker extends SwingWorker<Patient, Void> {
 		this.caller = caller;
 	}
 
-	protected Patient doInBackground() {
+	protected Patient doInBackground() throws NoPatientException {
 		// This code is executed in a dedicated thread (not EDT)
 
 		try {
@@ -33,8 +34,12 @@ public class GetPatientWorker extends SwingWorker<Patient, Void> {
 
 		try {
 			// Executes the caller's callback method
-			caller.getPatientCallback(get());
-		} catch (ExecutionException | InterruptedException exception) {
+			caller.onGetPatientSuccess(get());
+		} catch (ExecutionException exception) {
+			if (exception.getCause() instanceof NoPatientException)
+				// Patient not found
+				caller.onGetPatientFailure();
+		} catch (InterruptedException exception) {
 			// There is nothing to be done
 		}
 	}

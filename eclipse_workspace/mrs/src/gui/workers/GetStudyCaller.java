@@ -4,6 +4,8 @@ import entities.Study;
 
 public interface GetStudyCaller {
 
-	public void getStudyCallback(Study study);
+	public void onGetStudyFailure();
+
+	public void onGetStudySuccess(Study study);
 
 }

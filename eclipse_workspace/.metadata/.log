@@ -6842,3 +6842,322 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2014-08-11 14:14:12.027 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.7.0_65
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=es_AR
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-08-11 14:17:06.234
+!MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
+Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
+The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
+this system level configuration. The Git installation location can be configured on the
+Team > Git > Configuration preference page's 'System Settings' tab.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-08-11 14:17:06.471
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Fede'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.osgi 2 0 2014-08-11 14:17:11.943
+!MESSAGE While loading class "org.eclipse.cdt.internal.ui.viewsupport.ExcludedFileDecorator", thread "Thread[Worker-1,5,main]" timed out waiting (5002ms) for thread "Thread[main,6,main]" to finish starting bundle "org.eclipse.cdt.ui_5.8.0.201406111759 [61]". To avoid deadlock, thread "Thread[Worker-1,5,main]" is proceeding but "org.eclipse.cdt.internal.ui.viewsupport.ExcludedFileDecorator" may not be fully initialized.
+!STACK 0
+org.osgi.framework.BundleException: Unable to acquire the state change lock for the module: osgi.identity; osgi.identity="org.eclipse.cdt.ui"; type="osgi.bundle"; version:Version="5.8.0.201406111759"; singleton:="true" [id=61] STARTED [STARTED]
+	at org.eclipse.osgi.container.Module.lockStateChange(Module.java:329)
+	at org.eclipse.osgi.container.Module.start(Module.java:389)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:454)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:107)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:531)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:324)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:311)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:386)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:336)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:328)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:160)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.loadClass(EquinoxBundle.java:568)
+	at org.eclipse.core.internal.registry.osgi.RegistryStrategyOSGI.createExecutableExtension(RegistryStrategyOSGI.java:174)
+	at org.eclipse.core.internal.registry.ExtensionRegistry.createExecutableExtension(ExtensionRegistry.java:905)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:243)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.WorkbenchPlugin.createExtension(WorkbenchPlugin.java:285)
+	at org.eclipse.ui.internal.decorators.LightweightDecoratorDefinition$1.run(LightweightDecoratorDefinition.java:125)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.runtime.Platform.run(Platform.java:867)
+	at org.eclipse.ui.internal.decorators.LightweightDecoratorDefinition.internalGetDecorator(LightweightDecoratorDefinition.java:120)
+	at org.eclipse.ui.internal.decorators.LightweightDecoratorDefinition.decorate(LightweightDecoratorDefinition.java:255)
+	at org.eclipse.ui.internal.decorators.LightweightDecoratorManager$LightweightRunnable.run(LightweightDecoratorManager.java:83)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.ui.internal.decorators.LightweightDecoratorManager.decorate(LightweightDecoratorManager.java:367)
+	at org.eclipse.ui.internal.decorators.LightweightDecoratorManager.getDecorations(LightweightDecoratorManager.java:349)
+	at org.eclipse.ui.internal.decorators.DecorationScheduler$1.ensureResultCached(DecorationScheduler.java:372)
+	at org.eclipse.ui.internal.decorators.DecorationScheduler$1.run(DecorationScheduler.java:332)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.ltk.ui.refactoring 4 10000 2014-08-11 17:01:29.729
+!MESSAGE Internal Error
+!STACK 1
+Java Model Exception: Core Exception [code 273] Problems encountered while deleting resources.
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:50)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Contains: Could not delete '/mrs/studies_files'.
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:351)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1983)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:803)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:168)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F\8BA8.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA\ADE6.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files.
+Caused by: org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:816)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:168)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Contains: Could not delete '/mrs/studies_files'.
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:351)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1983)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:803)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:168)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F\8BA8.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA\ADE6.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2014-08-11 17:01:29.729
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 2 org.eclipse.core.resources 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete '/mrs/studies_files'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.delete(FileSystemResourceManager.java:351)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFolder(ResourceTree.java:352)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFolder(ResourceTree.java:798)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1983)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:803)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:168)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.access$0(DynamicValidationStateChange.java:1)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange$1.run(DynamicValidationStateChange.java:113)
+	at org.eclipse.jdt.internal.core.BatchOperation.executeOperation(BatchOperation.java:39)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:729)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.jdt.core.JavaCore.run(JavaCore.java:5358)
+	at org.eclipse.jdt.internal.corext.refactoring.changes.DynamicValidationStateChange.perform(DynamicValidationStateChange.java:116)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Contains: Problems encountered while deleting files.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F\8BA8.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA\ADE6.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242.
+Contains: Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files.
+!SUBENTRY 3 org.eclipse.core.resources 4 273 2014-08-11 17:01:29.729
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 4 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F\8BA8.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99\463F.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9\8A99.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83\4CB9.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD\7D83.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126\27BD.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\9126.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA\ADE6.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D\25DA.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0\895D.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4\49F0.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB\23D4.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242\3CAB.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files\A242.
+!SUBENTRY 5 org.eclipse.core.filesystem 4 273 2014-08-11 17:01:29.729
+!MESSAGE Could not delete: D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace\mrs\studies_files.
+!SESSION 2014-08-11 20:59:28.433 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.7.0_65
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=es_AR
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-08-11 20:59:47.017
+!MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
+Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
+The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
+this system level configuration. The Git installation location can be configured on the
+Team > Git > Configuration preference page's 'System Settings' tab.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-08-11 20:59:47.172
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Fede'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.

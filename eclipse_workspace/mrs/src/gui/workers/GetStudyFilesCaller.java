@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface GetStudyFilesCaller {
 
-	public void getStudyFilesCallback(List<File> studyFiles);
+	public void onGetStudyFilesSuccess(List<File> studyFiles);
 
 }

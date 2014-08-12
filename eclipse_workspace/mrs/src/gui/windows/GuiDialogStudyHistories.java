@@ -59,12 +59,12 @@ public class GuiDialogStudyHistories extends GuiDialog {
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
 
 		onInitialize();
-		
+
 		return panelMain;
 	}
 
 	protected String getTitle() {
-		return "MRS - Historial de modificaciones (" + Utility.bytesToHexadecimal(StudyManager.getCurrentStudyId()) + ")";
+		return "Historial de modificaciones (" + Utility.bytesToHexadecimal(StudyManager.getCurrentStudyId()) + ") - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -72,8 +72,8 @@ public class GuiDialogStudyHistories extends GuiDialog {
 	}
 
 	private void onGoBack() {
-		// Closes the current dialog
-		GuiManager.closeCurrentDialog();
+		// Closes the current window
+		GuiManager.closeCurrentWindow();
 	}
 
 	private void onInitialize() {
@@ -83,7 +83,7 @@ public class GuiDialogStudyHistories extends GuiDialog {
 		// Gets the study histories
 		GetStudyHistoriesCaller caller = new GetStudyHistoriesCaller() {
 
-			public void getStudyHistoriesCallback(List<StudyHistory> studyHistories) {
+			public void onGetStudyHistoriesSuccess(List<StudyHistory> studyHistories) {
 				for (StudyHistory studyHistory : studyHistories) {
 					String studyHistoryLine = new String();
 					studyHistoryLine += Utility.formatTimestamp(studyHistory.getDatetime());

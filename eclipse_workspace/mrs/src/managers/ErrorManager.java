@@ -29,7 +29,7 @@ public class ErrorManager {
 
 		// Executes this code in the event dispatch thread (EDT)
 		EventQueue.invokeLater(new Runnable() {
-		
+
 			public void run() {
 				// Opens an error frame
 				GuiManager.openFrame(GuiManager.FRAME_ERROR);

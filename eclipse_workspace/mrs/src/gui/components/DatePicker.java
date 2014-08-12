@@ -102,17 +102,17 @@ public class DatePicker extends JPanel {
 		JButton closeButton = new JButton("Cancelar");
 		closeButton.setMargin(new Insets(2, 8, 2, 8));
 		closeButton.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				hidePopup();
 			}
-			
+
 		});
-		
+
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panel.add(closeButton);
-		
+
 		return panel;
 	}
 
@@ -120,9 +120,9 @@ public class DatePicker extends JPanel {
 		JPanel panel = new JPanel();
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints constraints = new GridBagConstraints();
-		
+
 		panel.setLayout(gridbag);
-	
+
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 7;
@@ -132,7 +132,7 @@ public class DatePicker extends JPanel {
 		Font font = title.getFont();
 		Font weekFont = new Font(font.getName(), font.getStyle(), font.getSize() - 2);
 		title.setFont(font);
-	
+
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
@@ -141,49 +141,48 @@ public class DatePicker extends JPanel {
 			panel.add(label, constraints);
 			label.setFont(weekFont);
 		}
-	
+
 		Calendar draw = (Calendar) newCalendar.clone();
 		draw.set(Calendar.DATE, 1);
 		draw.add(Calendar.DATE, - draw.get(Calendar.DAY_OF_WEEK) + 1);
 		int monthInt = newCalendar.get(Calendar.MONTH);
-	
+
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		int width = getFontMetrics(weekFont).stringWidth(" Wed ");
 		int width1 = getFontMetrics(weekFont).stringWidth("Wed");
 		int height = getFontMetrics(weekFont).getHeight() + width - width1;
-	
+
 		for (constraints.gridy = 2; constraints.gridy < 8; constraints.gridy++)
 			for (constraints.gridx = 0; constraints.gridx < 7; constraints.gridx++) {
 				JButton dayButton = new JButton();
-				
+
 				if (draw.get(Calendar.MONTH) == monthInt) {
 					String dayString = dateFormatterButton.format(draw.getTime());
 					if (draw.get(Calendar.DAY_OF_MONTH) < 10)
 						dayString = " " + dayString;
 					dayButton.setText(dayString);
-				} else {
+				} else
 					dayButton.setEnabled(false);
-				}
-				
+
 				if (draw.get(Calendar.DAY_OF_MONTH) == newCalendar.get(Calendar.DAY_OF_MONTH) && draw.get(Calendar.MONTH) == monthInt)
 					dayButton.setBackground(Color.yellow);
-				
+
 				dayButton.setFont(weekFont);
 				dayButton.setPreferredSize(new Dimension(width, height));
 				dayButton.setMargin(new Insets(0, 0, 0, 0));
 				dayButton.addActionListener(new ActionListener() {
-	
+
 					public void actionPerformed(ActionEvent event) {
 						onPickDay(event.getActionCommand());
 					}
-	
+
 				});
 				panel.add(dayButton, constraints);
-				
+
 				draw.add(Calendar.DATE, + 1);
 			}
-	
+
 		return panel;
 	}
 
@@ -196,61 +195,61 @@ public class DatePicker extends JPanel {
 	private JPanel createTopControls() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-	
+
 		buttonPreviousYear = new JButton(" << ");
 		panel.add(buttonPreviousYear);
 		buttonPreviousYear.setMargin(new Insets(0, 0, 0, 0));
 		buttonPreviousYear.addActionListener(new ActionListener() {
-	
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonPreviousYearAction();
 			}
-			
+
 		});
-	
+
 		buttonPreviousMonth = new JButton(" < ");
 		panel.add(buttonPreviousMonth);
 		buttonPreviousMonth.setMargin(new Insets(0, 0, 0, 0));
 		buttonPreviousMonth.addActionListener(new ActionListener() {
-	
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonPreviousMonthAction();
 			}
-			
+
 		});
-	
+
 		fieldCurrentDate = new JTextField(dateFormatterField.format(newCalendar.getTime()), 10);
 		fieldCurrentDate.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
 				onEditDate();
 			}
-			
+
 		});
 		panel.add(fieldCurrentDate);
-	
+
 		buttonNextMonth = new JButton(" > ");
 		panel.add(buttonNextMonth);
 		buttonNextMonth.setMargin(new Insets(0, 0, 0, 0));
 		buttonNextMonth.addActionListener(new ActionListener() {
-	
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonNextMonthAction();
 			}
-			
+
 		});
-	
+
 		buttonNextYear = new JButton(" >> ");
 		panel.add(buttonNextYear);
 		buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
 		buttonNextYear.addActionListener(new ActionListener() {
-	
+
 			public void actionPerformed(ActionEvent arg0) {
 				onButtonNextYearAction();
 			}
-			
+
 		});
-	
+
 		return panel;
 	}
 
@@ -296,17 +295,17 @@ public class DatePicker extends JPanel {
 
 	private void refreshPanel() {
 		removeAll();
-		
+
 		setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createLineBorder(Color.GRAY, 1),
 			BorderFactory.createEmptyBorder(4, 4, 4, 4)
-		));
+			));
 
 		setLayout(new BorderLayout(0, 4));
 		add(createTopControls(), BorderLayout.NORTH);
 		add(createCalendar(), BorderLayout.CENTER);
 		add(createBottomControls(), BorderLayout.SOUTH);
-		
+
 		revalidate();
 	}
 }

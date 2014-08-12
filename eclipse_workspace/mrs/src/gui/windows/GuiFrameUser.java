@@ -164,18 +164,32 @@ public class GuiFrameUser extends GuiFrame {
 		panelMain.add(panelSearch, BorderLayout.NORTH);
 		panelMain.add(scrollPanelPatients, BorderLayout.CENTER);
 		panelMain.add(panelButtons, BorderLayout.SOUTH);
-		
+
 		onInitialize();
-		
+
 		return panelMain;
 	}
 
 	protected String getTitle() {
-		return "MRS - Usuario: " + UserManager.getCurrentUserId();
+		return "Usuario: " + UserManager.getCurrentUserId() + " - MRS";
 	}
 
 	protected boolean isResizable() {
 		return true;
+	}
+
+	protected void onClose() {
+		if (! isLocked()) {
+			// The window is not locked
+
+			// Confirms the action
+			if (! GuiManager.showConfirmationDialog(this, "¿Cerrar sesión?", "Está a punto de cerrar la sesión." + System.lineSeparator() + "Para volver a ingresar deberá volver a autenticarse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
+				// The action was canceled
+				return;
+
+			// Closes the current window
+			GuiManager.closeCurrentWindow();
+		}
 	}
 
 	private void onAddPatient() {
@@ -184,10 +198,9 @@ public class GuiFrameUser extends GuiFrame {
 	}
 
 	private void onExit() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
+		onClose();
 	}
-	
+
 	private void onInitialize() {
 		// Locks the window
 		lock();
@@ -195,7 +208,7 @@ public class GuiFrameUser extends GuiFrame {
 		// Gets the patient summaries
 		GetPatientSummariesCaller caller = new GetPatientSummariesCaller() {
 
-			public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
+			public void onGetPatientSummariesSuccess(List<PatientSummary> patientSummaries) {
 				// Sets the patient summaries as the table data
 				tablePatients.setPatientSummaries(patientSummaries);
 
@@ -233,7 +246,7 @@ public class GuiFrameUser extends GuiFrame {
 		// Removes the patient
 		RemovePatientCaller caller = new RemovePatientCaller() {
 
-			public void removePatientCallback() {
+			public void onRemovePatientSuccess() {
 				// Removes the patient's row
 				tablePatients.removePatientSummary(selectedRowIndex);
 
@@ -263,7 +276,7 @@ public class GuiFrameUser extends GuiFrame {
 					// Gets the patient summaries
 					GetPatientSummariesCaller caller = new GetPatientSummariesCaller() {
 
-						public void getPatientSummariesCallback(List<PatientSummary> patientSummaries) {
+						public void onGetPatientSummariesSuccess(List<PatientSummary> patientSummaries) {
 							// Sets the patient summaries as the table data
 							tablePatients.setPatientSummaries(patientSummaries);
 
@@ -274,7 +287,7 @@ public class GuiFrameUser extends GuiFrame {
 							onSelectPatient();
 
 							// Focus the search field
-							fieldSearch.requestFocus();
+							fieldSearch.requestFocusInWindow();
 						}
 
 					};
@@ -284,7 +297,7 @@ public class GuiFrameUser extends GuiFrame {
 					// Searches the patient summaries
 					SearchPatientSummariesCaller caller = new SearchPatientSummariesCaller() {
 
-						public void searchPatientSummariesCallback(List<PatientSummary> patientSummaries) {
+						public void onSearchPatientSummariesSuccess(List<PatientSummary> patientSummaries) {
 							// Sets the patient summaries as the table data
 							tablePatients.setPatientSummaries(patientSummaries);
 
@@ -295,7 +308,7 @@ public class GuiFrameUser extends GuiFrame {
 							onSelectPatient();
 
 							// Focus the search field
-							fieldSearch.requestFocus();
+							fieldSearch.requestFocusInWindow();
 						}
 
 					};

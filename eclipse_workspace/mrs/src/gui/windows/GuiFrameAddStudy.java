@@ -291,7 +291,7 @@ public class GuiFrameAddStudy extends GuiFrame {
 	}
 
 	protected String getTitle() {
-		return "MRS - Nuevo estudio";
+		return "Nuevo estudio - MRS";
 	}
 
 	protected boolean isResizable() {
@@ -323,9 +323,9 @@ public class GuiFrameAddStudy extends GuiFrame {
 		// Adds the study
 		AddStudyCaller caller = new AddStudyCaller() {
 
-			public void addStudyCallback() {
-				// Closes the current frame
-				GuiManager.closeCurrentFrame();
+			public void onAddStudySuccess() {
+				// Closes the current window
+				GuiManager.closeCurrentWindow();
 			}
 
 		};
@@ -343,10 +343,10 @@ public class GuiFrameAddStudy extends GuiFrame {
 	}
 
 	private void onCancel() {
-		// Closes the current frame
-		GuiManager.closeCurrentFrame();
+		// Closes the current window
+		GuiManager.closeCurrentWindow();
 	}
-	
+
 	private void onInitialize() {
 		// Locks the window
 		lock();
@@ -354,7 +354,7 @@ public class GuiFrameAddStudy extends GuiFrame {
 		// Gets the study types
 		GetStudyTypesCaller caller = new GetStudyTypesCaller() {
 
-			public void getStudyTypesCallback(List<StudyType> studyTypes) {
+			public void onGetStudyTypesSuccess(List<StudyType> studyTypes) {
 				// Adds the study types to the combo box
 				for (StudyType studyType : studyTypes)
 					comboBoxStudyType.addItem(studyType);
@@ -407,7 +407,7 @@ public class GuiFrameAddStudy extends GuiFrame {
 			// Opens the file's directory
 			OpenFileDirectoryCaller caller = new OpenFileDirectoryCaller() {
 
-				public void openFileDirectoryCallback() {
+				public void onOpenFileDirectorySuccess() {
 					// Unlocks the window
 					unlock();
 				}
