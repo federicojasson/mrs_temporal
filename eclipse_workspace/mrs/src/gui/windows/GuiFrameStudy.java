@@ -12,6 +12,7 @@ import gui.workers.OpenFileDirectoryCaller;
 import gui.workers.OpenFileDirectoryWorker;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -94,6 +95,8 @@ public class GuiFrameStudy extends GuiFrame {
 		panelFields.add(fieldDate, "3, 5, fill, default");
 
 		fieldCauses = new JTextArea();
+		fieldCauses.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		fieldCauses.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		fieldCauses.setLineWrap(true);
 		fieldCauses.setWrapStyleWord(true);
 		registerComponent("fieldCauses", fieldCauses);
@@ -106,6 +109,8 @@ public class GuiFrameStudy extends GuiFrame {
 		panelCauses.add(scrollPanelCauses);
 
 		fieldDiagnosis = new JTextArea();
+		fieldDiagnosis.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		fieldDiagnosis.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		fieldDiagnosis.setLineWrap(true);
 		fieldDiagnosis.setWrapStyleWord(true);
 		registerComponent("fieldDiagnosis", fieldDiagnosis);
@@ -118,6 +123,8 @@ public class GuiFrameStudy extends GuiFrame {
 		panelDiagnosis.add(scrollPanelDiagnosis);
 
 		fieldIndications = new JTextArea();
+		fieldIndications.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		fieldIndications.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		fieldIndications.setLineWrap(true);
 		fieldIndications.setWrapStyleWord(true);
 		registerComponent("fieldDiagnosis", fieldIndications);
@@ -130,6 +137,8 @@ public class GuiFrameStudy extends GuiFrame {
 		panelIndications.add(scrollPanelIndications);
 
 		fieldObservations = new JTextArea();
+		fieldObservations.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		fieldObservations.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		fieldObservations.setLineWrap(true);
 		fieldObservations.setWrapStyleWord(true);
 		registerComponent("fieldObservations", fieldObservations);
@@ -302,6 +311,10 @@ public class GuiFrameStudy extends GuiFrame {
 
 	protected boolean isResizable() {
 		return true;
+	}
+
+	protected void onPack() {
+		setFocusOwner(null);
 	}
 
 	private void onAddStudyFile() {

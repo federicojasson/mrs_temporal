@@ -103,6 +103,10 @@ public class GuiFrameError extends GuiFrame {
 		ApplicationManager.exitAbnormally();
 	}
 
+	protected void onPack() {
+		setFocusOwner(null);
+	}
+
 	private void onExit() {
 		onClose();
 	}

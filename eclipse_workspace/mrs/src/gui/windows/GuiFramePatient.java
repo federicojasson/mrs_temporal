@@ -3,6 +3,7 @@ package gui.windows;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -157,6 +158,8 @@ public class GuiFramePatient extends GuiFrame {
 		panelFields.add(comboBoxBloodType, "3, 9, fill, default");
 
 		fieldObservations = new JTextArea();
+		fieldObservations.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		fieldObservations.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		fieldObservations.setLineWrap(true);
 		fieldObservations.setWrapStyleWord(true);
 		registerComponent("fieldObservations", fieldObservations);
@@ -185,11 +188,11 @@ public class GuiFramePatient extends GuiFrame {
 			}
 
 			public void insertUpdate(DocumentEvent event) {
-				onSearch();
+				onSearch(800);
 			}
 
 			public void removeUpdate(DocumentEvent event) {
-				onSearch();
+				onSearch(800);
 			}
 
 		});
@@ -339,6 +342,14 @@ public class GuiFramePatient extends GuiFrame {
 
 	protected boolean isResizable() {
 		return true;
+	}
+
+	protected void onPack() {
+		setFocusOwner(fieldSearch);
+	}
+
+	protected void onRecover() {
+		onSearch(0);
 	}
 
 	private void onAddStudy() {
@@ -492,7 +503,7 @@ public class GuiFramePatient extends GuiFrame {
 		worker.execute();
 	}
 
-	private void onSearch() {
+	private void onSearch(long delay) {
 		TimerTask task = new TimerTask() {
 
 			public void run() {
@@ -517,7 +528,7 @@ public class GuiFramePatient extends GuiFrame {
 							onSelectStudy();
 
 							// Focus the search field
-							fieldSearch.requestFocusInWindow();
+							setFocusOwner(fieldSearch);
 						}
 
 					};
@@ -538,7 +549,7 @@ public class GuiFramePatient extends GuiFrame {
 							onSelectStudy();
 
 							// Focus the search field
-							fieldSearch.requestFocusInWindow();
+							setFocusOwner(fieldSearch);
 						}
 
 					};
@@ -547,7 +558,7 @@ public class GuiFramePatient extends GuiFrame {
 				}
 			}
 		};
-		TimerManager.scheduleTask(task, 800);
+		TimerManager.scheduleTask(task, delay);
 	}
 
 	private void onSelectStudy() {

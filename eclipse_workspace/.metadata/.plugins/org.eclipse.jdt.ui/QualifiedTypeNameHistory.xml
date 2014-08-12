@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.swing.table.TableCellRenderer"/>
 <fullyQualifiedTypeName name="com.jgoodies.forms.factories.FormFactory"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="gui.workers.RemovePatientCaller"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="exceptions.NoStudyException"/>
 <fullyQualifiedTypeName name="gui.windows.GuiFrameStudy"/>
 <fullyQualifiedTypeName name="managers.GuiManager"/>
+<fullyQualifiedTypeName name="java.awt.KeyboardFocusManager"/>
 </qualifiedTypeNameHistroy>

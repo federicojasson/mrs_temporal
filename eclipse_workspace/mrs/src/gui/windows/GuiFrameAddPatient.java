@@ -3,6 +3,7 @@ package gui.windows;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -117,6 +118,8 @@ public class GuiFrameAddPatient extends GuiFrame {
 		panelFields.add(comboBoxBloodType, "3, 7, fill, default");
 
 		fieldObservations = new JTextArea();
+		fieldObservations.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		fieldObservations.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 		fieldObservations.setLineWrap(true);
 		fieldObservations.setWrapStyleWord(true);
 		registerComponent("fieldObservations", fieldObservations);
@@ -184,6 +187,10 @@ public class GuiFrameAddPatient extends GuiFrame {
 
 	protected boolean isResizable() {
 		return true;
+	}
+
+	protected void onPack() {
+		setFocusOwner(fieldName);
 	}
 
 	private void onAddPatient() {

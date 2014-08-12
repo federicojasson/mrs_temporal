@@ -30,6 +30,7 @@ public abstract class GuiDialog extends GuiWindow {
 		window.setModalityType(ModalityType.APPLICATION_MODAL);
 		window.setContentPane(getMainPanel());
 		window.pack();
+		onPack();
 		window.setMinimumSize(window.getSize());
 		window.setResizable(isResizable());
 		window.setLocationRelativeTo(callerWindow.getWindow());
@@ -46,6 +47,8 @@ public abstract class GuiDialog extends GuiWindow {
 			// Closes the current window
 			GuiManager.closeCurrentWindow();
 	}
+
+	protected void onPack() {}
 
 	protected void setDefaultButton(JButton button) {
 		window.getRootPane().setDefaultButton(button);

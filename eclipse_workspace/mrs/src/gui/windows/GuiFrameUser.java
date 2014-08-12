@@ -53,11 +53,11 @@ public class GuiFrameUser extends GuiFrame {
 			}
 
 			public void insertUpdate(DocumentEvent event) {
-				onSearch();
+				onSearch(800);
 			}
 
 			public void removeUpdate(DocumentEvent event) {
-				onSearch();
+				onSearch(800);
 			}
 
 		});
@@ -192,6 +192,14 @@ public class GuiFrameUser extends GuiFrame {
 		}
 	}
 
+	protected void onPack() {
+		setFocusOwner(fieldSearch);
+	}
+
+	protected void onRecover() {
+		onSearch(0);
+	}
+
 	private void onAddPatient() {
 		// Opens the add patient frame
 		GuiManager.openFrame(GuiManager.FRAME_ADD_PATIENT);
@@ -262,7 +270,7 @@ public class GuiFrameUser extends GuiFrame {
 		worker.execute();
 	}
 
-	private void onSearch() {
+	private void onSearch(long delay) {
 		TimerTask task = new TimerTask() {
 
 			public void run() {
@@ -287,7 +295,7 @@ public class GuiFrameUser extends GuiFrame {
 							onSelectPatient();
 
 							// Focus the search field
-							fieldSearch.requestFocusInWindow();
+							setFocusOwner(fieldSearch);
 						}
 
 					};
@@ -308,7 +316,7 @@ public class GuiFrameUser extends GuiFrame {
 							onSelectPatient();
 
 							// Focus the search field
-							fieldSearch.requestFocusInWindow();
+							setFocusOwner(fieldSearch);
 						}
 
 					};
@@ -317,7 +325,7 @@ public class GuiFrameUser extends GuiFrame {
 				}
 			}
 		};
-		TimerManager.scheduleTask(task, 800);
+		TimerManager.scheduleTask(task, delay);
 	}
 
 	private void onSelectPatient() {

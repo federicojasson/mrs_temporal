@@ -43,6 +43,9 @@ public abstract class GuiWindow {
 
 		// Unlocks the window after recovering it
 		unlock();
+
+		// Calls the callback method
+		onRecover();
 	}
 
 	protected abstract String getTitle();
@@ -80,6 +83,8 @@ public abstract class GuiWindow {
 		}
 	}
 
+	protected void onRecover() {}
+
 	protected void registerComponent(String componentId, Component component) {
 		components.put(componentId, component);
 	}
@@ -104,6 +109,16 @@ public abstract class GuiWindow {
 		window.setBounds(x, y, newWidth, newHeight);
 	}
 
+	protected void setFocusOwner(Component focusOwner) {
+		if (isLocked)
+			// Saves the window's focus owner
+			this.focusOwner = focusOwner;
+		else
+			if (focusOwner != null)
+				// Focuses the focus owner
+				focusOwner.requestFocusInWindow();
+	}
+
 	protected abstract void setTitle(String title);
 
 	protected void setWindow(Window window) {
@@ -118,7 +133,7 @@ public abstract class GuiWindow {
 			setTitle(title);
 
 			if (focusOwner != null)
-				// Restores the window's focus owner
+				// Focuses the focus owner
 				focusOwner.requestFocusInWindow();
 
 			// Restores the state of all the components

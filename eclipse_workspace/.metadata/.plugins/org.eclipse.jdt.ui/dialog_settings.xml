@@ -251,12 +251,13 @@
 		<item value="false" key="OmitCallToSuper"/>
 	</section>
 	<section name="FatJarPackageWizard">
-		<item value="C:\Users\Fede\Desktop\mrs.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\jar\mrs.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="ApplicationManager - mrs" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
 		<item value="D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\eclipse_workspace" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="2" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
 		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="D:\Documents\Desarrollo\En desarrollo\GitHub\mrs_temporal\jar\mrs.jar"/>
 			<item value="C:\Users\Fede\Desktop\mrs.jar"/>
 			<item value="C:\Users\Fede\Desktop\ejecutable\mrs.jar"/>
 			<item value="C:\Users\Fede\Desktop\ejecutable\MRS.jar"/>

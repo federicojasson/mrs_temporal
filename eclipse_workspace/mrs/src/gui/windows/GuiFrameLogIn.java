@@ -105,6 +105,10 @@ public class GuiFrameLogIn extends GuiFrame {
 		return false;
 	}
 
+	protected void onPack() {
+		setFocusOwner(fieldId);
+	}
+
 	private void onExit() {
 		// Closes the current window
 		GuiManager.closeCurrentWindow();

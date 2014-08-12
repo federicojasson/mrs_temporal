@@ -71,6 +71,10 @@ public class GuiDialogStudyHistories extends GuiDialog {
 		return true;
 	}
 
+	protected void onPack() {
+		setFocusOwner(null);
+	}
+
 	private void onGoBack() {
 		// Closes the current window
 		GuiManager.closeCurrentWindow();

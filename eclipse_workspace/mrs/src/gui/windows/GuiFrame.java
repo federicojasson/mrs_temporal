@@ -32,6 +32,7 @@ public abstract class GuiFrame extends GuiWindow {
 		window.setIconImage(ImageManager.getImage(ImageManager.WINDOW_ICON));
 		window.setContentPane(getMainPanel());
 		window.pack();
+		onPack();
 		window.setMinimumSize(window.getSize());
 		window.setResizable(isResizable());
 		window.setLocationRelativeTo(callerWindow == null ? null : callerWindow.getWindow());
@@ -48,6 +49,8 @@ public abstract class GuiFrame extends GuiWindow {
 			// Closes the current window
 			GuiManager.closeCurrentWindow();
 	}
+
+	protected void onPack() {}
 
 	protected void setDefaultButton(JButton button) {
 		window.getRootPane().setDefaultButton(button);
