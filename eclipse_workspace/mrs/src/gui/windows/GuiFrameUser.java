@@ -183,7 +183,7 @@ public class GuiFrameUser extends GuiFrame {
 			// The window is not locked
 
 			// Confirms the action
-			if (! GuiManager.showConfirmationDialog(this, "¿Cerrar sesión?", "Está a punto de cerrar la sesión." + System.lineSeparator() + "Para volver a ingresar deberá volver a autenticarse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
+			if (! GuiManager.showConfirmationDialog(this, "¿Cerrar sesión?", "Está a punto de cerrar sesión." + System.lineSeparator() + "Para reingresar deberá volver a autenticarse." + System.lineSeparator() + "¿Está seguro que desea continuar?"))
 				// The action was canceled
 				return;
 
